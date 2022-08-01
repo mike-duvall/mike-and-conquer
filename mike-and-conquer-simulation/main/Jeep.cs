@@ -192,6 +192,7 @@ namespace mike_and_conquer_simulation.main
         {
             if (path.Count > 1)
             {
+
                 this.movementDistanceEpsilon = 3.5f;
 
                 MoveTowardsCurrentDestinationInPath();
@@ -199,12 +200,11 @@ namespace mike_and_conquer_simulation.main
             }
             else if (path.Count == 1)
             {
+                // Reduce epsilon as we approach final destination
+                // so that it lands exactly on right point
+                // TODO:  Refator to handle this more elegantly that setting movementDistanceEpsilon
+                // everytime in this method
                 this.movementDistanceEpsilon = 1.5;
-
-                // TODO:  Currently waiting until units almost arrive to assign
-                // them slots on the destination square, but when
-                // handling more than 5 units, will probably need to assign slots
-                // when the move is initiated, rather than up on arrival
                 LandOnFinalDestinationMapSquare();
             }
             else

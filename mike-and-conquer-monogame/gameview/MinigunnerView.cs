@@ -29,22 +29,9 @@ namespace mike_and_conquer.gameview
 
         enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
-        // protected MinigunnerView(Minigunner minigunner, string spriteListKey)
-        // {
-        //     this.myMinigunner = minigunner;
-        //     this.unitSprite = new UnitSprite(spriteListKey);
-        //     this.unitSprite.drawBoundingRectangle = false;
-        //     this.unitSprite.drawShadow = true;
-        //
-        //     this.unitSelectionCursor = new UnitSelectionCursor(myMinigunner, (int)this.myMinigunner.GameWorldLocation.WorldCoordinatesAsVector2.X, (int)this.myMinigunner.GameWorldLocation.WorldCoordinatesAsVector2.Y);
-        //     this.destinationSquare = new DestinationSquare();
-        //     this.drawDestinationSquare = false;
-        //     SetupAnimations();
-        // }
 
         protected MinigunnerView(int unitId,string spriteListKey, int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            // this.myMinigunner = minigunner;
             this.UnitId = unitId;
             this.XInWorldCoordinates = xInWorldCoordinates;
             this.YInWorldCoordinates = yInWorldCoordinates;
@@ -174,45 +161,6 @@ namespace mike_and_conquer.gameview
         {
             unitSprite.SetAnimate(animateFlag);
         }
-
-
-        // public void OrderToMoveToDestination(Point centerOfSquare)
-        // {
-        //     // StartScenarioCommand command = new StartScenarioCommand();
-        //     // command.GDIPlayerController = new HumanPlayerController();
-        //     //
-        //     // SimulationMain.instance.PostCommand(command);
-        //
-        //
-        //     OrderUnitToMoveCommand command = new OrderUnitToMoveCommand();
-        //     command.UnitId = this.UnitId;
-        //     command.DestinationXInWorldCoordinates = centerOfSquare.X;
-        //     command.DestinationYInWorldCoordinates = centerOfSquare.Y;
-        //
-        //     SimulationMain.instance.PostCommand(command);
-        //
-        // }
-
-
-
-
-        // internal Rectangle CreateClickDetectionRectangle()
-        // {
-        //
-        //     int unitWidth = 12;
-        //     int unitHeight = 12;
-        //
-        //     int x = (int)(XInWorldCoordinates - (unitWidth / 2));
-        //     int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
-        //
-        //
-        //     // TODO: Is this a memory leak?
-        //     // Thinking not, as it's just a struct with two values and helper functions
-        //     // As opposed to something consumes resources on the graphics card?
-        //     // It doesn't have a Dispose method
-        //     Rectangle rectangle = new Rectangle(x, y, unitWidth, unitHeight);
-        //     return rectangle;
-        // }
 
 
     }

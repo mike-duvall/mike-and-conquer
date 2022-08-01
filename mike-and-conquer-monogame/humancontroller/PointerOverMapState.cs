@@ -181,12 +181,6 @@ namespace mike_and_conquer.gameworld.humancontroller
 
         public void OrderToMoveToDestination(int unitId, Point centerOfSquare)
         {
-            // StartScenarioCommand command = new StartScenarioCommand();
-            // command.GDIPlayerController = new HumanPlayerController();
-            //
-            // SimulationMain.instance.PostCommand(command);
-
-
             OrderUnitToMoveCommand command = new OrderUnitToMoveCommand();
             command.UnitId = unitId;
             command.DestinationXInWorldCoordinates = centerOfSquare.X;

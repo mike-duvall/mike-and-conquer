@@ -144,9 +144,7 @@ namespace mike_and_conquer.gameview
 
         private KeyboardState oldKeyboardState;
 
-        // private List<MinigunnerView> gdiMinigunnerViewList;
         private List<UnitView> unitViewList;
-        // private List<MinigunnerView> nodMinigunnerViewList;
         //
         // private GDIBarracksView gdiBarracksView;
         //
@@ -250,26 +248,6 @@ namespace mike_and_conquer.gameview
 
         public UnitView GetUnitViewById(int unitId)
         {
-            // if (mcvView != null && mcvView.UnitId == unitId)
-            // {
-            //     return mcvView;
-            // }
-            // else if (jeepView != null && jeepView.UnitId == unitId)
-            // {
-            //     return jeepView;
-            // }
-            // else
-            // {
-            //     foreach (MinigunnerView nextMinigunnerView in GameWorldView.instance.GdiMinigunnerViewList)
-            //     {
-            //         if (nextMinigunnerView.UnitId == unitId)
-            //         {
-            //             return nextMinigunnerView;
-            //         }
-            //     }
-            //
-            // }
-
 
             foreach (UnitView unitView in this.unitViewList)
             {
@@ -548,23 +526,6 @@ namespace mike_and_conquer.gameview
             {
                 unitView.DrawShadowOnly(gameTime, spriteBatch);
             }
-            //
-            // foreach (MinigunnerView nextMinigunnerView in GameWorldView.instance.NodMinigunnerViewList)
-            // {
-            //     nextMinigunnerView.DrawShadowOnly(gameTime, spriteBatch);
-            // }
-
-
-            // if (GameWorldView.instance.mcvView != null)
-            // {
-            //     GameWorldView.instance.mcvView.DrawShadowOnly(gameTime, spriteBatch);
-            // }
-            //
-            //
-            // if (GameWorldView.instance.jeepView != null)
-            // {
-            //     GameWorldView.instance.jeepView.DrawShadowOnly(gameTime, spriteBatch);
-            // }
 
 
             foreach (TerrainView nextTerrainView in GameWorldView.instance.terrainViewList)
@@ -733,33 +694,10 @@ namespace mike_and_conquer.gameview
             }
 
 
-            // foreach (MinigunnerView nextMinigunnerView in GameWorldView.instance.NodMinigunnerViewList)
-            // {
-            //     nextMinigunnerView.DrawNoShadow(gameTime, spriteBatch);
-            // }
-
-
-            // if (GameWorldView.instance.mcvView != null)
-            // {
-            //     GameWorldView.instance.mcvView.DrawNoShadow(gameTime, spriteBatch);
-            // }
-            //
-            // if (GameWorldView.instance.jeepView != null)
-            // {
-            //     GameWorldView.instance.jeepView.DrawNoShadow(gameTime, spriteBatch);
-            // }
-            //
-
-
-
             foreach (TerrainView nextTerrainView in GameWorldView.instance.terrainViewList)
             {
                 nextTerrainView.DrawNoShadow(gameTime, spriteBatch);
             }
-
-
-
-
 
             spriteBatch.End();
         }
