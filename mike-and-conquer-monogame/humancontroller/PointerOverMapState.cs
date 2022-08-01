@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using mike_and_conquer.gameview;
 using mike_and_conquer.main;
 using mike_and_conquer_monogame.main;
+using mike_and_conquer_simulation.commands;
+using mike_and_conquer_simulation.main;
 
 
 namespace mike_and_conquer.gameworld.humancontroller
@@ -107,9 +109,9 @@ namespace mike_and_conquer.gameworld.humancontroller
             //     GameWorld.instance.MCV.selected = false;
             // }
 
-            foreach (MinigunnerView minigunnerView in GameWorldView.instance.GdiMinigunnerViewList)
+            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
             {
-                minigunnerView.Selected = false;
+                unitView.Selected = false;
             }
 
         }
@@ -176,6 +178,19 @@ namespace mike_and_conquer.gameworld.humancontroller
         // }
         //
 
+
+        public void OrderToMoveToDestination(int unitId, Point centerOfSquare)
+        {
+            OrderUnitToMoveCommand command = new OrderUnitToMoveCommand();
+            command.UnitId = unitId;
+            command.DestinationXInWorldCoordinates = centerOfSquare.X;
+            command.DestinationYInWorldCoordinates = centerOfSquare.Y;
+
+            SimulationMain.instance.PostCommand(command);
+
+        }
+
+
         private bool CheckForAndHandleLeftClickOnMap(Point mouseLocation)
         {
 
@@ -184,9 +199,9 @@ namespace mike_and_conquer.gameworld.humancontroller
 
             bool unitOrderedToMove = false;
 
-            foreach (MinigunnerView nextMinigunner in GameWorldView.instance.GdiMinigunnerViewList)
+            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
             {
-                if (nextMinigunner.Selected == true)
+                if (unitView.Selected == true)
                 {
                     // if (GameWorld.instance.IsValidMoveDestination(new Point(mouseX, mouseY)))
                     // {
@@ -196,7 +211,8 @@ namespace mike_and_conquer.gameworld.humancontroller
 
 
                     Point centerOfSquare = clickedMapTileInstance.GetCenter();
-                    nextMinigunner.OrderToMoveToDestination(centerOfSquare);
+                    OrderToMoveToDestination(unitView.UnitId, centerOfSquare);
+                    // unitView.OrderToMoveToDestination(centerOfSquare);
                     unitOrderedToMove = true;
                     // }
                 }

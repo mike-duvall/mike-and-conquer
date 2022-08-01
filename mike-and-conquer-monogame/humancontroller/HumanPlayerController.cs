@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 
 using mike_and_conquer.gameview;
+using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.gameworld;
 using MouseState = Microsoft.Xna.Framework.Input.MouseState;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
@@ -74,13 +75,14 @@ namespace mike_and_conquer.gameworld.humancontroller
             //     }
             // }
 
-            foreach (MinigunnerView nextMinigunnerView in GameWorldView.instance.GdiMinigunnerViewList)
+
+            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
             {
-                if (nextMinigunnerView.ContainsPoint(mouseX, mouseY))
+                if (unitView.ContainsPoint(mouseX, mouseY))
                 {
                     handled = true;
                     // GameWorld.instance.SelectSingleGDIUnit(nextMinigunner);
-                    nextMinigunnerView.Selected = true;
+                    unitView.Selected = true;
 
                     // MikeAndConquerGame.instance.SoundManager.PlayUnitAwaitingOrders();
                 }

@@ -68,14 +68,13 @@ namespace mike_and_conquer.gameview
         }
 
 
-
-        public void Update(GameTime gameTime)
+        internal override void Update(GameTime gameTime)
         {
             // unitSelectionCursor.Update(gameTime);
         }
 
 
-        internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
+        internal override void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // if (myMCV.Health <= 0)
             // {
@@ -101,7 +100,7 @@ namespace mike_and_conquer.gameview
         }
 
 
-        public void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch)
+        internal override void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
             // if (myMCV.Health <= 0)
