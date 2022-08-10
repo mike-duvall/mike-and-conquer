@@ -163,6 +163,35 @@ namespace mike_and_conquer_monogame.main
                     new LeftClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
+            else if (rawCommand.CommandType.Equals(LeftClickAndHoldCommand.CommandName))
+            {
+                LeftClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+
+                LeftClickAndHoldCommand command =
+                    new LeftClickAndHoldCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+            else if (rawCommand.CommandType.Equals(MoveMouseCommand.CommandName))
+            {
+                LeftClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+
+                MoveMouseCommand command =
+                    new MoveMouseCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+            else if (rawCommand.CommandType.Equals(ReleaseLeftMouseButtonCommand.CommandName))
+            {
+                LeftClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+
+
+                ReleaseLeftMouseButtonCommand command = new ReleaseLeftMouseButtonCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+
+            }
+
 
             else
             {
@@ -823,6 +852,93 @@ namespace mike_and_conquer_monogame.main
             }).Start();
 
         }
+
+
+        public void MoveMouse(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
+            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
+            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+
+            Vector2 transformedLocation =
+                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
+
+            Point windowPosition = Window.Position;
+
+            int screenWidth = GameWorldView.instance.ScreenWidth;
+            int screenHeight = GameWorldView.instance.ScreenHeight;
+
+            int x = 0;
+
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                /* run your code here */
+                // Console.WriteLine("Hello, world");
+                MouseInputHandler.MoveMouseToCoordinates((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+
+            }).Start();
+
+        }
+
+
+        public void LeftClickAndHold(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
+            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
+            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+
+            Vector2 transformedLocation =
+                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
+
+            Point windowPosition = Window.Position;
+
+            int screenWidth = GameWorldView.instance.ScreenWidth;
+            int screenHeight = GameWorldView.instance.ScreenHeight;
+
+            int x = 0;
+
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                /* run your code here */
+                // Console.WriteLine("Hello, world");
+                MouseInputHandler.DoLeftMouseClickAndHold((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+
+            }).Start();
+
+        }
+
+        public void ReleaseLeftMouseButton(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
+            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
+            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+
+            Vector2 transformedLocation =
+                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
+
+            Point windowPosition = Window.Position;
+
+            int screenWidth = GameWorldView.instance.ScreenWidth;
+            int screenHeight = GameWorldView.instance.ScreenHeight;
+
+            int x = 0;
+
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                /* run your code here */
+                // Console.WriteLine("Hello, world");
+                MouseInputHandler.DoReleaseLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+
+            }).Start();
+
+        }
+
 
         public UnitView GetUnitViewByIdByEvent(int unitId)
         {
