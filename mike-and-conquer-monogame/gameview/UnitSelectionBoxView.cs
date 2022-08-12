@@ -45,8 +45,9 @@ namespace mike_and_conquer.gameview
 
         void UpdateBoundingRectangle()
         {
-            int width = unitSelectionBox.selectionBoxRectangle.Right - unitSelectionBox.selectionBoxRectangle.Left;
-            int height = unitSelectionBox.selectionBoxRectangle.Bottom - unitSelectionBox.selectionBoxRectangle.Top;
+
+            int width = unitSelectionBox.SelectionBoxRectangle.Right - unitSelectionBox.SelectionBoxRectangle.Left;
+            int height = unitSelectionBox.SelectionBoxRectangle.Bottom - unitSelectionBox.SelectionBoxRectangle.Top;
 
             if (width < 1) width = 1;
             if (height < 1) height = 1;
@@ -76,7 +77,7 @@ namespace mike_and_conquer.gameview
 
         internal void Draw( SpriteBatch spriteBatch)
         {
-            if (unitSelectionBox.isDragSelectHappening)
+            if (unitSelectionBox.IsDragSelectHappening)
             {
                 UpdateBoundingRectangle();
                 Vector2 origin = new Vector2(0, 0);

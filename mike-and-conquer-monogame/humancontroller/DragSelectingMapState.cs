@@ -14,10 +14,7 @@ namespace mike_and_conquer.gameworld.humancontroller
         public DragSelectingMapState(Point leftMouseDownStartPoint)
         {
             UnitSelectionBox unitSelectionBox = GameWorldView.instance.unitSelectionBox;
-            unitSelectionBox.selectionBoxDragStartPoint = leftMouseDownStartPoint;
-            // unitSelectionBox.selectionBoxRectangle = new Rectangle(leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y,
-            //     leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y);
-            // unitSelectionBox.isDragSelectHappening = true;
+            unitSelectionBox.HandleStartDragSelect(leftMouseDownStartPoint);
         }
 
         public override HumanControllerState Update( MouseState newMouseState, MouseState oldMouseState)
