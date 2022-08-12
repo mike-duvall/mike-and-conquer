@@ -97,6 +97,15 @@ namespace mike_and_conquer_monogame.main
 
 
             Content.RootDirectory = "Content";
+
+//            var graphicsProfile = _graphics.GraphicsProfile;
+//            var isFixedTimeStep = this.IsFixedTimeStep;
+//            var synchronizeWithVerticalRetrace = _graphics.SynchronizeWithVerticalRetrace;
+
+            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            this.IsFixedTimeStep = false;
+            _graphics.SynchronizeWithVerticalRetrace = false;
+
             simulationStateListenerList = new List<SimulationStateListener>();
 
 

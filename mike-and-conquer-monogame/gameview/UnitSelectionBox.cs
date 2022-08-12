@@ -35,7 +35,7 @@ namespace mike_and_conquer.gameview
             {
                 HandleDragFromRightToLeft(mouseWorldLocationPoint);
             }
-
+            isDragSelectHappening = true;
         }
 
         public void HandleDragFromLeftToRight(Point mouseWorldLocationPoint)
@@ -108,18 +108,6 @@ namespace mike_and_conquer.gameview
             // a single square can only hold 5 minigunners
             int numMinigunnersSelected = 0;
             int maxAllowedSelected = 5;
-            // foreach (Minigunner minigunner in MikeAndConquerGame.instance.gameWorld.GDIMinigunnerList)
-            // {
-            //     if (numMinigunnersSelected < maxAllowedSelected && selectionBoxRectangle.Contains(minigunner.GameWorldLocation.WorldCoordinatesAsVector2))
-            //     {
-            //         minigunner.selected = true;
-            //         numMinigunnersSelected++;
-            //     }
-            //     else
-            //     {
-            //         minigunner.selected = false;
-            //     }
-            // }
             foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
             {
                 Vector2 unitWorldCoordinatesVector2 =
@@ -134,8 +122,6 @@ namespace mike_and_conquer.gameview
                     unitView.Selected = false;
                 }
             }
-
-
 
             isDragSelectHappening = false;
             return numMinigunnersSelected;

@@ -15,9 +15,10 @@ namespace mike_and_conquer.gameworld.humancontroller
         {
             UnitSelectionBox unitSelectionBox = GameWorldView.instance.unitSelectionBox;
             unitSelectionBox.selectionBoxDragStartPoint = leftMouseDownStartPoint;
-            unitSelectionBox.isDragSelectHappening = true;
+            // unitSelectionBox.selectionBoxRectangle = new Rectangle(leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y,
+            //     leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y);
+            // unitSelectionBox.isDragSelectHappening = true;
         }
-
 
         public override HumanControllerState Update( MouseState newMouseState, MouseState oldMouseState)
         {

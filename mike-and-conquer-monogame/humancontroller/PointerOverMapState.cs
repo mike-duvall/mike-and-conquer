@@ -88,7 +88,7 @@ namespace mike_and_conquer.gameworld.humancontroller
                 double distance = GetDistance(leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y,
                     mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
         
-                if (distance > 20)
+                if (distance > 2)
                 {
                     return true;
                 }
