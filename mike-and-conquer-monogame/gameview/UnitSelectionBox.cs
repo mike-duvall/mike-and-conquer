@@ -18,7 +18,7 @@ namespace mike_and_conquer.gameview
             get { return new Vector2(selectionBoxRectangle.X, selectionBoxRectangle.Y);  }
         }
 
-        private Boolean isDragSelectHappening;
+        private bool isDragSelectHappening;
         private Point selectionBoxDragStartPoint;
 
         private Rectangle selectionBoxRectangle = new Rectangle(0,0,10,10);
@@ -56,7 +56,7 @@ namespace mike_and_conquer.gameview
             }
             else
             {
-                HandleDrapFromBottomLeftToTopRight(mouseWorldLocationPoint);
+                HandleDragFromBottomLeftToTopRight(mouseWorldLocationPoint);
             }
         }
 
@@ -91,7 +91,7 @@ namespace mike_and_conquer.gameview
                 mouseWorldLocationPoint.Y - selectionBoxDragStartPoint.Y);
         }
 
-        private void HandleDrapFromBottomLeftToTopRight(Point mouseWorldLocationPoint)
+        private void HandleDragFromBottomLeftToTopRight(Point mouseWorldLocationPoint)
         {
             selectionBoxRectangle = new Rectangle(
                 selectionBoxDragStartPoint.X,
