@@ -9,7 +9,7 @@ using mike_and_conquer_monogame.main;
 
 namespace mike_and_conquer.gameworld.humancontroller
 {
-    public class DragSelectingMapState : HumanControllerState
+     class DragSelectingMapState : HumanControllerState
     {
         public DragSelectingMapState(Point leftMouseDownStartPoint)
         {

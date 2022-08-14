@@ -58,7 +58,7 @@ namespace mike_and_conquer.gameview
 
 
 
-        public UnitSelectionBox unitSelectionBox;
+        internal UnitSelectionBox unitSelectionBox;
 
         private ShadowMapper shadowMapper;
         // private MinigunnerSidebarIconView minigunnerSidebarIconView;
@@ -166,7 +166,6 @@ namespace mike_and_conquer.gameview
         // private List<NodTurretView> nodTurretViewList;
         // private List<Projectile120mmView> projectile120MmViewList;
         //
-        private UnitSelectionBoxView unitSelectionBoxView;
 
         public List<MapTileInstanceView> MapTileInstanceViewList
         {
@@ -233,8 +232,8 @@ namespace mike_and_conquer.gameview
 
             unitSelectionBox = new UnitSelectionBox();
 
-            unitSelectionBoxView =
-                new UnitSelectionBoxView(unitSelectionBox);
+            // unitSelectionBoxView =
+            //     new UnitSelectionBoxView(unitSelectionBox);
 
             shadowMapper = new ShadowMapper();
             redrawBaseMapTiles = true;
@@ -756,7 +755,8 @@ namespace mike_and_conquer.gameview
                 mapViewportCamera.TransformMatrix);
 
 
-            unitSelectionBoxView.Draw(spriteBatch);
+            // unitSelectionBoxView.Draw(spriteBatch);
+            unitSelectionBox.Draw(spriteBatch);
 
             spriteBatch.End();
 

@@ -1,37 +1,27 @@
 ﻿
 using mike_and_conquer_monogame.main;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using Boolean = System.Boolean;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Point = Microsoft.Xna.Framework.Point;
-
-
+using Color = Microsoft.Xna.Framework.Color;
+using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
+using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
+using SpriteEffects = Microsoft.Xna.Framework.Graphics.SpriteEffects;
 
 namespace mike_and_conquer.gameview
 {
 
-    public class UnitSelectionBox
+    internal class UnitSelectionBox
     {
 
-        public Vector2 Position
-        {
-            get { return new Vector2(selectionBoxRectangle.X, selectionBoxRectangle.Y);  }
-        }
 
         private bool isDragSelectHappening;
         private Point selectionBoxDragStartPoint;
 
         private Rectangle selectionBoxRectangle = new Rectangle(0,0,10,10);
 
-        public Rectangle SelectionBoxRectangle
-        {
-            get { return selectionBoxRectangle; }
-        }
-
-        public bool IsDragSelectHappening
-        {
-            get { return isDragSelectHappening; }
-        }
+        private Texture2D unitSelectionBoxTexture = null;
+        private float defaultScale = 1;
 
 
 
@@ -48,7 +38,7 @@ namespace mike_and_conquer.gameview
             isDragSelectHappening = true;
         }
 
-        public void HandleDragFromLeftToRight(Point mouseWorldLocationPoint)
+        private void HandleDragFromLeftToRight(Point mouseWorldLocationPoint)
         {
             if (mouseWorldLocationPoint.Y > selectionBoxDragStartPoint.Y)
             {
@@ -60,7 +50,7 @@ namespace mike_and_conquer.gameview
             }
         }
 
-        public void HandleDragFromRightToLeft(Point mouseWorldLocationPoint)
+        private void HandleDragFromRightToLeft(Point mouseWorldLocationPoint)
         {
             if (mouseWorldLocationPoint.Y > selectionBoxDragStartPoint.Y)
             {
@@ -112,7 +102,7 @@ namespace mike_and_conquer.gameview
 
 
 
-        public int HandleEndDragSelect()
+        internal int HandleEndDragSelect()
         {
 
             // TODO:  For now, limiting the number of allowed selected units to 5
@@ -141,10 +131,77 @@ namespace mike_and_conquer.gameview
         }
 
 
-        public void HandleStartDragSelect(Point aPoint)
+        internal void HandleStartDragSelect(Point aPoint)
         {
             this.selectionBoxDragStartPoint = aPoint;
         }
+
+        private void FillHorizontalLine(Color[] data, int width, int height, int lineIndex, Color color)
+        {
+            int beginIndex = width * lineIndex;
+            for (int i = beginIndex; i < (beginIndex + width); ++i)
+            {
+                data[i] = color;
+            }
+        }
+
+        private void FillVerticalLine(Color[] data, int width, int height, int lineIndex, Color color)
+        {
+            int beginIndex = lineIndex;
+            for (int i = beginIndex; i < (width * height); i += width)
+            {
+                data[i] = color;
+            }
+        }
+
+
+        private void UpdateBoundingRectangle()
+        {
+
+            int width = selectionBoxRectangle.Right - selectionBoxRectangle.Left;
+            int height = selectionBoxRectangle.Bottom - selectionBoxRectangle.Top;
+
+            if (width < 1) width = 1;
+            if (height < 1) height = 1;
+            if (unitSelectionBoxTexture != null)
+            {
+                unitSelectionBoxTexture.Dispose();
+            }
+
+            unitSelectionBoxTexture = new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, width, height);
+            Color[] data = new Color[width * height];
+            FillHorizontalLine(data, width, height, 0, Color.White);
+            FillHorizontalLine(data, width, height, height - 1, Color.White);
+            FillVerticalLine(data, width, height, 0, Color.White);
+            FillVerticalLine(data, width, height, width - 1, Color.White);
+            //            DrawRedDotInCenter(width, height, data);
+            unitSelectionBoxTexture.SetData(data);
+        }
+
+        private void DrawRedDotInCenter(int width, int height, Color[] data)
+        {
+            int centerX = width / 2;
+            int centerY = height / 2;
+            int centerOffset = (centerY * width) + centerX;
+            data[centerOffset] = Color.Red;
+        }
+
+
+        internal void Draw(SpriteBatch spriteBatch)
+        {
+            if (isDragSelectHappening)
+            {
+                UpdateBoundingRectangle();
+                Vector2 origin = new Vector2(0, 0);
+                Vector2 position = new Vector2(selectionBoxRectangle.X, selectionBoxRectangle.Y);
+                spriteBatch.Draw(unitSelectionBoxTexture, position, null, Color.White, 0f, origin, defaultScale,
+                    SpriteEffects.None, SpriteSortLayers.UNIT_SELECTION_BOX_DEPTH);
+            }
+
+        }
+
+
+
     }
 
 
