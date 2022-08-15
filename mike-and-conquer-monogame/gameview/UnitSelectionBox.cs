@@ -14,7 +14,6 @@ namespace mike_and_conquer.gameview
     internal class UnitSelectionBox
     {
 
-
         private bool isDragSelectHappening;
         private Point selectionBoxDragStartPoint;
 
@@ -22,7 +21,6 @@ namespace mike_and_conquer.gameview
 
         private Texture2D unitSelectionBoxTexture = null;
         private float defaultScale = 1;
-
 
 
         internal void HandleMouseMoveDuringDragSelect(Point mouseWorldLocationPoint)
@@ -109,16 +107,18 @@ namespace mike_and_conquer.gameview
             // Until can add ability to handle the case where more than 5 unites are directed
             // to move to the same square (i.e. add code to shunt some of the selected units off to nearby squares, since
             // a single square can only hold 5 minigunners
-            int numMinigunnersSelected = 0;
+            // TODO:  Need to add logic to prevent selection of MCV during drag select
+            // Also, check with real game of what other units can't be selected by drag select
+            int numUnitsSelected = 0;
             int maxAllowedSelected = 5;
             foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
             {
                 Vector2 unitWorldCoordinatesVector2 =
                     new Vector2(unitView.XInWorldCoordinates, unitView.YInWorldCoordinates);
-                if (numMinigunnersSelected < maxAllowedSelected && selectionBoxRectangle.Contains(unitWorldCoordinatesVector2))
+                if (numUnitsSelected < maxAllowedSelected && selectionBoxRectangle.Contains(unitWorldCoordinatesVector2))
                 {
                     unitView.Selected = true;
-                    numMinigunnersSelected++;
+                    numUnitsSelected++;
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace mike_and_conquer.gameview
             }
 
             isDragSelectHappening = false;
-            return numMinigunnersSelected;
+            return numUnitsSelected;
         }
 
 

@@ -33,7 +33,6 @@ namespace mike_and_conquer.gameworld.humancontroller
                 UnitSelectionBox unitSelectionBox = GameWorldView.instance.unitSelectionBox;
                 MikeAndConquerGame.instance.logger.LogWarning("HandleEndDragSelect");
                 unitSelectionBox.HandleEndDragSelect();
-                // if (!GameWorldView.instance.IsAMinigunnerSelected())
                 if (!GameWorldView.instance.IsAUnitViewSelected())
                 {
                     Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);

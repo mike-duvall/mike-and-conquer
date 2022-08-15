@@ -153,11 +153,6 @@ namespace mike_and_conquer.gameview
         //
         // private GDIConstructionYardView gdiConstructionYardView;
 
-        // public MCVView mcvView;
-        //
-        // public JeepView jeepView;
-
-
 
         private List<MapTileInstanceView> mapTileInstanceViewList;
 
@@ -228,12 +223,7 @@ namespace mike_and_conquer.gameview
             // nodTurretViewList = new List<NodTurretView>();
             // projectile120MmViewList = new List<Projectile120mmView>();
             terrainViewList = new List<TerrainView>();
-
-
             unitSelectionBox = new UnitSelectionBox();
-
-            // unitSelectionBoxView =
-            //     new UnitSelectionBoxView(unitSelectionBox);
 
             shadowMapper = new ShadowMapper();
             redrawBaseMapTiles = true;
@@ -754,8 +744,6 @@ namespace mike_and_conquer.gameview
                 nullEffect,
                 mapViewportCamera.TransformMatrix);
 
-
-            // unitSelectionBoxView.Draw(spriteBatch);
             unitSelectionBox.Draw(spriteBatch);
 
             spriteBatch.End();
@@ -1545,9 +1533,9 @@ namespace mike_and_conquer.gameview
 
         public bool IsAUnitViewSelected()
         {
-            foreach (UnitView nextMinigunner in unitViewList)
+            foreach (UnitView unitView in unitViewList)
             {
-                if (nextMinigunner.Selected)
+                if (unitView.Selected)
                 {
                     return true;
                 }

@@ -165,8 +165,8 @@ namespace mike_and_conquer_monogame.main
             }
             else if (rawCommand.CommandType.Equals(LeftClickCommand.CommandName))
             {
-                LeftClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
                 LeftClickCommand command =
                     new LeftClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
@@ -174,8 +174,8 @@ namespace mike_and_conquer_monogame.main
             }
             else if (rawCommand.CommandType.Equals(RightClickCommand.CommandName))
             {
-                LeftClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
                 RightClickCommand command =
                     new RightClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
@@ -184,8 +184,8 @@ namespace mike_and_conquer_monogame.main
 
             else if (rawCommand.CommandType.Equals(LeftClickAndHoldCommand.CommandName))
             {
-                LeftClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
                 LeftClickAndHoldCommand command =
                     new LeftClickAndHoldCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
@@ -193,8 +193,8 @@ namespace mike_and_conquer_monogame.main
             }
             else if (rawCommand.CommandType.Equals(MoveMouseCommand.CommandName))
             {
-                LeftClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
                 MoveMouseCommand command =
                     new MoveMouseCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
@@ -202,8 +202,8 @@ namespace mike_and_conquer_monogame.main
             }
             else if (rawCommand.CommandType.Equals(ReleaseLeftMouseButtonCommand.CommandName))
             {
-                LeftClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
 
                 ReleaseLeftMouseButtonCommand command = new ReleaseLeftMouseButtonCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
