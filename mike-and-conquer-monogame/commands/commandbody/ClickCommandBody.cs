@@ -1,6 +1,6 @@
 ﻿namespace mike_and_conquer_monogame.commands.commandbody
 {
-    internal class LeftClickCommandBody
+    internal class ClickCommandBody
     {
 
 

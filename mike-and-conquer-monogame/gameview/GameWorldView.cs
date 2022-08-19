@@ -57,6 +57,9 @@ namespace mike_and_conquer.gameview
         public static int MAP_TILE_WIDTH_IN_LEPTONS = 256;
 
 
+
+        internal UnitSelectionBox unitSelectionBox;
+
         private ShadowMapper shadowMapper;
         // private MinigunnerSidebarIconView minigunnerSidebarIconView;
         // private BarracksSidebarIconView barracksSidebarIconView;
@@ -150,11 +153,6 @@ namespace mike_and_conquer.gameview
         //
         // private GDIConstructionYardView gdiConstructionYardView;
 
-        // public MCVView mcvView;
-        //
-        // public JeepView jeepView;
-
-
 
         private List<MapTileInstanceView> mapTileInstanceViewList;
 
@@ -163,7 +161,6 @@ namespace mike_and_conquer.gameview
         // private List<NodTurretView> nodTurretViewList;
         // private List<Projectile120mmView> projectile120MmViewList;
         //
-        // private UnitSelectionBoxView unitSelectionBoxView;
 
         public List<MapTileInstanceView> MapTileInstanceViewList
         {
@@ -226,9 +223,7 @@ namespace mike_and_conquer.gameview
             // nodTurretViewList = new List<NodTurretView>();
             // projectile120MmViewList = new List<Projectile120mmView>();
             terrainViewList = new List<TerrainView>();
-
-            // unitSelectionBoxView =
-            //     new UnitSelectionBoxView(GameWorld.instance.unitSelectionBox);
+            unitSelectionBox = new UnitSelectionBox();
 
             shadowMapper = new ShadowMapper();
             redrawBaseMapTiles = true;
@@ -241,6 +236,8 @@ namespace mike_and_conquer.gameview
         {
             MapZoom = GameOptions.instance.MapZoomLevel;
             DrawMap(gameTime);
+
+
             // DrawSidebar(gameTime);
             // DrawGameCursor(gameTime);
         }
@@ -747,8 +744,7 @@ namespace mike_and_conquer.gameview
                 nullEffect,
                 mapViewportCamera.TransformMatrix);
 
-
-            // unitSelectionBoxView.Draw(spriteBatch);
+            unitSelectionBox.Draw(spriteBatch);
 
             spriteBatch.End();
 
@@ -1534,7 +1530,20 @@ namespace mike_and_conquer.gameview
             unitView.RemovePlannedPathStepView(pathStep);
         }
 
-        
+
+        public bool IsAUnitViewSelected()
+        {
+            foreach (UnitView unitView in unitViewList)
+            {
+                if (unitView.Selected)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
 
 
     }

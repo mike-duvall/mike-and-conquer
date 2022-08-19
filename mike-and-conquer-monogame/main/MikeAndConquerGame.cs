@@ -97,6 +97,15 @@ namespace mike_and_conquer_monogame.main
 
 
             Content.RootDirectory = "Content";
+
+//            var graphicsProfile = _graphics.GraphicsProfile;
+//            var isFixedTimeStep = this.IsFixedTimeStep;
+//            var synchronizeWithVerticalRetrace = _graphics.SynchronizeWithVerticalRetrace;
+
+            _graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            this.IsFixedTimeStep = false;
+            _graphics.SynchronizeWithVerticalRetrace = false;
+
             simulationStateListenerList = new List<SimulationStateListener>();
 
 
@@ -156,13 +165,52 @@ namespace mike_and_conquer_monogame.main
             }
             else if (rawCommand.CommandType.Equals(LeftClickCommand.CommandName))
             {
-                LeftClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<LeftClickCommandBody>(rawCommand.CommandData);
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
                 LeftClickCommand command =
                     new LeftClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
+            else if (rawCommand.CommandType.Equals(RightClickCommand.CommandName))
+            {
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+
+                RightClickCommand command =
+                    new RightClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+
+            else if (rawCommand.CommandType.Equals(LeftClickAndHoldCommand.CommandName))
+            {
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+
+                LeftClickAndHoldCommand command =
+                    new LeftClickAndHoldCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+            else if (rawCommand.CommandType.Equals(MoveMouseCommand.CommandName))
+            {
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+
+                MoveMouseCommand command =
+                    new MoveMouseCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+            else if (rawCommand.CommandType.Equals(ReleaseLeftMouseButtonCommand.CommandName))
+            {
+                ClickCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+
+
+                ReleaseLeftMouseButtonCommand command = new ReleaseLeftMouseButtonCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+
+            }
+
 
             else
             {
@@ -796,7 +844,8 @@ namespace mike_and_conquer_monogame.main
 
         }
 
-        public void LeftClick(int xInWorldCoordinates, int yInWorldCoordinates)
+
+        private Vector2 ConvertWorldCoordinatesToScreenCoordaintes(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
@@ -805,36 +854,113 @@ namespace mike_and_conquer_monogame.main
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
 
-            Point windowPosition = Window.Position;
+            return transformedLocation;
+        }
 
-            int screenWidth = GameWorldView.instance.ScreenWidth;
-            int screenHeight = GameWorldView.instance.ScreenHeight;
+        public void LeftClick(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
 
-            int x = 0;
-
+            Vector2 transformedLocation =
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 /* run your code here */
                 // Console.WriteLine("Hello, world");
-                MouseInputHandler.DoLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+                MouseInputHandler.DoLeftMouseClick(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
 
             }).Start();
 
         }
 
+        public void RightClick(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            Vector2 transformedLocation =
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                MouseInputHandler.DoRightMouseClick(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
+
+            }).Start();
+
+        }
+
+
+
+        public void MoveMouse(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+
+            Vector2 transformedLocation =
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
+
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                MouseInputHandler.MoveMouseToCoordinates(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
+
+            }).Start();
+
+        }
+
+
+        public void LeftClickAndHold(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            Vector2 transformedLocation =
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
+
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                MouseInputHandler.DoLeftMouseClickAndHold(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
+
+            }).Start();
+
+        }
+
+        public void ReleaseLeftMouseButton(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+
+            Vector2 transformedLocation =
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
+
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                MouseInputHandler.DoReleaseLeftMouseClick(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
+
+            }).Start();
+
+        }
+
+
         public UnitView GetUnitViewByIdByEvent(int unitId)
         {
-            // GetCopyOfEventHistoryCommand anEvent = new GetCopyOfEventHistoryCommand();
-            //
-            // lock (inputCommandQueue)
-            // {
-            //     inputCommandQueue.Enqueue(anEvent);
-            // }
-            //
-            // List<SimulationStateUpdateEvent> list = anEvent.GetCopyOfEventHistory();
-            // return list;
 
             GetUnitViewCommand command = new GetUnitViewCommand(unitId);
 

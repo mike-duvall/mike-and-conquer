@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 // using mike_and_conquer.gameobjects;
@@ -37,21 +38,26 @@ namespace mike_and_conquer.gameworld.humancontroller
             // }
 
 
-            // if (MouseInputUtil.LeftMouseButtonClicked(newMouseState, oldMouseState))
-            // {
-            //     leftMouseDownStartPoint = mouseWorldLocationPoint;
-            // }
+            if (MouseInputUtil.LeftMouseButtonClicked(newMouseState, oldMouseState))
+            {
+                MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonClicked");
+                leftMouseDownStartPoint = mouseWorldLocationPoint;
 
-            // if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
-            // {
-            //     if (MouseDragIsHappening(mouseWorldLocationPoint))
-            //     {
-            //         return new DragSelectingMapState(leftMouseDownStartPoint);
-            //     }
-            // }
+            }
+
+            if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
+            {
+                MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonIsBeingHeldDown");
+                if (IsMouseDragHappening(mouseWorldLocationPoint))
+                {
+                    MikeAndConquerGame.instance.logger.LogInformation("IsMouseDragHappening");
+                    return new DragSelectingMapState(leftMouseDownStartPoint);
+                }
+            }
 
             if (MouseInputUtil.LeftMouseButtonUnclicked(newMouseState, oldMouseState))
             {
+                MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonUnclicked");
                 leftMouseDownStartPoint.X = -1;
                 leftMouseDownStartPoint.Y = -1;
                 Boolean handledEvent = HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);
@@ -74,23 +80,23 @@ namespace mike_and_conquer.gameworld.humancontroller
             return this;
         }
 
-        // private bool MouseDragIsHappening(Point mouseWorldLocationPoint)
-        // {
-        //
-        //     if (leftMouseDownStartPoint.X != -1 && leftMouseDownStartPoint.Y != -1)
-        //     {
-        //         double distance = GetDistance(leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y,
-        //             mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
-        //
-        //         if (distance > 20)
-        //         {
-        //             return true;
-        //         }
-        //     }
-        //
-        //     return false;
-        //
-        // }
+        private bool IsMouseDragHappening(Point mouseWorldLocationPoint)
+        {
+        
+            if (leftMouseDownStartPoint.X != -1 && leftMouseDownStartPoint.Y != -1)
+            {
+                double distance = GetDistance(leftMouseDownStartPoint.X, leftMouseDownStartPoint.Y,
+                    mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
+        
+                if (distance > 2)
+                {
+                    return true;
+                }
+            }
+        
+            return false;
+        
+        }
 
 
         internal void HandleRightClick(Point mouseLocation)
