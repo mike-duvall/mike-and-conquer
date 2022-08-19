@@ -48,9 +48,9 @@ namespace mike_and_conquer.gameworld.humancontroller
             if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
             {
                 MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonIsBeingHeldDown");
-                if (MouseDragIsHappening(mouseWorldLocationPoint))
+                if (IsMouseDragHappening(mouseWorldLocationPoint))
                 {
-                    MikeAndConquerGame.instance.logger.LogInformation("MouseDragIsHappening");
+                    MikeAndConquerGame.instance.logger.LogInformation("IsMouseDragHappening");
                     return new DragSelectingMapState(leftMouseDownStartPoint);
                 }
             }
@@ -80,7 +80,7 @@ namespace mike_and_conquer.gameworld.humancontroller
             return this;
         }
 
-        private bool MouseDragIsHappening(Point mouseWorldLocationPoint)
+        private bool IsMouseDragHappening(Point mouseWorldLocationPoint)
         {
         
             if (leftMouseDownStartPoint.X != -1 && leftMouseDownStartPoint.Y != -1)
