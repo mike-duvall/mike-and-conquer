@@ -844,7 +844,8 @@ namespace mike_and_conquer_monogame.main
 
         }
 
-        public void LeftClick(int xInWorldCoordinates, int yInWorldCoordinates)
+
+        private Vector2 ConvertWorldCoordinatesToScreenCoordaintes(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
@@ -853,20 +854,25 @@ namespace mike_and_conquer_monogame.main
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
 
-            Point windowPosition = Window.Position;
+            return transformedLocation;
+        }
 
-            int screenWidth = GameWorldView.instance.ScreenWidth;
-            int screenHeight = GameWorldView.instance.ScreenHeight;
+        public void LeftClick(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
 
-            int x = 0;
-
+            Vector2 transformedLocation =
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 /* run your code here */
                 // Console.WriteLine("Hello, world");
-                MouseInputHandler.DoLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+                MouseInputHandler.DoLeftMouseClick(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
 
             }).Start();
 
@@ -874,25 +880,17 @@ namespace mike_and_conquer_monogame.main
 
         public void RightClick(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
-            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
-
             Vector2 transformedLocation =
-                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
-
-            // Point windowPosition = Window.Position;
-
-            int screenWidth = GameWorldView.instance.ScreenWidth;
-            int screenHeight = GameWorldView.instance.ScreenHeight;
-
-            int x = 0;
-
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                MouseInputHandler.DoRightMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+                MouseInputHandler.DoRightMouseClick(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
 
             }).Start();
 
@@ -902,27 +900,19 @@ namespace mike_and_conquer_monogame.main
 
         public void MoveMouse(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
-            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
 
             Vector2 transformedLocation =
-                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
-
-            Point windowPosition = Window.Position;
-
-            int screenWidth = GameWorldView.instance.ScreenWidth;
-            int screenHeight = GameWorldView.instance.ScreenHeight;
-
-            int x = 0;
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                /* run your code here */
-                // Console.WriteLine("Hello, world");
-                MouseInputHandler.MoveMouseToCoordinates((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+                MouseInputHandler.MoveMouseToCoordinates(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
 
             }).Start();
 
@@ -931,27 +921,18 @@ namespace mike_and_conquer_monogame.main
 
         public void LeftClickAndHold(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
-            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
-
             Vector2 transformedLocation =
-                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
-
-            Point windowPosition = Window.Position;
-
-            int screenWidth = GameWorldView.instance.ScreenWidth;
-            int screenHeight = GameWorldView.instance.ScreenHeight;
-
-            int x = 0;
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                /* run your code here */
-                // Console.WriteLine("Hello, world");
-                MouseInputHandler.DoLeftMouseClickAndHold((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+                MouseInputHandler.DoLeftMouseClickAndHold(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
 
             }).Start();
 
@@ -959,27 +940,19 @@ namespace mike_and_conquer_monogame.main
 
         public void ReleaseLeftMouseButton(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
-            unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
 
             Vector2 transformedLocation =
-                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
-
-            Point windowPosition = Window.Position;
-
-            int screenWidth = GameWorldView.instance.ScreenWidth;
-            int screenHeight = GameWorldView.instance.ScreenHeight;
-
-            int x = 0;
+                ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                /* run your code here */
-                // Console.WriteLine("Hello, world");
-                MouseInputHandler.DoReleaseLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+                MouseInputHandler.DoReleaseLeftMouseClick(
+                    (uint)transformedLocation.X,
+                    (uint)transformedLocation.Y,
+                    GameWorldView.instance.ScreenWidth,
+                    GameWorldView.instance.ScreenHeight);
 
             }).Start();
 
@@ -988,15 +961,6 @@ namespace mike_and_conquer_monogame.main
 
         public UnitView GetUnitViewByIdByEvent(int unitId)
         {
-            // GetCopyOfEventHistoryCommand anEvent = new GetCopyOfEventHistoryCommand();
-            //
-            // lock (inputCommandQueue)
-            // {
-            //     inputCommandQueue.Enqueue(anEvent);
-            // }
-            //
-            // List<SimulationStateUpdateEvent> list = anEvent.GetCopyOfEventHistory();
-            // return list;
 
             GetUnitViewCommand command = new GetUnitViewCommand(unitId);
 
