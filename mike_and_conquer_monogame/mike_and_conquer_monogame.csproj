@@ -35,7 +35,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\mike-and-conquer-simulation\mike-and-conquer-simulation.csproj" />
+    <ProjectReference Include="..\mike_and_conquer_simulation\mike_and_conquer_simulation.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
