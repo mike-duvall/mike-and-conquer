@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mike_and_conquer_monogame", "mike_and_conquer_monogame\mike_and_conquer_monogame.csproj", "{6DFFC6D2-2F54-4C74-9C67-373CE7C16539}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mike-and-conquer-simulation", "mike-and-conquer-simulation\mike-and-conquer-simulation.csproj", "{52DB7130-76AE-4FC1-84EC-6F345A341CF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mike_and_conquer_simulation", "mike_and_conquer_simulation\mike_and_conquer_simulation.csproj", "{52DB7130-76AE-4FC1-84EC-6F345A341CF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
