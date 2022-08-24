@@ -1,7 +1,6 @@
 ﻿using mike_and_conquer_monogame.main;
 
-
-namespace mike_and_conquer_monogame.commands
+namespace mike_and_conquer_monogame.commands.ui
 {
     public class LeftClickAndHoldCommand : AsyncViewCommand
     {

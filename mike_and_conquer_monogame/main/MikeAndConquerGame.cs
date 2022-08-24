@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using mike_and_conquer_monogame.commands;
 using mike_and_conquer_monogame.commands.commandbody;
+using mike_and_conquer_monogame.commands.ui;
 using mike_and_conquer_monogame.eventhandler;
 using mike_and_conquer_monogame.gamesprite;
 using mike_and_conquer_monogame.gamestate;
