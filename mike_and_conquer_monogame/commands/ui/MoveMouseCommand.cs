@@ -1,9 +1,8 @@
 ﻿using mike_and_conquer_monogame.main;
 
-
-namespace mike_and_conquer_monogame.commands
+namespace mike_and_conquer_monogame.commands.ui
 {
-    public class RightClickCommand : AsyncViewCommand
+    public class MoveMouseCommand : AsyncViewCommand
     {
 
 
@@ -11,9 +10,9 @@ namespace mike_and_conquer_monogame.commands
         private int yInWorldCoordinates;
 
 
-        public const string CommandName = "RightClick";
+        public const string CommandName = "MoveMouse";
 
-        public RightClickCommand(int xInWorldCoordinates, int yInWorldCoordinates)
+        public MoveMouseCommand(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             this.xInWorldCoordinates = xInWorldCoordinates;
             this.yInWorldCoordinates = yInWorldCoordinates;
@@ -21,7 +20,7 @@ namespace mike_and_conquer_monogame.commands
 
         protected override void ProcessImpl()
         {
-            MikeAndConquerGame.instance.RightClick(xInWorldCoordinates, yInWorldCoordinates);
+            MikeAndConquerGame.instance.MoveMouse(xInWorldCoordinates, yInWorldCoordinates);
 
         }
     }

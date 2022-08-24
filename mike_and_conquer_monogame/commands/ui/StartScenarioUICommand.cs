@@ -1,8 +1,7 @@
 ﻿using mike_and_conquer_monogame.main;
-
 using mike_and_conquer_simulation.gameworld;
 
-namespace mike_and_conquer_monogame.commands
+namespace mike_and_conquer_monogame.commands.ui
 {
     public class StartScenarioUICommand : AsyncViewCommand
     {

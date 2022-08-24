@@ -1,5 +1,5 @@
 ﻿
-namespace mike_and_conquer_monogame.commands
+namespace mike_and_conquer_monogame.commands.ui
 {
     internal class RawCommandUI
     {
