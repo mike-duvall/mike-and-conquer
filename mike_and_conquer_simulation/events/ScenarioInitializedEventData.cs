@@ -2,10 +2,10 @@
 
 namespace mike_and_conquer_simulation.events
 {
-    public class InitializeScenarioEventData
+    public class ScenarioInitializedEventData
     {
 
-        public const string EventType = "InitializeScenario";
+        public const string EventType = "ScenarioInitialized";
 
         public int MapWidth { get;  }
         public int MapHeight { get;  }
@@ -13,7 +13,7 @@ namespace mike_and_conquer_simulation.events
         public List<MapTileInstanceCreateEventData> MapTileInstanceCreateEventDataList { get; }
         public List<TerrainItemCreateEventData> TerrainItemCreateEventDataList { get; }
 
-        public InitializeScenarioEventData(int mapWidth, int mapHeight, List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList, List<TerrainItemCreateEventData> terrainItemCreateEventDataList)
+        public ScenarioInitializedEventData(int mapWidth, int mapHeight, List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList, List<TerrainItemCreateEventData> terrainItemCreateEventDataList)
         {
             MapWidth = mapWidth;
             MapHeight = mapHeight;

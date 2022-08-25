@@ -110,7 +110,7 @@ namespace mike_and_conquer_monogame.main
 
 
 
-            simulationStateListenerList.Add(new InitializeScenarioEventHandler(this));
+            simulationStateListenerList.Add(new InitializeUIWhenScenarioInitializedEventHandler(this));
 
             simulationStateListenerList.Add(new AddMinigunnerViewWhenMinigunnerCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
@@ -703,7 +703,7 @@ namespace mike_and_conquer_monogame.main
 
         }
 
-        public void InitializeScenario(InitializeScenarioEventData initializeScenarioEventData)
+        public void InitializeUI(ScenarioInitializedEventData scenarioInitializedEventData)
         {
 
             gameWorldView.HandleReset();
@@ -711,10 +711,10 @@ namespace mike_and_conquer_monogame.main
             // mapWidth = -10;
             // mapHeight = -10;
 
-            this.mapWidth = initializeScenarioEventData.MapWidth;
-            this.mapHeight = initializeScenarioEventData.MapHeight;
+            this.mapWidth = scenarioInitializedEventData.MapWidth;
+            this.mapHeight = scenarioInitializedEventData.MapHeight;
 
-            foreach (MapTileInstanceCreateEventData mapTileInstanceCreateEventData in initializeScenarioEventData
+            foreach (MapTileInstanceCreateEventData mapTileInstanceCreateEventData in scenarioInitializedEventData
                          .MapTileInstanceCreateEventDataList)
             {
                 // public MapTileInstanceView(int imageIndex, string textureKey, bool isBlockingTerrain, MapTileVisibility mapTileVisibility)
@@ -739,7 +739,7 @@ namespace mike_and_conquer_monogame.main
 
             }
 
-            foreach (TerrainItemCreateEventData terrainItemCreateEventData in initializeScenarioEventData
+            foreach (TerrainItemCreateEventData terrainItemCreateEventData in scenarioInitializedEventData
                          .TerrainItemCreateEventDataList)
             {
                 gameWorldView.AddTerrainItemView(

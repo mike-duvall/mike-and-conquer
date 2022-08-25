@@ -122,16 +122,16 @@ namespace mike_and_conquer_simulation.main
 
             }
 
-            InitializeScenarioEventData eventData = new InitializeScenarioEventData(
+            ScenarioInitializedEventData initializedEventData = new ScenarioInitializedEventData(
                 mapWidth,
                 mapHeight,
                 mapTileInstanceCreateEventDataList,
                 terrainItemCreateEventDataList);
 
-            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            string serializedEventData = JsonConvert.SerializeObject(initializedEventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent = 
                 new SimulationStateUpdateEvent(
-                        InitializeScenarioEventData.EventType,
+                        ScenarioInitializedEventData.EventType,
                         serializedEventData
                     );
 
