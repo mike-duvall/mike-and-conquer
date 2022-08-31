@@ -1,12 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using mike_and_conquer_monogame.gamesprite;
-using mike_and_conquer_monogame.main;
-using mike_and_conquer_monogame.util;
+
+
+
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
+using XnaVector2 = Microsoft.Xna.Framework.Vector2;
+using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
+using XnaColor = Microsoft.Xna.Framework.Color;
+using GameTime = Microsoft.Xna.Framework.GameTime;
+using XnaPoint = Microsoft.Xna.Framework.Point;
+using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
+using SpriteEffects = Microsoft.Xna.Framework.Graphics.SpriteEffects;
+
+using TextureUtil = mike_and_conquer_monogame.util.TextureUtil;
+using SingleTextureSprite = mike_and_conquer_monogame.gamesprite.SingleTextureSprite;
+using PartiallyVisibileMapTileMask= mike_and_conquer_monogame.gamesprite.PartiallyVisibileMapTileMask;
+using MapTileFrame = mike_and_conquer_monogame.gamesprite.MapTileFrame;
+using MikeAndConquerGame = mike_and_conquer_monogame.main.MikeAndConquerGame;
+
+using GameOptions = mike_and_conquer_monogame.main.GameOptions;
 
 namespace mike_and_conquer_monogame.gameview
 {
@@ -18,7 +31,7 @@ namespace mike_and_conquer_monogame.gameview
         // TODO Refactor handling of map shroud masks.  Consider pulling out everything into separate class(es)
         private static Texture2D visibleMask = null;
         private PartiallyVisibileMapTileMask partiallyVisibileMapTileMask;
-        private static Vector2 middleOfSpriteInSpriteCoordinates;
+        private static XnaVector2 middleOfSpriteInSpriteCoordinates;
 
         private int imageIndex;
         // private string textureKey;
@@ -32,7 +45,7 @@ namespace mike_and_conquer_monogame.gameview
 
         private List<MapTileShroudMapping> mapTileShroudMappingList;
 
-        private Rectangle boundingRectangle;
+        private XnaRectangle boundingRectangle;
         private bool boundingRectangleInitialized;
 
         public enum MapTileVisibility
@@ -65,12 +78,12 @@ namespace mike_and_conquer_monogame.gameview
             partiallyVisibileMapTileMask = new PartiallyVisibileMapTileMask();
 
             mapTileBorder = TextureUtil.CreateSpriteBorderRectangleTexture(
-                Color.White,
+                XnaColor.White,
                 this.singleTextureSprite.Width,
                 this.singleTextureSprite.Height);
 
             mapTileBlockingTerrainBorder = TextureUtil.CreateSpriteBorderRectangleTexture(
-                new Color(127, 255, 255, 255),
+                new XnaColor(127, 255, 255, 255),
                 this.singleTextureSprite.Width,
                 this.singleTextureSprite.Height);
 
@@ -89,17 +102,17 @@ namespace mike_and_conquer_monogame.gameview
                 int numPixels = mapTileFrameList[imageIndex].Texture.Width *
                                 mapTileFrameList[imageIndex].Texture.Height;
 
-                Color[] textureData = new Color[numPixels];
+                XnaColor[] textureData = new XnaColor[numPixels];
                 visibleMask.GetData(textureData);
 
                 for (int i = 0; i < numPixels; i++)
                 {
-                    Color xnaColor = Color.Transparent;
+                    XnaColor xnaColor = XnaColor.Transparent;
                     textureData[i] = xnaColor;
                 }
 
                 visibleMask.SetData(textureData);
-                middleOfSpriteInSpriteCoordinates = new Vector2();
+                middleOfSpriteInSpriteCoordinates = new XnaVector2();
 
                 middleOfSpriteInSpriteCoordinates.X = visibleMask.Width / 2;
                 middleOfSpriteInSpriteCoordinates.Y = visibleMask.Height / 2;
@@ -127,15 +140,15 @@ namespace mike_and_conquer_monogame.gameview
 
         internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Vector2 worldCoordinatesAsXnaVector2 =
+            // XnaVector2 worldCoordinatesAsXnaVector2 =
             //     MonogameUtil.ConvertSystemNumericsVector2ToXnaVector2(this.myMapTileInstance.MapTileLocation
             //         .WorldCoordinatesAsVector2);
 
-            Point pointInWorldCoordinates =
-                GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new Point(xInWorldMapTileCoordinates,
+            XnaPoint pointInWorldCoordinates =
+                GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
                     yInWorldMapTileCoordinates));
 
-            Vector2 worldCoordinatesAsXnaVector2 = new Vector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
+            XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
 
             singleTextureSprite.Draw(
                 gameTime,
@@ -143,7 +156,7 @@ namespace mike_and_conquer_monogame.gameview
                 worldCoordinatesAsXnaVector2,
                 SpriteSortLayers.MAP_SQUARE_DEPTH,
                 false,
-                Color.White);
+                XnaColor.White);
 
 
 
@@ -161,13 +174,13 @@ namespace mike_and_conquer_monogame.gameview
                 float defaultScale = 1;
                 float layerDepth = 0;
                 spriteBatch.Draw(mapTileBlockingTerrainBorder, worldCoordinatesAsXnaVector2, null,
-                    Color.White, 0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, layerDepth);
+                    XnaColor.White, 0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, layerDepth);
             }
             else             if (GameOptions.instance.DrawTerrainBorder)
             {
                 float defaultScale = 1;
                 float layerDepth = 0;
-                spriteBatch.Draw(mapTileBorder, worldCoordinatesAsXnaVector2, null, Color.White,
+                spriteBatch.Draw(mapTileBorder, worldCoordinatesAsXnaVector2, null, XnaColor.White,
                     0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, layerDepth);
             }
 
@@ -1470,24 +1483,24 @@ namespace mike_and_conquer_monogame.gameview
             //         .WorldCoordinatesAsVector2);
 
 
-            Point pointInWorldCoordinates =
-                GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new Point(xInWorldMapTileCoordinates,
+            XnaPoint pointInWorldCoordinates =
+                GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
                     xInWorldMapTileCoordinates));
 
-            Vector2 worldCoordinatesAsXnaVector2 = new Vector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
+            XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
 
 
             if (this.visibility == MapTileVisibility.Visible)
             {
 
-                spriteBatch.Draw(visibleMask, worldCoordinatesAsXnaVector2, null, Color.White, 0f,
-                    middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
+                spriteBatch.Draw(visibleMask, worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
+                    middleOfSpriteInSpriteCoordinates, defaultScale, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 1.0f);
             }
             else if (this.visibility == MapTileVisibility.PartiallyVisible)
             {
                 int index = DeterminePartiallyVisibleMaskTile();
                 spriteBatch.Draw(partiallyVisibileMapTileMask.GetMask(index),
-                    worldCoordinatesAsXnaVector2, null, Color.White, 0f,
+                    worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
                     middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
             }
         }
@@ -1511,11 +1524,11 @@ namespace mike_and_conquer_monogame.gameview
 
         public bool ContainsPoint(int mouseX, int mouseY)
         {
-            return GetBoundingRectangle().Contains(new Point(mouseX, mouseY));
+            return GetBoundingRectangle().Contains(new XnaPoint(mouseX, mouseY));
         }
 
 
-        private Rectangle GetBoundingRectangle()
+        private XnaRectangle GetBoundingRectangle()
         {
 
 
@@ -1524,14 +1537,14 @@ namespace mike_and_conquer_monogame.gameview
                 int width = GameWorldView.MAP_TILE_WIDTH;
                 int height = GameWorldView.MAP_TILE_HEIGHT;
 
-                Point mapTileInstanceViewInWorldCoordinates =
-                    MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new Point(xInWorldMapTileCoordinates,
+                XnaPoint mapTileInstanceViewInWorldCoordinates =
+                    MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
                         yInWorldMapTileCoordinates));
 
                 int leftX = mapTileInstanceViewInWorldCoordinates.X - (width / 2);
                 int topY = mapTileInstanceViewInWorldCoordinates.Y - (height / 2);
 
-                boundingRectangle = new Rectangle(leftX, topY, width, height);
+                boundingRectangle = new XnaRectangle(leftX, topY, width, height);
                 boundingRectangleInitialized = true;
             }
 
@@ -1541,14 +1554,14 @@ namespace mike_and_conquer_monogame.gameview
 
 
 
-        public Point GetCenter()
+        public XnaPoint GetCenter()
         {
-            return MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new Point(xInWorldMapTileCoordinates,
+            return MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
                 yInWorldMapTileCoordinates));
         }
 
 
-        public static Point ConvertMapTileCoordinatesToWorldCoordinates(Point pointInWorldMapSquareCoordinates)
+        public static XnaPoint ConvertMapTileCoordinatesToWorldCoordinates(XnaPoint pointInWorldMapSquareCoordinates)
         {
 
             int xInWorldCoordinates = (pointInWorldMapSquareCoordinates.X * GameWorldView.MAP_TILE_WIDTH) +
@@ -1556,7 +1569,7 @@ namespace mike_and_conquer_monogame.gameview
             int yInWorldCoordinates = pointInWorldMapSquareCoordinates.Y * GameWorldView.MAP_TILE_HEIGHT +
                                       (GameWorldView.MAP_TILE_HEIGHT / 2);
 
-            return new Point(xInWorldCoordinates, yInWorldCoordinates);
+            return new XnaPoint(xInWorldCoordinates, yInWorldCoordinates);
         }
 
     }
