@@ -8,10 +8,24 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace mike_and_conquer_simulation.gameworld
 {
-    internal class MapTileLocation
+    public class MapTileLocation
     {
         private int xInWorldMapTileCoordinates;
         private int yInWorldMapTileCoordinates;
+
+
+        public enum TILE_LOCATION
+        {
+            WEST,
+            NORTH_WEST,
+            NORTH,
+            NORTH_EAST,
+            EAST,
+            SOUTH_EAST,
+            SOUTH,
+            SOUTH_WEST
+        }
+
 
 
         public int XInWorldMapTileCoordinates
@@ -136,46 +150,46 @@ namespace mike_and_conquer_simulation.gameworld
 
 
 
-        public MapTileLocation CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION tileLocation)
+        public MapTileLocation CreateAdjacentMapTileLocation(TILE_LOCATION tileLocation)
         {
             MapTileLocation adjacentMapTileLocation = this.Clone();
 
             int xOffset = 0;
             int yOffset = 0;
 
-            if (tileLocation == GameWorld.TILE_LOCATION.WEST)
+            if (tileLocation == TILE_LOCATION.WEST)
             {
                 xOffset = -1;
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.NORTH_WEST)
+            else if (tileLocation == TILE_LOCATION.NORTH_WEST)
             {
                 xOffset = -1;
                 yOffset = -1;
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.NORTH)
+            else if (tileLocation == TILE_LOCATION.NORTH)
             {
                 yOffset = -1;
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.NORTH_EAST)
+            else if (tileLocation == TILE_LOCATION.NORTH_EAST)
             {
                 xOffset = 1;
                 yOffset = -1;
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.EAST)
+            else if (tileLocation == TILE_LOCATION.EAST)
             {
                 xOffset = 1;
 
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.SOUTH_EAST)
+            else if (tileLocation == TILE_LOCATION.SOUTH_EAST)
             {
                 xOffset = 1;
                 yOffset = 1;
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.SOUTH)
+            else if (tileLocation == TILE_LOCATION.SOUTH)
             {
                 yOffset = 1;
             }
-            else if (tileLocation == GameWorld.TILE_LOCATION.SOUTH_WEST)
+            else if (tileLocation == TILE_LOCATION.SOUTH_WEST)
             {
                 xOffset = -1;
                 yOffset = 1;

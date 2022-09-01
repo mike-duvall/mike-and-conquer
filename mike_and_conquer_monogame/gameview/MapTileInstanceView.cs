@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-
-
-
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
@@ -20,6 +17,14 @@ using MapTileFrame = mike_and_conquer_monogame.gamesprite.MapTileFrame;
 using MikeAndConquerGame = mike_and_conquer_monogame.main.MikeAndConquerGame;
 
 using GameOptions = mike_and_conquer_monogame.main.GameOptions;
+
+
+using SimulationMapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+
+
+using NumericsVector2 = System.Numerics.Vector2;
+
+using SystemDrawingPoint = System.Drawing.Point;
 
 namespace mike_and_conquer_monogame.gameview
 {
@@ -56,14 +61,18 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        private int xInWorldMapTileCoordinates;
-        private int yInWorldMapTileCoordinates;
+        // private int xInWorldMapTileCoordinates;
+        // private int yInWorldMapTileCoordinates;
+        private SimulationMapTileLocation mapTileLocation;
 
         public MapTileInstanceView(int xInWorldMapTileCoordinates, int yInWorldMapTileCoordinates, int imageIndex, string textureKey, bool isBlockingTerrain, MapTileVisibility mapTileVisibility)
         {
 
-            this.xInWorldMapTileCoordinates = xInWorldMapTileCoordinates;
-            this.yInWorldMapTileCoordinates = yInWorldMapTileCoordinates;
+            // this.xInWorldMapTileCoordinates = xInWorldMapTileCoordinates;
+            // this.yInWorldMapTileCoordinates = yInWorldMapTileCoordinates;
+            this.mapTileLocation = SimulationMapTileLocation.CreateFromWorldMapTileCoordinates(
+                xInWorldMapTileCoordinates,
+                yInWorldMapTileCoordinates);
             this.imageIndex = imageIndex;
             // this.textureKey = textureKey;
             this.isBlockingTerrain = isBlockingTerrain;
@@ -135,6 +144,15 @@ namespace mike_and_conquer_monogame.gameview
 
 
 
+        internal XnaVector2 ConvertNumericsVector2ToXnaVector2(NumericsVector2 numericsVector2)
+        {
+            XnaVector2 xnaVector2 = new XnaVector2(
+                numericsVector2.X,
+                numericsVector2.Y);
+
+            return xnaVector2;
+
+        }
 
 
 
@@ -144,11 +162,17 @@ namespace mike_and_conquer_monogame.gameview
             //     MonogameUtil.ConvertSystemNumericsVector2ToXnaVector2(this.myMapTileInstance.MapTileLocation
             //         .WorldCoordinatesAsVector2);
 
-            XnaPoint pointInWorldCoordinates =
-                GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-                    yInWorldMapTileCoordinates));
+            // XnaPoint pointInWorldCoordinates =
+            //     GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
+            //         yInWorldMapTileCoordinates));
 
-            XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
+            // XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
+
+
+            NumericsVector2 worldCoordinatesAsNumericsVector2 = mapTileLocation.WorldCoordinatesAsVector2;
+
+            XnaVector2 worldCoordinatesAsXnaVector2 =
+                ConvertNumericsVector2ToXnaVector2(worldCoordinatesAsNumericsVector2);
 
             singleTextureSprite.Draw(
                 gameTime,
@@ -1483,11 +1507,15 @@ namespace mike_and_conquer_monogame.gameview
             //         .WorldCoordinatesAsVector2);
 
 
-            XnaPoint pointInWorldCoordinates =
-                GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-                    xInWorldMapTileCoordinates));
+            // XnaPoint pointInWorldCoordinates =
+            //     GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
+            //         xInWorldMapTileCoordinates));
+            //
+            // XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
 
-            XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
+            XnaVector2 worldCoordinatesAsXnaVector2 =
+                ConvertNumericsVector2ToXnaVector2(mapTileLocation.WorldCoordinatesAsVector2);
+
 
 
             if (this.visibility == MapTileVisibility.Visible)
@@ -1537,9 +1565,15 @@ namespace mike_and_conquer_monogame.gameview
                 int width = GameWorldView.MAP_TILE_WIDTH;
                 int height = GameWorldView.MAP_TILE_HEIGHT;
 
-                XnaPoint mapTileInstanceViewInWorldCoordinates =
-                    MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-                        yInWorldMapTileCoordinates));
+                // XnaPoint mapTileInstanceViewInWorldCoordinates =
+                //     MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
+                //         yInWorldMapTileCoordinates));
+
+
+                SystemDrawingPoint worldCoordinatesAsSystemDrawingPoint = mapTileLocation.WorldCoordinatesAsPoint;
+                XnaPoint mapTileInstanceViewInWorldCoordinates = new XnaPoint(
+                    worldCoordinatesAsSystemDrawingPoint.X,
+                    worldCoordinatesAsSystemDrawingPoint.Y);
 
                 int leftX = mapTileInstanceViewInWorldCoordinates.X - (width / 2);
                 int topY = mapTileInstanceViewInWorldCoordinates.Y - (height / 2);
@@ -1556,6 +1590,9 @@ namespace mike_and_conquer_monogame.gameview
 
         public XnaPoint GetCenter()
         {
+            int xInWorldMapTileCoordinates = mapTileLocation.WorldMapTileCoordinatesAsPoint.X;
+            int yInWorldMapTileCoordinates = mapTileLocation.WorldMapTileCoordinatesAsPoint.Y;
+
             return MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
                 yInWorldMapTileCoordinates));
         }
