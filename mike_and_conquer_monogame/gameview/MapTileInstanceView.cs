@@ -31,7 +31,6 @@ namespace mike_and_conquer_monogame.gameview
     public class MapTileInstanceView
     {
         public SingleTextureSprite singleTextureSprite;
-        // public MapTileInstance myMapTileInstance;
 
         // TODO Refactor handling of map shroud masks.  Consider pulling out everything into separate class(es)
         private static Texture2D visibleMask = null;
@@ -61,15 +60,11 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        // private int xInWorldMapTileCoordinates;
-        // private int yInWorldMapTileCoordinates;
         private SimulationMapTileLocation mapTileLocation;
 
         public MapTileInstanceView(int xInWorldMapTileCoordinates, int yInWorldMapTileCoordinates, int imageIndex, string textureKey, bool isBlockingTerrain, MapTileVisibility mapTileVisibility)
         {
 
-            // this.xInWorldMapTileCoordinates = xInWorldMapTileCoordinates;
-            // this.yInWorldMapTileCoordinates = yInWorldMapTileCoordinates;
             this.mapTileLocation = SimulationMapTileLocation.CreateFromWorldMapTileCoordinates(
                 xInWorldMapTileCoordinates,
                 yInWorldMapTileCoordinates);
@@ -158,21 +153,10 @@ namespace mike_and_conquer_monogame.gameview
 
         internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // XnaVector2 worldCoordinatesAsXnaVector2 =
-            //     MonogameUtil.ConvertSystemNumericsVector2ToXnaVector2(this.myMapTileInstance.MapTileLocation
-            //         .WorldCoordinatesAsVector2);
 
-            // XnaPoint pointInWorldCoordinates =
-            //     GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-            //         yInWorldMapTileCoordinates));
-
-            // XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
-
-
-            NumericsVector2 worldCoordinatesAsNumericsVector2 = mapTileLocation.WorldCoordinatesAsVector2;
 
             XnaVector2 worldCoordinatesAsXnaVector2 =
-                ConvertNumericsVector2ToXnaVector2(worldCoordinatesAsNumericsVector2);
+                ConvertNumericsVector2ToXnaVector2(mapTileLocation.WorldCoordinatesAsVector2);
 
             singleTextureSprite.Draw(
                 gameTime,
@@ -182,17 +166,7 @@ namespace mike_and_conquer_monogame.gameview
                 false,
                 XnaColor.White);
 
-
-
-            // if (GameOptions.instance.DrawPaths && isPartOfPath)
-            // {
-            //     float defaultScale = 1;
-            //     float layerDepth = 0;
-            //     spriteBatch.Draw(pathIcon, worldCoordinatesAsXnaVector2, null, Color.White,
-            //         0f, middleOfPathSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, layerDepth);
-            //
-            // }
-            
+          
             if (GameOptions.instance.DrawBlockingTerrainBorder && this.isBlockingTerrain)
             {
                 float defaultScale = 1;
@@ -1502,17 +1476,7 @@ namespace mike_and_conquer_monogame.gameview
         internal void DrawVisbilityMask(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float defaultScale = 1;
-            // Vector2 worldCoordinatesAsXnaVector2 =
-            //     MonogameUtil.ConvertSystemNumericsVector2ToXnaVector2(this.myMapTileInstance.MapTileLocation
-            //         .WorldCoordinatesAsVector2);
-
-
-            // XnaPoint pointInWorldCoordinates =
-            //     GameWorldView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-            //         xInWorldMapTileCoordinates));
-            //
-            // XnaVector2 worldCoordinatesAsXnaVector2 = new XnaVector2(pointInWorldCoordinates.X, pointInWorldCoordinates.Y);
-
+            
             XnaVector2 worldCoordinatesAsXnaVector2 =
                 ConvertNumericsVector2ToXnaVector2(mapTileLocation.WorldCoordinatesAsVector2);
 
@@ -1565,18 +1529,10 @@ namespace mike_and_conquer_monogame.gameview
                 int width = GameWorldView.MAP_TILE_WIDTH;
                 int height = GameWorldView.MAP_TILE_HEIGHT;
 
-                // XnaPoint mapTileInstanceViewInWorldCoordinates =
-                //     MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-                //         yInWorldMapTileCoordinates));
-
-
                 SystemDrawingPoint worldCoordinatesAsSystemDrawingPoint = mapTileLocation.WorldCoordinatesAsPoint;
-                XnaPoint mapTileInstanceViewInWorldCoordinates = new XnaPoint(
-                    worldCoordinatesAsSystemDrawingPoint.X,
-                    worldCoordinatesAsSystemDrawingPoint.Y);
 
-                int leftX = mapTileInstanceViewInWorldCoordinates.X - (width / 2);
-                int topY = mapTileInstanceViewInWorldCoordinates.Y - (height / 2);
+                int leftX = worldCoordinatesAsSystemDrawingPoint.X - (width / 2);
+                int topY = worldCoordinatesAsSystemDrawingPoint.Y - (height / 2);
 
                 boundingRectangle = new XnaRectangle(leftX, topY, width, height);
                 boundingRectangleInitialized = true;
@@ -1590,24 +1546,32 @@ namespace mike_and_conquer_monogame.gameview
 
         public XnaPoint GetCenter()
         {
-            int xInWorldMapTileCoordinates = mapTileLocation.WorldMapTileCoordinatesAsPoint.X;
-            int yInWorldMapTileCoordinates = mapTileLocation.WorldMapTileCoordinatesAsPoint.Y;
-
-            return MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
-                yInWorldMapTileCoordinates));
-        }
-
-
-        public static XnaPoint ConvertMapTileCoordinatesToWorldCoordinates(XnaPoint pointInWorldMapSquareCoordinates)
-        {
-
-            int xInWorldCoordinates = (pointInWorldMapSquareCoordinates.X * GameWorldView.MAP_TILE_WIDTH) +
+            // int xInWorldMapTileCoordinates = mapTileLocation.WorldMapTileCoordinatesAsPoint.X;
+            // int yInWorldMapTileCoordinates = mapTileLocation.WorldMapTileCoordinatesAsPoint.Y;
+            //
+            // return MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new XnaPoint(xInWorldMapTileCoordinates,
+            //     yInWorldMapTileCoordinates));
+            int xInWorldCoordinates = (mapTileLocation.XInWorldMapTileCoordinates * GameWorldView.MAP_TILE_WIDTH) +
                                       (GameWorldView.MAP_TILE_WIDTH / 2);
-            int yInWorldCoordinates = pointInWorldMapSquareCoordinates.Y * GameWorldView.MAP_TILE_HEIGHT +
+            int yInWorldCoordinates = mapTileLocation.YInWorldMapTileCoordinates * GameWorldView.MAP_TILE_HEIGHT +
                                       (GameWorldView.MAP_TILE_HEIGHT / 2);
 
             return new XnaPoint(xInWorldCoordinates, yInWorldCoordinates);
+
+
         }
+
+
+        // public static XnaPoint ConvertMapTileCoordinatesToWorldCoordinates(XnaPoint pointInWorldMapSquareCoordinates)
+        // {
+        //
+        //     int xInWorldCoordinates = (pointInWorldMapSquareCoordinates.X * GameWorldView.MAP_TILE_WIDTH) +
+        //                               (GameWorldView.MAP_TILE_WIDTH / 2);
+        //     int yInWorldCoordinates = pointInWorldMapSquareCoordinates.Y * GameWorldView.MAP_TILE_HEIGHT +
+        //                               (GameWorldView.MAP_TILE_HEIGHT / 2);
+        //
+        //     return new XnaPoint(xInWorldCoordinates, yInWorldCoordinates);
+        // }
 
     }
 }

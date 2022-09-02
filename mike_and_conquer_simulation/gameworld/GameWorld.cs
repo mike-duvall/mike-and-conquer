@@ -955,20 +955,6 @@ namespace mike_and_conquer_simulation.gameworld
         // }
 
 
-        // public enum TILE_LOCATION
-        // {
-        //     WEST,
-        //     NORTH_WEST,
-        //     NORTH,
-        //     NORTH_EAST,
-        //     EAST,
-        //     SOUTH_EAST,
-        //     SOUTH,
-        //     SOUTH_WEST
-        // }
-
-
-
         // private bool IsMapTileInstanceAdjacentToConstructionYard(MapTileInstance mapTileInstance)
         // {
         //
