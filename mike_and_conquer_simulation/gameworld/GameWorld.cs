@@ -955,20 +955,6 @@ namespace mike_and_conquer_simulation.gameworld
         // }
 
 
-        public enum TILE_LOCATION
-        {
-            WEST,
-            NORTH_WEST,
-            NORTH,
-            NORTH_EAST,
-            EAST,
-            SOUTH_EAST,
-            SOUTH,
-            SOUTH_WEST
-        }
-
-
-
         // private bool IsMapTileInstanceAdjacentToConstructionYard(MapTileInstance mapTileInstance)
         // {
         //
@@ -1018,7 +1004,7 @@ namespace mike_and_conquer_simulation.gameworld
 
 
 
-        private MapTileInstance FindAdjacentMapTileInstance(MapTileInstance mapTileInstance,TILE_LOCATION tileLocation)
+        private MapTileInstance FindAdjacentMapTileInstance(MapTileInstance mapTileInstance,MapTileLocation.TILE_LOCATION tileLocation)
         {
 
             MapTileLocation adjacentMapTileLocation =
