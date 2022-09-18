@@ -12,7 +12,6 @@ namespace mike_and_conquer_monogame.humancontroller
     class HumanPlayerController : PlayerController
     {
 
-
         private HumanControllerState previousHumanControllerState;
         private HumanControllerState humanControllerState;
 

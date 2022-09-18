@@ -1,6 +1,10 @@
-﻿using System;
-using mike_and_conquer_simulation.events;
-using Newtonsoft.Json;
+﻿
+
+using MapTileInstance = mike_and_conquer_simulation.gameworld.MapTileInstance;
+using GameWorld = mike_and_conquer_simulation.gameworld.GameWorld;
+using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+
+
 
 namespace mike_and_conquer_simulation.main
 {
@@ -19,6 +23,8 @@ namespace mike_and_conquer_simulation.main
 
         double movementDistanceEpsilon;
         private float movementDelta;
+
+        // private MapTileInstance currentMapTileInstance;
 
         public MCV()
         {
@@ -57,6 +63,7 @@ namespace mike_and_conquer_simulation.main
 
         public override void Update()
         {
+            UpdateVisibleMapTiles();
             if (currentCommand == Command.FOLLOW_PATH)
             {
                 if (IsAtDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates))
@@ -94,10 +101,114 @@ namespace mike_and_conquer_simulation.main
                 }
 
             }
-            
+        }
 
+        private void UpdateVisibleMapTiles()
+        {
+
+            // TODO: Consider removing this if statement once map shroud is fully working
+            // if (GameOptions.instance.DrawShroud == false)
+            // {
+            //     return;
+            // }
+
+            // MapTileInstance possibleNewMapTileInstance =
+            //     GameWorld.instance.FindMapTileInstance(
+            //         MapTileLocation.CreateFromWorldCoordinatesInVector2(gameWorldLocation.WorldCoordinatesAsVector2));
+            //
+            // if (possibleNewMapTileInstance == currentMapTileInstance)
+            // {
+            //     return;
+            // }
+
+            // currentMapTileInstance = possibleNewMapTileInstance;
+
+            MapTileInstance possibleNewMapTileInstance =
+                GameWorld.instance.FindMapTileInstance(
+                    MapTileLocation.CreateFromWorldCoordinates(
+                        (int)this.GameWorldLocation.X,
+                        (int)this.GameWorldLocation.Y)
+                );
+
+            if (possibleNewMapTileInstance == currentMapTileInstance)
+            {
+                return;
+            }
+
+            currentMapTileInstance = possibleNewMapTileInstance;
+
+
+
+
+            // TODO:  Code south needs to handle literal edge cases where minigunner is near edge of 
+            // map and there is NO east or west tile, etc
+            UpdateNearbyMapTileVisibility(0, 0, MapTileInstance.MapTileVisibility.Visible);
+
+
+            // top side
+            UpdateNearbyMapTileVisibility(-2, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-1, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(0, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(1, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(2, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+
+
+            UpdateNearbyMapTileVisibility(-3, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-2, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-1, -2, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, -2, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, -2, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(2, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(3, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+
+
+            UpdateNearbyMapTileVisibility(-3, -1, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-2, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(-1, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(2, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(3, -1, MapTileInstance.MapTileVisibility.PartiallyVisible);
+
+
+            // same row
+            UpdateNearbyMapTileVisibility(-3, 0, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-2, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(-1, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(2, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(3, 0, MapTileInstance.MapTileVisibility.PartiallyVisible);
+
+
+            // bottom
+            UpdateNearbyMapTileVisibility(-3, 1, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-2, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(-1, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(2, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(3, 1, MapTileInstance.MapTileVisibility.PartiallyVisible);
+
+            UpdateNearbyMapTileVisibility(-3, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-2, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-1, 2, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, 2, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, 2, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(2, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(3, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
+
+
+            UpdateNearbyMapTileVisibility(-2, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(-1, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(0, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(1, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
+            UpdateNearbyMapTileVisibility(2, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
 
         }
+
+
+
 
         private bool IsAtDestination(int destinationX, int destinationY)
         {

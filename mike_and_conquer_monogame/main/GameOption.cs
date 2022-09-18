@@ -10,18 +10,18 @@ namespace mike_and_conquer_monogame.main
     {
 
         public bool DrawTerrainBorder = false;
-        //public bool DrawTerrainBorder = true;
+        // public bool DrawTerrainBorder = true;
 
         public bool DrawBlockingTerrainBorder = false;
 
         public bool IsFullScreen = true;
         // public bool IsFullScreen = false;
 
-        // public bool DrawShroud = true;
-        public bool DrawShroud = false;
+        public bool DrawShroud = true;
+        // public bool DrawShroud = false;
 
-        // public float MapZoomLevel = 1.0f;
-        public float MapZoomLevel = 2.0f;
+        public float MapZoomLevel = 1.0f;
+        // public float MapZoomLevel = 2.0f;
 
         //        public  bool PlayMusic = true;
         public bool PlayMusic = false;

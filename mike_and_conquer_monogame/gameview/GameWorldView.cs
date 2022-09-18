@@ -38,6 +38,8 @@ using ImmutablePalette = mike_and_conquer_monogame.openra.ImmutablePalette;
 
 using Matrix = Microsoft.Xna.Framework.Matrix;
 
+using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+
 namespace mike_and_conquer_monogame.gameview
 {
     public class GameWorldView
@@ -1412,11 +1414,12 @@ namespace mike_and_conquer_monogame.gameview
         //     }
         //
         // }
-        public void AddMapTileInstanceView(int xInWorldMapTileCoordinates, int yInWorldMapTileCoordinates,
+        public void AddMapTileInstanceView(int mapTileInstanceId, int xInWorldMapTileCoordinates, int yInWorldMapTileCoordinates,
             byte imageIndex, string textureKey, bool isBlockingTerrain,
             MapTileInstanceView.MapTileVisibility visibilityEnumValue)
         {
             MapTileInstanceView view = new MapTileInstanceView(
+                mapTileInstanceId,
                 xInWorldMapTileCoordinates,
                 yInWorldMapTileCoordinates,
                 imageIndex,
@@ -1538,6 +1541,57 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
+        public void UpdateMapTileViewVisibility(MapTileVisibilityUpdatedEventData eventData)
+        {
+
+            MapTileInstanceView mapTileInstanceView =  FindMapTileInstanceView(eventData.MapTileInstanceId);
+//            mapTileInstanceView.visibility = Enum.TryParse("Active", out StatusEnum myStatus);
+
+            Enum.TryParse(eventData.Visibility,
+                out MapTileInstanceView.MapTileVisibility visibilityEnumValue);
+
+            mapTileInstanceView.visibility = visibilityEnumValue;
+
+
+//            eventData.Visibility;
+        }
+
+
+        public MapTileInstanceView FindMapTileInstanceView(int mapTileInstnaceViewId)
+        {
+            foreach (MapTileInstanceView view in this.MapTileInstanceViewList)
+            {
+                if (view.mapTileInstanceId == mapTileInstnaceViewId)
+                {
+                    return view;
+                }
+            }
+
+            throw new Exception("Did not find MapTileInstanceView with id=" + mapTileInstnaceViewId);
+        }
+
+        public MapTileInstanceView FindMapTileInstanceViewAllowNull(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            foreach (MapTileInstanceView mapTileInstanceView in this.MapTileInstanceViewList)
+            {
+                if (mapTileInstanceView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates))
+                {
+                    return mapTileInstanceView;
+                }
+            }
+
+            return null;
+
+        }
+
+        public MapTileInstanceView FindAdjacentMapTileInstanceViewAllowNull(MapTileLocation mapTileLocation, MapTileLocation.TILE_LOCATION tileLocation)
+        {
+            MapTileLocation adjacentMapTileLocation = mapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
+
+            return this.FindMapTileInstanceViewAllowNull(
+                adjacentMapTileLocation.WorldCoordinatesAsPoint.X,
+                adjacentMapTileLocation.WorldCoordinatesAsPoint.Y);
+        }
 
 
     }

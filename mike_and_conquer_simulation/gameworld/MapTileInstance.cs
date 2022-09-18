@@ -6,7 +6,7 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace mike_and_conquer_simulation.gameworld
 {
-    internal class MapTileInstance
+    public class MapTileInstance
     {
 
         public int MapTileInstanceId { get; set; }
@@ -69,6 +69,7 @@ namespace mike_and_conquer_simulation.gameworld
             this.imageIndex = imageIndex;
             this.isBlockingTerrain = isBlockingTerrain;
             this.Visibility = MapTileInstance.MapTileVisibility.NotVisible;
+            // this.Visibility = MapTileInstance.MapTileVisibility.Visible;
             this.MapTileInstanceId = SimulationMain.globalId++;
         }
 
