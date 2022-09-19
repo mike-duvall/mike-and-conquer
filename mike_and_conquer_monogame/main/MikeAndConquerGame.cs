@@ -77,13 +77,14 @@ namespace mike_and_conquer_monogame.main
 
             new GameOptions();
 
-            _graphics.HardwareModeSwitch = false;
             
              if (GameOptions.instance.IsFullScreen)
              {
                 _graphics.IsFullScreen = true;
                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                _graphics.HardwareModeSwitch = false;
+
             }
             else
             {

@@ -71,22 +71,23 @@ namespace mike_and_conquer_monogame.rest.controller
         // }
 
 
+        // [HttpGet]
+        // public IActionResult Get()
+        // {
+        //
+        //     MemoryStream stream = MikeAndConquerGame.instance.GetScreenshotViaEvent();
+        //     stream.Flush();
+        //     FileStream fileStream = new FileStream("C:\\buildoutput\\temp3.png", FileMode.Open, FileAccess.Read);
+        //     return File(fileStream, "image/png");
+        // }
+
+
         [HttpGet]
         public IActionResult Get()
         {
-            // var image = System.IO.File.OpenRead("C:\\buildoutput\\real-game-shroud-1-start-x408-y129-232x159.png");
             MemoryStream stream = MikeAndConquerGame.instance.GetScreenshotViaEvent();
-            stream.Flush();
-
-            // FileStream fileStream = new FileStream("C:\\buildoutput\\temp3.png", FileMode.Create,FileAccess.ReadWrite);
-            FileStream fileStream = new FileStream("C:\\buildoutput\\temp3.png", FileMode.Open, FileAccess.Read);
-            // stream.CopyTo(fileStream);
-
-
-            
-            return File(fileStream, "image/png");
-
-
+            stream.Position = 0;
+            return File(stream, "image/png");
         }
 
 
