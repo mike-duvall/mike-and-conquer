@@ -21,6 +21,8 @@ using mike_and_conquer_simulation.main;
 using Newtonsoft.Json;
 
 using MemoryStream = System.IO.MemoryStream;
+using Form = System.Windows.Forms.Form;
+
 
 namespace mike_and_conquer_monogame.main
 {
@@ -83,7 +85,14 @@ namespace mike_and_conquer_monogame.main
                 _graphics.IsFullScreen = true;
                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                // Having to set HardwareModeSwitch to false to make screenshots work for my tests
+                // only on the Thinkpad laptop for some reason
                 _graphics.HardwareModeSwitch = false;
+
+
+                Form myForm = (Form)Form.FromHandle(this.Window.Handle);
+                myForm.Activate();
+
 
             }
             else
@@ -99,6 +108,14 @@ namespace mike_and_conquer_monogame.main
 
 
             }
+
+             // For some reason, if HardwareModeSwitch is false
+             // It doesn't always make the game window the top window
+             // in the foreground
+             // if (_graphics.HardwareModeSwitch == false)
+             // {
+             //     BringGameWindowToForeground();
+             // }
 
 
             Content.RootDirectory = "Content";
@@ -141,6 +158,13 @@ namespace mike_and_conquer_monogame.main
             MikeAndConquerGame.instance = this;
         }
 
+
+        internal void BringGameWindowToForeground()
+        {
+            Thread.Sleep(1000);
+            Form myForm = (Form)Form.FromHandle(this.Window.Handle);
+            myForm.Activate();
+        }
 
         internal void PostCommand(RawCommandUI rawCommandUi)
         {
@@ -491,9 +515,21 @@ namespace mike_and_conquer_monogame.main
 
         }
 
+        private bool activated = false;
 
         protected override void Update(GameTime gameTime)
         {
+
+
+            if (!activated)
+            {
+                Form myForm = (Form)Form.FromHandle(this.Window.Handle);
+                myForm.Activate();
+                activated = true;
+
+            }
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
