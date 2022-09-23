@@ -547,6 +547,12 @@ namespace mike_and_conquer_simulation.gameworld
             return gdiPlayer.CreateMCV(xInWorldCoordinates, yInWorldCoordinates);
         }
 
+
+        public void RemoveUnit(int unitId)
+        {
+            gdiPlayer.RemoveUnit(unitId);
+        }
+
         public Unit FindUnitWithUnitId(int unitId)
         {
             return gdiPlayer.FindUnitWithUnitId(unitId);

@@ -316,5 +316,32 @@ namespace mike_and_conquer_simulation.gameworld
             return foundUnit;
 
         }
+
+        private void PublishUnitDeleteEvent( int unitId)
+        {
+            UnitDeleteEventData eventData = new UnitDeleteEventData(unitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitDeleteEventData.EventType,
+                    serializedEventData);
+
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+
+        }
+
+
+        public void RemoveUnit(int unitId)
+        {
+            Unit foundUnit = FindUnitWithUnitId(unitId);
+            unitList.Remove(foundUnit);
+
+
+            // MinigunnerCreateEventData.EventType
+
+            PublishUnitDeleteEvent(unitId);
+        }
     }
 }

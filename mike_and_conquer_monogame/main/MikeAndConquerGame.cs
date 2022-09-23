@@ -145,6 +145,8 @@ namespace mike_and_conquer_monogame.main
             
             simulationStateListenerList.Add( new UpdateMapTileViewVisibilityWhenMapTileVisibilityChangedEventHandler(this));
 
+            simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
+
             IsMouseVisible = true;
             // double currentResolution = TimerHelper.GetCurrentResolution();
             // gameWorld = new GameWorld();
@@ -586,6 +588,11 @@ namespace mike_and_conquer_monogame.main
             gameWorldView.AddMinigunnerView(id, x, y);
             // MinigunnerView minigunnerView = new GdiMinigunnerView(id, x, y);
             // unitViewList.Add(minigunnerView);
+        }
+
+        public void RemoveUnitView(int unitId)
+        {
+            gameWorldView.RemoveUnitView(unitId);
         }
 
         public void AddJeepView(int id, int x, int y)

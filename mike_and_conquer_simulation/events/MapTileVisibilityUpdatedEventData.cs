@@ -1,12 +1,12 @@
 ﻿using System;
-using mike_and_conquer_simulation.gameworld;
+
 
 namespace mike_and_conquer_simulation.events
 {
     public class MapTileVisibilityUpdatedEventData
     {
 
-        public const string EventType = "UnitOrderedToMove";
+        public const string EventType = "MapTileVisibilityUpdated";
 
 
         public int MapTileInstanceId { get; set; }

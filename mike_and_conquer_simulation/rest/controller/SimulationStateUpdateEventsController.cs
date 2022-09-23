@@ -27,22 +27,32 @@ namespace mike_and_conquer_simulation.rest.controller
         }
 
         [HttpGet]
-        public IEnumerable<RestSimulationStateUpdateEvent> Get()
+        public IEnumerable<RestSimulationStateUpdateEvent> Get([FromQuery] int startIndex)
         {
+
+
             List<RestSimulationStateUpdateEvent> restReturnList = new List<RestSimulationStateUpdateEvent>();
 
             List<SimulationStateUpdateEvent> simulationStateUpdateList = 
                 SimulationMain.instance.GetCopyOfEventHistoryViaEvent();
 
+
+            int currentIndex = 0;
             foreach (SimulationStateUpdateEvent simulationStateUpdateEvent in simulationStateUpdateList)
             {
-                RestSimulationStateUpdateEvent anEvent = new RestSimulationStateUpdateEvent();
-                anEvent.EventType = simulationStateUpdateEvent.EventType;
-                anEvent.EventData = simulationStateUpdateEvent.EventData;
-                // anEvent.X = simulationStateUpdateEvent.X;
-                // anEvent.Y = simulationStateUpdateEvent.Y;
-                // anEvent.UnitId = simulationStateUpdateEvent.UnitId;
-                restReturnList.Add(anEvent);
+                if (currentIndex >= startIndex)
+                {
+                    RestSimulationStateUpdateEvent anEvent = new RestSimulationStateUpdateEvent();
+                    anEvent.EventType = simulationStateUpdateEvent.EventType;
+                    anEvent.EventData = simulationStateUpdateEvent.EventData;
+                    // anEvent.X = simulationStateUpdateEvent.X;
+                    // anEvent.Y = simulationStateUpdateEvent.Y;
+                    // anEvent.UnitId = simulationStateUpdateEvent.UnitId;
+                    restReturnList.Add(anEvent);
+
+                }
+
+                currentIndex++;
             }
 
 

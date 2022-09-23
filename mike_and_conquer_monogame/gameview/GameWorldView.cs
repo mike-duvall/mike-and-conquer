@@ -1447,6 +1447,12 @@ namespace mike_and_conquer_monogame.gameview
             unitViewList.Add(view);
         }
 
+
+        public void RemoveUnitView(int unitId)
+        {
+            UnitView unitView = FindUnitViewById(unitId);
+            unitViewList.Remove(unitView);
+        }
         public void AddMCVView(int id, int x, int y)
         {
             MCVView view = new MCVView(id, x, y);
@@ -1499,7 +1505,7 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        private UnitView FindUnitById(int unitId)
+        private UnitView FindUnitViewById(int unitId)
         {
             UnitView foundUnitView = null;
             foreach (UnitView unitView in unitViewList)
@@ -1517,13 +1523,13 @@ namespace mike_and_conquer_monogame.gameview
 
         public void CreatePlannedPathView(int unitId, List<PathStep> pathStepList)
         {
-            UnitView unitView = FindUnitById(unitId);
+            UnitView unitView = FindUnitViewById(unitId);
             unitView.CreatePlannedPathView(pathStepList);
         }
 
         public void RemovePlannedStepView(int unitId, PathStep pathStep)
         {
-            UnitView unitView = FindUnitById(unitId);
+            UnitView unitView = FindUnitViewById(unitId);
             unitView.RemovePlannedPathStepView(pathStep);
         }
 

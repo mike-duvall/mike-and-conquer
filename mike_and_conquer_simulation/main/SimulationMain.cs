@@ -346,6 +346,11 @@ namespace mike_and_conquer_simulation.main
         }
 
 
+        internal void RemoveUnit(int unitId)
+        {
+            gameWorld.RemoveUnit(unitId);
+        }
+
 
 
 
@@ -500,6 +505,22 @@ namespace mike_and_conquer_simulation.main
                 return aCommand;
 
             }
+            else if (rawCommand.CommandType.Equals(RemoveUnitCommand.CommandName))
+            {
+
+                RemoveUnitCommandBody commandBody =
+                    JsonConvert.DeserializeObject<RemoveUnitCommandBody>(rawCommand.CommandData);
+
+                RemoveUnitCommand command = new RemoveUnitCommand();
+                command.UnitId = commandBody.UnitId;
+                // CreateMinigunnerCommand createUnit = new CreateMinigunnerCommand();
+                // createUnit.X = commandBody.StartLocationXInWorldCoordinates;
+                // createUnit.Y = commandBody.StartLocationYInWorldCoordinates;
+
+                return command;
+
+            }
+
             else
             {
                 throw new Exception("Unknown CommandType:" + rawCommand.CommandType);

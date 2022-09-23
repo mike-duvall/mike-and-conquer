@@ -143,7 +143,7 @@ namespace mike_and_conquer_simulation.main
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    UnitMoveOrderEventData.EventType,
+                    MapTileVisibilityUpdatedEventData.EventType,
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
