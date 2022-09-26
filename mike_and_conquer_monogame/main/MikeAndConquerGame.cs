@@ -238,8 +238,16 @@ namespace mike_and_conquer_monogame.main
                 ClickCommandBody commandBody =
                     JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
-
                 ReleaseLeftMouseButtonCommand command = new ReleaseLeftMouseButtonCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+
+            }
+            else if (rawCommand.CommandType.Equals(SetUIOptionsCommand.CommandName))
+            {
+                SetUIOptionsCommandBody commandBody =
+                    JsonConvert.DeserializeObject<SetUIOptionsCommandBody>(rawCommand.CommandData);
+
+                SetUIOptionsCommand command = new SetUIOptionsCommand(commandBody.DrawShroud, commandBody.MapZoomLevel);
                 return command;
 
             }
@@ -1058,6 +1066,12 @@ namespace mike_and_conquer_monogame.main
         public void UpdateMapTileViewVisibility(MapTileVisibilityUpdatedEventData eventData)
         {
             GameWorldView.instance.UpdateMapTileViewVisibility(eventData);
+        }
+
+        public void SetUIOptions(bool drawShroud, float mapZoomLevel)
+        {
+            GameOptions.instance.DrawShroud = drawShroud;
+            GameOptions.instance.MapZoomLevel = mapZoomLevel;
         }
     }
 }
