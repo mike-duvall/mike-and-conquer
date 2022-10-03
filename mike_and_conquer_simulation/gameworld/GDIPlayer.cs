@@ -317,14 +317,14 @@ namespace mike_and_conquer_simulation.gameworld
 
         }
 
-        private void PublishUnitDeleteEvent( int unitId)
+        private void PublishUnitDeletedEvent( int unitId)
         {
-            UnitDeleteEventData eventData = new UnitDeleteEventData(unitId);
+            UnitDeletedEventData eventData = new UnitDeletedEventData(unitId);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    UnitDeleteEventData.EventType,
+                    UnitDeletedEventData.EventType,
                     serializedEventData);
 
 
@@ -341,7 +341,8 @@ namespace mike_and_conquer_simulation.gameworld
 
             // MinigunnerCreateEventData.EventType
 
-            PublishUnitDeleteEvent(unitId);
+
+            PublishUnitDeletedEvent(unitId);
         }
     }
 }

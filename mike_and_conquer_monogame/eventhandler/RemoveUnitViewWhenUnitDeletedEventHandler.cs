@@ -18,17 +18,17 @@ namespace mike_and_conquer_monogame.eventhandler
 
         public override void Update(SimulationStateUpdateEvent anEvent)
         {
-            if (anEvent.EventType.Equals(UnitDeleteEventData.EventType))
+            if (anEvent.EventType.Equals(UnitDeletedEventData.EventType))
             {
-                // UnitDeleteEventData eventData =
-                //     JsonConvert.DeserializeObject < UnitDeleteEventData eventData =
+                // UnitDeletedEventData eventData =
+                //     JsonConvert.DeserializeObject < UnitDeletedEventData eventData =
                 //     > (anEvent.EventData);
 
                 // UnitArrivedAtPathStepEventData eventData =
                 //     JsonConvert.DeserializeObject<UnitArrivedAtPathStepEventData>(anEvent.EventData);
 
-                UnitDeleteEventData eventData =
-                    JsonConvert.DeserializeObject<UnitDeleteEventData>(anEvent.EventData);
+                UnitDeletedEventData eventData =
+                    JsonConvert.DeserializeObject<UnitDeletedEventData>(anEvent.EventData);
 
 
                 // AddMinigunnerViewCommand command = new AddMinigunnerViewCommand(eventData.UnitId, eventData.X, eventData.Y);

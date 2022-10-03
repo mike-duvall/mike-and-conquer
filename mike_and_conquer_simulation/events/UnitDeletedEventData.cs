@@ -1,14 +1,14 @@
 ﻿namespace mike_and_conquer_simulation.events
 {
-    public class UnitDeleteEventData
+    public class UnitDeletedEventData
     {
 
-        public const string EventType = "UnitDelete";
+        public const string EventType = "UnitDeleted";
 
         public int UnitId { get;  }
 
 
-        public UnitDeleteEventData(int unitId)
+        public UnitDeletedEventData(int unitId)
         {
             UnitId = unitId;
         }

@@ -1030,6 +1030,19 @@ namespace mike_and_conquer_monogame.main
             return unitView;
         }
 
+        public GameOptions GetGameOptionsByEvent()
+        {
+            GetGameOptionsCommand command = new GetGameOptionsCommand();
+            lock (inputCommandQueue)
+            {
+                inputCommandQueue.Enqueue(command);
+            }
+
+            GameOptions gameOptions = command.GetGameOptions();
+            return gameOptions;
+
+        }
+
 
         public MemoryStream GetScreenshotViaEvent()
         {
@@ -1072,6 +1085,12 @@ namespace mike_and_conquer_monogame.main
         {
             GameOptions.instance.DrawShroud = drawShroud;
             GameOptions.instance.MapZoomLevel = mapZoomLevel;
+
+            int x = 3;
+
+            bool drawShroud2 = GameOptions.instance.DrawShroud;
+            float mapZoomLevel2 = GameOptions.instance.MapZoomLevel;
+            x = 4;
         }
     }
 }

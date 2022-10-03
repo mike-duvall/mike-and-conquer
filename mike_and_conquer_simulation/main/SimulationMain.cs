@@ -416,6 +416,11 @@ namespace mike_and_conquer_simulation.main
             this.simulationOptions.CurrentGameSpeed = aGameSpeed;
         }
 
+        internal SimulationOptions GetSimulationOptions()
+        {
+            return simulationOptions;
+        }
+
 
         internal void PostCommand(RawCommand incomingAdminCommand)
         {
@@ -498,7 +503,7 @@ namespace mike_and_conquer_simulation.main
                 SetSimulationOptionsCommandBody commandBody =
                     JsonConvert.DeserializeObject<SetSimulationOptionsCommandBody>(rawCommand.CommandData);
 
-                SimulationOptions.GameSpeed inputGameSpeed = ConvertGameSpeedStringToEnum(commandBody.GameSpeed);
+                SimulationOptions.GameSpeed inputGameSpeed = SimulationOptions.ConvertGameSpeedStringToEnum(commandBody.GameSpeed);
                 SetGameSpeedCommand aCommand = new SetGameSpeedCommand();
                 aCommand.GameSpeed = inputGameSpeed;
 
@@ -529,19 +534,19 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-        private SimulationOptions.GameSpeed ConvertGameSpeedStringToEnum(String gameSpeedAsString)
-        {
-            if (gameSpeedAsString == "Slowest") return SimulationOptions.GameSpeed.Slowest;
-            if (gameSpeedAsString == "Slower") return SimulationOptions.GameSpeed.Slower;
-            if (gameSpeedAsString == "Slow") return SimulationOptions.GameSpeed.Slow;
-            if (gameSpeedAsString == "Moderate") return SimulationOptions.GameSpeed.Moderate;
-            if (gameSpeedAsString == "Normal") return SimulationOptions.GameSpeed.Normal;
-            if (gameSpeedAsString == "Fast") return SimulationOptions.GameSpeed.Fast;
-            if (gameSpeedAsString == "Faster") return SimulationOptions.GameSpeed.Faster;
-            if (gameSpeedAsString == "Fastest") return SimulationOptions.GameSpeed.Fastest;
-
-            throw new Exception("Could not map game speed string of:" + gameSpeedAsString);
-        }
+        // private SimulationOptions.GameSpeed ConvertGameSpeedStringToEnum(String gameSpeedAsString)
+        // {
+        //     if (gameSpeedAsString == "Slowest") return SimulationOptions.GameSpeed.Slowest;
+        //     if (gameSpeedAsString == "Slower") return SimulationOptions.GameSpeed.Slower;
+        //     if (gameSpeedAsString == "Slow") return SimulationOptions.GameSpeed.Slow;
+        //     if (gameSpeedAsString == "Moderate") return SimulationOptions.GameSpeed.Moderate;
+        //     if (gameSpeedAsString == "Normal") return SimulationOptions.GameSpeed.Normal;
+        //     if (gameSpeedAsString == "Fast") return SimulationOptions.GameSpeed.Fast;
+        //     if (gameSpeedAsString == "Faster") return SimulationOptions.GameSpeed.Faster;
+        //     if (gameSpeedAsString == "Fastest") return SimulationOptions.GameSpeed.Fastest;
+        //
+        //     throw new Exception("Could not map game speed string of:" + gameSpeedAsString);
+        // }
 
         public void PostCommand(AsyncSimulationCommand command)
         {
