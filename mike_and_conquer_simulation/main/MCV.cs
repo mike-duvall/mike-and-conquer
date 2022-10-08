@@ -146,64 +146,35 @@ namespace mike_and_conquer_simulation.main
 
 
             // top side
-            UpdateNearbyMapTileVisibility(-2, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(-1, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(0, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(1, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(2, -3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-
-
-            UpdateNearbyMapTileVisibility(-3, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(-2, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
             UpdateNearbyMapTileVisibility(-1, -2, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(0, -2, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, -2, MapTileInstance.MapTileVisibility.Visible);
-            UpdateNearbyMapTileVisibility(2, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(3, -2, MapTileInstance.MapTileVisibility.PartiallyVisible);
 
-
-            UpdateNearbyMapTileVisibility(-3, -1, MapTileInstance.MapTileVisibility.PartiallyVisible);
             UpdateNearbyMapTileVisibility(-2, -1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(-1, -1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(0, -1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, -1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(2, -1, MapTileInstance.MapTileVisibility.Visible);
-            UpdateNearbyMapTileVisibility(3, -1, MapTileInstance.MapTileVisibility.PartiallyVisible);
 
 
             // same row
-            UpdateNearbyMapTileVisibility(-3, 0, MapTileInstance.MapTileVisibility.PartiallyVisible);
             UpdateNearbyMapTileVisibility(-2, 0, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(-1, 0, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(0, 0, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 0, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(2, 0, MapTileInstance.MapTileVisibility.Visible);
-            UpdateNearbyMapTileVisibility(3, 0, MapTileInstance.MapTileVisibility.PartiallyVisible);
 
 
             // bottom
-            UpdateNearbyMapTileVisibility(-3, 1, MapTileInstance.MapTileVisibility.PartiallyVisible);
             UpdateNearbyMapTileVisibility(-2, 1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(-1, 1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(0, 1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(2, 1, MapTileInstance.MapTileVisibility.Visible);
-            UpdateNearbyMapTileVisibility(3, 1, MapTileInstance.MapTileVisibility.PartiallyVisible);
-
-            UpdateNearbyMapTileVisibility(-3, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(-2, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
             UpdateNearbyMapTileVisibility(-1, 2, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(0, 2, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 2, MapTileInstance.MapTileVisibility.Visible);
-            UpdateNearbyMapTileVisibility(2, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(3, 2, MapTileInstance.MapTileVisibility.PartiallyVisible);
 
-
-            UpdateNearbyMapTileVisibility(-2, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(-1, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(0, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(1, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
-            UpdateNearbyMapTileVisibility(2, 3, MapTileInstance.MapTileVisibility.PartiallyVisible);
 
         }
 

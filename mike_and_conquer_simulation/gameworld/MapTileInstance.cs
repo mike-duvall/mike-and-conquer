@@ -43,7 +43,6 @@ namespace mike_and_conquer_simulation.gameworld
         public enum MapTileVisibility
         {
             NotVisible,
-            PartiallyVisible,
             Visible
         }
 
