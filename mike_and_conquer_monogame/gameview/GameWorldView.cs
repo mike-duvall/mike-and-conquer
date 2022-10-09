@@ -606,6 +606,30 @@ namespace mike_and_conquer_monogame.gameview
 
             if (GameOptions.instance.DrawShroud)
             {
+
+
+                // Update all visibility masks before drawing, instead of while drawing, because
+                // tiles can be made visible not just by unit movement
+                // but also by logics that determines if a tile is surrounded by other visible tiles
+                foreach (MapTileInstanceView basicMapSquareView in GameWorldView.instance.MapTileInstanceViewList)
+                {
+                    basicMapSquareView.UpdateVisbilityMask();
+                }
+
+                // Do two passes, because above loop could have uncovered new visible tiles, which in turn
+                // could make even more tiles visibles.  Doing these two loops is solving a flicker issue where
+                // a tile that should be visible is momentarily not visible or in shade, do to it becoming visible
+                // because of state of surrounding tiles, but not getting updated to visible until two full passes of this
+                // loop.  One pass makes the flicker period shorter, but doesn't fully solve it.
+                // Two passes appears to fully solve it.
+                //  May want to investigate alternative algorithm that does updates in a different order or perhaps
+                // Tries updating nearby tiles when it makes another tile visible
+                foreach (MapTileInstanceView basicMapSquareView in GameWorldView.instance.MapTileInstanceViewList)
+                {
+                    basicMapSquareView.UpdateVisbilityMask();
+                }
+
+
                 foreach (MapTileInstanceView basicMapSquareView in GameWorldView.instance.MapTileInstanceViewList)
                 {
                     basicMapSquareView.DrawVisbilityMask(gameTime, spriteBatch);

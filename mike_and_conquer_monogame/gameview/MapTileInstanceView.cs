@@ -31,6 +31,7 @@ namespace mike_and_conquer_monogame.gameview
 
         // TODO Refactor handling of map shroud masks.  Consider pulling out everything into separate class(es)
         private static Texture2D visibleMask = null;
+        private Texture2D currentVisibilityMask = null;
         private PartiallyVisibileMapTileMask partiallyVisibileMapTileMask;
         private static XnaVector2 middleOfSpriteInSpriteCoordinates;
 
@@ -1717,6 +1718,24 @@ namespace mike_and_conquer_monogame.gameview
 
 
 
+        internal void UpdateVisbilityMask()
+        {
+            if (this.visibility == MapTileVisibility.Visible)
+            {
+                this.currentVisibilityMask = visibleMask;
+
+            }
+            else // if (this.visibility == MapTileVisibility.PartiallyVisible)
+            {
+                int index = DeterminePartiallyVisibleMaskTile();
+                if (index >= 0)
+                {
+                    this.currentVisibilityMask = partiallyVisibileMapTileMask.GetMask(index);
+                }
+            }
+
+        }
+
         internal void DrawVisbilityMask(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float defaultScale = 1;
@@ -1724,28 +1743,32 @@ namespace mike_and_conquer_monogame.gameview
             XnaVector2 worldCoordinatesAsXnaVector2 =
                 ConvertNumericsVector2ToXnaVector2(mapTileLocation.WorldCoordinatesAsVector2);
 
-
-            if (mapTileLocation.XInWorldMapTileCoordinates == 24 && mapTileLocation.YInWorldMapTileCoordinates == 11)
+            if (currentVisibilityMask != null)
             {
-                int x = 3;
+                spriteBatch.Draw(currentVisibilityMask,
+                    worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
+                    middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
+
             }
 
-            if (this.visibility == MapTileVisibility.Visible)
-            {
 
-                spriteBatch.Draw(visibleMask, worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
-                    middleOfSpriteInSpriteCoordinates, defaultScale, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 1.0f);
-            }
-            else // if (this.visibility == MapTileVisibility.PartiallyVisible)
-            {
-                int index = DeterminePartiallyVisibleMaskTile();
-                if (index >= 0)
-                {
-                    spriteBatch.Draw(partiallyVisibileMapTileMask.GetMask(index),
-                        worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
-                        middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
-                }
-            }
+
+            // if (this.visibility == MapTileVisibility.Visible)
+            // {
+            //
+            //     spriteBatch.Draw(visibleMask, worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
+            //         middleOfSpriteInSpriteCoordinates, defaultScale, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 1.0f);
+            // }
+            // else // if (this.visibility == MapTileVisibility.PartiallyVisible)
+            // {
+            //     int index = DeterminePartiallyVisibleMaskTile();
+            //     if (index >= 0)
+            //     {
+            //         spriteBatch.Draw(partiallyVisibileMapTileMask.GetMask(index),
+            //             worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
+            //             middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
+            //     }
+            // }
         }
 
         // public bool ContainsPoint(int mouseX, int mouseY)
