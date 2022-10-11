@@ -84,30 +84,116 @@ namespace mike_and_conquer_simulation.main
 
 
         }
+        // private void PublishInitializeScenarioEvent(
+        //     int mapWidth,
+        //     int mapHeight,
+        //     List<MapTileInstance> mapTileInstanceList,
+        //     List<TerrainItem> terrainItemList)
+        // {
+        //
+        //     List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList =
+        //         new List<MapTileInstanceCreateEventData>();
+        //
+        //     foreach (MapTileInstance mapTileInstance in mapTileInstanceList)
+        //     {
+        //         MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
+        //             mapTileInstance.MapTileInstanceId,
+        //             mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
+        //             mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
+        //             mapTileInstance.TextureKey,
+        //             mapTileInstance.ImageIndex,
+        //             mapTileInstance.IsBlockingTerrain,
+        //             mapTileInstance.Visibility.ToString()
+        //             );
+        //
+        //         mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
+        //     }
+        //
+        //     List<TerrainItemCreateEventData> terrainItemCreateEventDataList =
+        //         new List<TerrainItemCreateEventData>();
+        //
+        //     foreach (TerrainItem terrainItem in terrainItemList)
+        //     {
+        //         TerrainItemCreateEventData terrainItemCreateEventData = new TerrainItemCreateEventData(
+        //             terrainItem.MapTileLocation.XInWorldMapTileCoordinates,
+        //             terrainItem.MapTileLocation.YInWorldMapTileCoordinates,
+        //             terrainItem.TerrainItemType);
+        //         terrainItemCreateEventDataList.Add(terrainItemCreateEventData);
+        //
+        //     }
+        //
+        //     ScenarioInitializedEventData initializedEventData = new ScenarioInitializedEventData(
+        //         mapWidth,
+        //         mapHeight,
+        //         mapTileInstanceCreateEventDataList,
+        //         terrainItemCreateEventDataList);
+        //
+        //     string serializedEventData = JsonConvert.SerializeObject(initializedEventData);
+        //     SimulationStateUpdateEvent simulationStateUpdateEvent = 
+        //         new SimulationStateUpdateEvent(
+        //                 ScenarioInitializedEventData.EventType,
+        //                 serializedEventData
+        //             );
+        //
+        //     PublishEvent(simulationStateUpdateEvent);
+        //
+        // }
+
         private void PublishInitializeScenarioEvent(
             int mapWidth,
             int mapHeight,
-            List<MapTileInstance> mapTileInstanceList,
+            MapTileInstance[,] mapTileInstanceArray,
             List<TerrainItem> terrainItemList)
         {
 
             List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList =
                 new List<MapTileInstanceCreateEventData>();
 
-            foreach (MapTileInstance mapTileInstance in mapTileInstanceList)
+            // foreach (MapTileInstance mapTileInstance in mapTileInstanceList)
+            // {
+            //     MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
+            //         mapTileInstance.MapTileInstanceId,
+            //         mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
+            //         mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
+            //         mapTileInstance.TextureKey,
+            //         mapTileInstance.ImageIndex,
+            //         mapTileInstance.IsBlockingTerrain,
+            //         mapTileInstance.Visibility.ToString()
+            //         );
+            //
+            //     mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
+            // }
+
+            // int numRows = mapTileInstanceArray.GetLength(1);
+            // int numColumns = mapTileInstanceArray.GetLength(0);
+
+            int numRows = gameWorld.gameMap.NumRows;
+            int numColumns = gameWorld.gameMap.NumColumns;
+
+
+            for (int row = 0; row < numRows; row++)
             {
-                MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
-                    mapTileInstance.MapTileInstanceId,
-                    mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
-                    mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
-                    mapTileInstance.TextureKey,
-                    mapTileInstance.ImageIndex,
-                    mapTileInstance.IsBlockingTerrain,
-                    mapTileInstance.Visibility.ToString()
+                for (int column = 0; column < numColumns; column++)
+                {
+                    MapTileInstance mapTileInstance = mapTileInstanceArray[column, row];
+
+                    MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
+                        mapTileInstance.MapTileInstanceId,
+                        mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
+                        mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
+                        mapTileInstance.TextureKey,
+                        mapTileInstance.ImageIndex,
+                        mapTileInstance.IsBlockingTerrain,
+                        mapTileInstance.Visibility.ToString()
                     );
 
-                mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
+                    mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
+
+                }
+
             }
+
+
 
             List<TerrainItemCreateEventData> terrainItemCreateEventDataList =
                 new List<TerrainItemCreateEventData>();
@@ -129,7 +215,7 @@ namespace mike_and_conquer_simulation.main
                 terrainItemCreateEventDataList);
 
             string serializedEventData = JsonConvert.SerializeObject(initializedEventData);
-            SimulationStateUpdateEvent simulationStateUpdateEvent = 
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
                         ScenarioInitializedEventData.EventType,
                         serializedEventData
@@ -138,6 +224,7 @@ namespace mike_and_conquer_simulation.main
             PublishEvent(simulationStateUpdateEvent);
 
         }
+
 
 
         public void AddListener(SimulationStateListener listener)
@@ -569,7 +656,8 @@ namespace mike_and_conquer_simulation.main
 
             gameWorld.StartScenario(playerController);
             
-            PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceList, gameWorld.terrainItemList);
+            // PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceList, gameWorld.terrainItemList);
+            PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
 
         }
 

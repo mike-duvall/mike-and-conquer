@@ -123,6 +123,8 @@ namespace mike_and_conquer_simulation.main
 
             // currentMapTileInstance = possibleNewMapTileInstance;
 
+
+
             MapTileInstance possibleNewMapTileInstance =
                 GameWorld.instance.FindMapTileInstance(
                     MapTileLocation.CreateFromWorldCoordinates(

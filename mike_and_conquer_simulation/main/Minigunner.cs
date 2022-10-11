@@ -617,7 +617,6 @@ namespace mike_and_conquer_simulation.main
             // }
 
 
-
             // east side
             UpdateNearbyMapTileVisibility(1, -1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 0, MapTileInstance.MapTileVisibility.Visible);
@@ -642,10 +641,10 @@ namespace mike_and_conquer_simulation.main
             UpdateNearbyMapTileVisibility(0, 1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);
 
-            foreach (MapTileInstance mapTileInstance in GameWorld.instance.gameMap.MapTileInstanceList)
-            {
-                UpdateToVisibleIfSurroundedByVisibleTiles(mapTileInstance);
-            }
+            // foreach (MapTileInstance mapTileInstance in GameWorld.instance.gameMap.MapTileInstanceList)
+            // {
+            //     UpdateToVisibleIfSurroundedByVisibleTiles(mapTileInstance);
+            // }
         }
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 // using mike_and_conquer.gameview;
 using Stream = System.IO.Stream;
@@ -49,18 +50,34 @@ namespace mike_and_conquer_simulation.gameworld
         public const string W2_TEM = "w2.tem";
 
 
-        private List<MapTileInstance> mapTileInstanceList;
+        // private List<MapTileInstance> mapTileInstanceList;
 
-        public List<MapTileInstance> MapTileInstanceList
+        private MapTileInstance[,] mapTileInstanceArray;
+
+        // public List<MapTileInstance> MapTileInstanceList
+        // {
+        //     get { return mapTileInstanceList; }
+        // }
+
+        public MapTileInstance[,] MapTileInstanceArray
         {
-            get { return mapTileInstanceList; }
+            get { return mapTileInstanceArray; }
         }
 
+        public int NumRows
+        {
+            get { return numRows; }
+        }
+
+        public int NumColumns
+        {
+            get { return numColumns; }
+        }
 
         private Dictionary<byte, string> mapFileCodeToTextureStringMap = new Dictionary<byte, string>();
 
-        public int numColumns;
-        public int numRows;
+        private int numColumns;
+        private int numRows;
 
         private Dictionary<string, int[]> blockingTerrainMap = new Dictionary<string, int[]>();
 
@@ -79,12 +96,18 @@ namespace mike_and_conquer_simulation.gameworld
 
             InitializeBlockTerrainMap();
 
-            mapTileInstanceList = new List<MapTileInstance>();
+            // mapTileInstanceList = new List<MapTileInstance>();
+            mapTileInstanceArray = new MapTileInstance[numColumns, numRows];
+
 
             int x = 0;
             int y = 0;
 
             int i = 0;
+
+            int arrayColumn = 0;
+            int arrayRow = 0;
+
             for (int row = startY; row <= endY; row++)
             {
                 for (int column = startX; column <= endX; column++)
@@ -97,8 +120,10 @@ namespace mike_and_conquer_simulation.gameworld
                     MapTileInstance mapTileInstance =
                         new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), textureKey, imageIndex, isBlockingTerrain);
 
-                    this.MapTileInstanceList.Add(mapTileInstance);
+                    // this.MapTileInstanceList.Add(mapTileInstance);
+                    this.mapTileInstanceArray[x, y] = mapTileInstance;
 
+                    
                     x++;
 
                     bool incrementRow = ((i + 1) % numColumns) == 0;
@@ -116,35 +141,35 @@ namespace mike_and_conquer_simulation.gameworld
 
 
         // Used for unit tests
-        public GameMap(int[,] nodeArray)
-        {
-            mapTileInstanceList = new List<MapTileInstance>();
-
-            numRows = nodeArray.GetLength(0);
-            numColumns = nodeArray.GetLength(1);
-
-            for (int y = 0; y < numRows; y++)
-            {
-                for (int x = 0; x < numColumns; x++)
-                {
-                    string dummyTexture = "";
-                    byte dummyImageIndex = 0;
-
-                    if (nodeArray[y, x] == 1)
-                    {
-                        MapTileInstance mapTileInstance =
-                            new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), dummyTexture, dummyImageIndex, true);
-                        this.MapTileInstanceList.Add(mapTileInstance);
-                    }
-                    else
-                    {
-                        MapTileInstance mapTileInstance =
-                            new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), dummyTexture, dummyImageIndex, false);
-                        this.MapTileInstanceList.Add(mapTileInstance);
-                    }
-                }
-            }
-        }
+        // public GameMap(int[,] nodeArray)
+        // {
+        //     mapTileInstanceList = new List<MapTileInstance>();
+        //
+        //     numRows = nodeArray.GetLength(0);
+        //     numColumns = nodeArray.GetLength(1);
+        //
+        //     for (int y = 0; y < numRows; y++)
+        //     {
+        //         for (int x = 0; x < numColumns; x++)
+        //         {
+        //             string dummyTexture = "";
+        //             byte dummyImageIndex = 0;
+        //
+        //             if (nodeArray[y, x] == 1)
+        //             {
+        //                 MapTileInstance mapTileInstance =
+        //                     new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), dummyTexture, dummyImageIndex, true);
+        //                 this.MapTileInstanceList.Add(mapTileInstance);
+        //             }
+        //             else
+        //             {
+        //                 MapTileInstance mapTileInstance =
+        //                     new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), dummyTexture, dummyImageIndex, false);
+        //                 this.MapTileInstanceList.Add(mapTileInstance);
+        //             }
+        //         }
+        //     }
+        // }
 
 
         private byte CalculateImageIndexForTextureKey(string textureKey, List<byte> allBytes, int column, int row, int offset)
@@ -300,10 +325,21 @@ namespace mike_and_conquer_simulation.gameworld
 
         public void Reset()
         {
-            foreach (MapTileInstance mapTileInstance in MapTileInstanceList)
+            // foreach (MapTileInstance mapTileInstance in MapTileInstanceList)
+            // {
+            //     // mapTileInstance.ClearAllMinigunnerSlots();
+            //     mapTileInstance.Visibility = MapTileInstance.MapTileVisibility.NotVisible;
+            // }
+
+
+
+            for (int row = 0; row < numRows; row++)
             {
-                // mapTileInstance.ClearAllMinigunnerSlots();
-                mapTileInstance.Visibility = MapTileInstance.MapTileVisibility.NotVisible;
+                for (int column = 0; column < numColumns; column++)
+                {
+                    mapTileInstanceArray[column, row].Visibility = MapTileInstance.MapTileVisibility.NotVisible;
+                }
+
             }
 
         }
