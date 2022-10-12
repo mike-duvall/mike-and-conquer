@@ -617,7 +617,7 @@ namespace mike_and_conquer_monogame.gameview
                 }
 
                 // Do two passes, because above loop could have uncovered new visible tiles, which in turn
-                // could make even more tiles visibles.  Doing these two loops is solving a flicker issue where
+                // could make even more tiles visible.  Doing these two loops is solving a flicker issue where
                 // a tile that should be visible is momentarily not visible or in shade, do to it becoming visible
                 // because of state of surrounding tiles, but not getting updated to visible until two full passes of this
                 // loop.  One pass makes the flicker period shorter, but doesn't fully solve it.
@@ -1575,15 +1575,12 @@ namespace mike_and_conquer_monogame.gameview
         {
 
             MapTileInstanceView mapTileInstanceView =  FindMapTileInstanceView(eventData.MapTileInstanceId);
-//            mapTileInstanceView.visibility = Enum.TryParse("Active", out StatusEnum myStatus);
 
             Enum.TryParse(eventData.Visibility,
                 out MapTileInstanceView.MapTileVisibility visibilityEnumValue);
 
             mapTileInstanceView.visibility = visibilityEnumValue;
 
-
-//            eventData.Visibility;
         }
 
 

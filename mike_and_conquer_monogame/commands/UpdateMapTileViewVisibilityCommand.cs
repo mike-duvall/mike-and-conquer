@@ -8,8 +8,6 @@ namespace mike_and_conquer_monogame.commands
     public class UpdateMapTileViewVisibilityCommand : AsyncViewCommand
     {
 
-
-        // private UnitPositionChangedEventData unitPositionChangedEventData;
         private MapTileVisibilityUpdatedEventData eventData;
 
         public UpdateMapTileViewVisibilityCommand(MapTileVisibilityUpdatedEventData data)
@@ -19,7 +17,6 @@ namespace mike_and_conquer_monogame.commands
 
         protected override void ProcessImpl()
         {
-            // MikeAndConquerGame.instance.UpdateUnitViewPosition(unitPositionChangedEventData);
             MikeAndConquerGame.instance.UpdateMapTileViewVisibility(eventData);
         }
     }

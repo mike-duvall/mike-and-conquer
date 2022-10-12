@@ -1030,20 +1030,6 @@ namespace mike_and_conquer_monogame.main
             return unitView;
         }
 
-        public GameOptions GetGameOptionsByEvent()
-        {
-            GetGameOptionsCommand command = new GetGameOptionsCommand();
-            lock (inputCommandQueue)
-            {
-                inputCommandQueue.Enqueue(command);
-            }
-
-            GameOptions gameOptions = command.GetGameOptions();
-            return gameOptions;
-
-        }
-
-
         public MemoryStream GetScreenshotViaEvent()
         {
             GetScreenshotCommand command = new GetScreenshotCommand();

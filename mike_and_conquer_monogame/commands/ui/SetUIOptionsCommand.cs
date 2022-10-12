@@ -19,7 +19,6 @@ namespace mike_and_conquer_monogame.commands.ui
         protected override void ProcessImpl()
         {
             MikeAndConquerGame.instance.SetUIOptions(drawShroud, mapZoomLevel);
-
         }
     }
 }

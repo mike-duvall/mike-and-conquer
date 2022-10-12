@@ -20,22 +20,12 @@ namespace mike_and_conquer_monogame.eventhandler
         {
             if (anEvent.EventType.Equals(UnitDeletedEventData.EventType))
             {
-                // UnitDeletedEventData eventData =
-                //     JsonConvert.DeserializeObject < UnitDeletedEventData eventData =
-                //     > (anEvent.EventData);
-
-                // UnitArrivedAtPathStepEventData eventData =
-                //     JsonConvert.DeserializeObject<UnitArrivedAtPathStepEventData>(anEvent.EventData);
-
                 UnitDeletedEventData eventData =
                     JsonConvert.DeserializeObject<UnitDeletedEventData>(anEvent.EventData);
 
-
-                // AddMinigunnerViewCommand command = new AddMinigunnerViewCommand(eventData.UnitId, eventData.X, eventData.Y);
                 RemoveUnitViewCommand command = new RemoveUnitViewCommand(eventData.UnitId);
 
                 mikeAndConquerGame.PostCommand(command);
-                
             }
 
 
