@@ -195,6 +195,7 @@ namespace mike_and_conquer_monogame.gameview
 
         private sbyte DeterminePartiallyVisibleMaskTile()
         {
+            sbyte value = -2;
 
             if (this.visibility != MapTileVisibility.Visible)
             {
@@ -238,7 +239,7 @@ namespace mike_and_conquer_monogame.gameview
                     index |= 0x01;
                 }
 
-                sbyte value = CardShadow[index];
+                value = CardShadow[index];
 
 
                 if (value == -2)
@@ -302,14 +303,13 @@ namespace mike_and_conquer_monogame.gameview
                 if (value == -1)
                 {
                     this.visibility = MapTileVisibility.Visible;
+                    // TODO: Possibly insert code or signal here to re-check nearby map tiles for visibility
                 }
-
-
-                return value;
 
             }
 
-            throw new Exception("Did not find value to map");
+            return value;
+
         }
 
 
