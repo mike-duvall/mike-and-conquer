@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace mike_and_conquer.main
+namespace mike_and_conquer_monogame.main
 {
     /// <summary>
     /// Provides functions to capture the entire screen, or a particular window, and save it to a file.

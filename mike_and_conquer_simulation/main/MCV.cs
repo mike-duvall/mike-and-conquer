@@ -112,18 +112,6 @@ namespace mike_and_conquer_simulation.main
             //     return;
             // }
 
-            // MapTileInstance possibleNewMapTileInstance =
-            //     GameWorld.instance.FindMapTileInstance(
-            //         MapTileLocation.CreateFromWorldCoordinatesInVector2(gameWorldLocation.WorldCoordinatesAsVector2));
-            //
-            // if (possibleNewMapTileInstance == currentMapTileInstance)
-            // {
-            //     return;
-            // }
-
-            // currentMapTileInstance = possibleNewMapTileInstance;
-
-
 
             MapTileInstance possibleNewMapTileInstance =
                 GameWorld.instance.FindMapTileInstance(

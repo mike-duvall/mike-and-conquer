@@ -187,6 +187,12 @@ namespace mike_and_conquer_monogame.gameview
 
 
 
+        // From Cnc code:
+            // * OUTPUT:  Returns with the shadow icon to use. -2= all black.                                *
+            // *                                                -1= map cell.                                *
+            // *                                                                                             *
+
+
         // "Card" means cardinal direction, which means, North, South, East, or West
         // Algorithm below lifted from real Cnc C++ algorithm
         // DISPLAY.CPP, line 1635, method:  int DisplayClass::Cell_Shadow(CELL cell, HouseClass *house)
@@ -313,135 +319,6 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-            // private int DeterminePartiallyVisibleMaskTile()
-            // {
-            //
-            //
-            //
-            //     MapTileInstanceView south = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.SOUTH);
-            //
-            //     MapTileVisibility southVisibility = MapTileVisibility.NotVisible;
-            //     if (south != null)
-            //     {
-            //         southVisibility = south.visibility;
-            //     }
-            //
-            //
-            //     // MapTileInstance north = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.NORTH));
-            //
-            //
-            //     MapTileInstanceView north = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.NORTH);
-            //
-            //
-            //
-            //     MapTileVisibility northVisibility = MapTileVisibility.NotVisible;
-            //     if (north != null)
-            //     {
-            //         northVisibility = north.visibility;
-            //     }
-            //
-            //     // MapTileInstance west = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.WEST));
-            //     MapTileInstanceView west = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.WEST);
-            //
-            //
-            //     MapTileVisibility westVisibility = MapTileVisibility.NotVisible;
-            //     if (west != null)
-            //     {
-            //         westVisibility = west.visibility;
-            //     }
-            //     
-            //     // MapTileInstance east = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.EAST));
-            //
-            //     MapTileInstanceView east = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.EAST);
-            //
-            //
-            //     MapTileVisibility eastVisibility = MapTileVisibility.NotVisible;
-            //     if (east != null)
-            //     {
-            //         eastVisibility = east.visibility;
-            //     }
-            //
-            //     // MapTileInstance northEast = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.NORTH_EAST));
-            //
-            //     MapTileInstanceView northEast = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.NORTH_EAST);
-            //
-            //
-            //     MapTileVisibility northEastVisibility = MapTileVisibility.NotVisible;
-            //     if (northEast != null)
-            //     {
-            //         northEastVisibility = northEast.visibility;
-            //     }
-            //
-            //     // MapTileInstance southEast = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.SOUTH_EAST));
-            //     MapTileInstanceView southEast = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.SOUTH_EAST);
-            //
-            //
-            //     MapTileVisibility southEastVisibility = MapTileVisibility.NotVisible;
-            //     if (southEast != null)
-            //     {
-            //         southEastVisibility = southEast.visibility;
-            //     }
-            //     
-            //     
-            //     // MapTileInstance southWest = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.SOUTH_WEST));
-            //
-            //     MapTileInstanceView southWest = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.SOUTH_WEST);
-            //
-            //     MapTileVisibility southWestVisibility = MapTileVisibility.NotVisible;
-            //     if (southEast != null)
-            //     {
-            //         southWestVisibility = southWest.visibility;
-            //     }
-            //     
-            //     // MapTileInstance northWest = GameWorld.instance.FindMapTileInstanceAllowNull(
-            //     //     myMapTileInstance.MapTileLocation.CreateAdjacentMapTileLocation(GameWorld.TILE_LOCATION.NORTH_WEST));
-            //
-            //     MapTileInstanceView northWest = GameWorldView.instance.FindAdjacentMapTileInstanceViewAllowNull(
-            //         this.mapTileLocation,
-            //         MapTileLocation.TILE_LOCATION.NORTH_WEST);
-            //
-            //     MapTileVisibility northWestVisibility = MapTileVisibility.NotVisible;
-            //     if (southEast != null)
-            //     {
-            //         northWestVisibility = northWest.visibility;
-            //     }
-            //     
-            //     return FindMapTileShroudMapping(
-            //         eastVisibility,
-            //         southVisibility,
-            //         westVisibility,
-            //         northVisibility,
-            //         northEastVisibility,
-            //         southEastVisibility,
-            //         southWestVisibility,
-            //         northWestVisibility);
-            //     
-            //
-            //
-            // }
-
-
-
         internal void UpdateVisbilityMask()
         {
             if (this.visibility == MapTileVisibility.Visible)
@@ -474,43 +351,8 @@ namespace mike_and_conquer_monogame.gameview
                     middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
 
             }
-
-
-
-            // if (this.visibility == MapTileVisibility.Visible)
-            // {
-            //
-            //     spriteBatch.Draw(visibleMask, worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
-            //         middleOfSpriteInSpriteCoordinates, defaultScale, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 1.0f);
-            // }
-            // else // if (this.visibility == MapTileVisibility.PartiallyVisible)
-            // {
-            //     int index = DeterminePartiallyVisibleMaskTile();
-            //     if (index >= 0)
-            //     {
-            //         spriteBatch.Draw(partiallyVisibileMapTileMask.GetMask(index),
-            //             worldCoordinatesAsXnaVector2, null, XnaColor.White, 0f,
-            //             middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 1.0f);
-            //     }
-            // }
         }
 
-        // public bool ContainsPoint(int mouseX, int mouseY)
-        // {
-        //     int width = GameWorldView.MAP_TILE_WIDTH;
-        //     int height = GameWorldView.MAP_TILE_HEIGHT;
-        //
-        //
-        //     Point mapTileInstanceViewInWorldCoordinates =
-        //         MapTileInstanceView.ConvertMapTileCoordinatesToWorldCoordinates(new Point(xInWorldMapTileCoordinates,
-        //             yInWorldMapTileCoordinates));
-        //
-        //     int leftX = mapTileInstanceViewInWorldCoordinates.X - (width / 2);
-        //     int topY = mapTileInstanceViewInWorldCoordinates.Y - (height / 2);
-        //
-        //     Rectangle boundRectangle = new Rectangle(leftX, topY, width, height);
-        //     return boundRectangle.Contains(new Point(mouseX, mouseY));
-        // }
 
         public bool ContainsPoint(int mouseX, int mouseY)
         {
@@ -520,7 +362,6 @@ namespace mike_and_conquer_monogame.gameview
 
         private XnaRectangle GetBoundingRectangle()
         {
-
 
             if (boundingRectangleInitialized == false)
             {
@@ -558,18 +399,6 @@ namespace mike_and_conquer_monogame.gameview
 
 
         }
-
-
-        // public static XnaPoint ConvertMapTileCoordinatesToWorldCoordinates(XnaPoint pointInWorldMapSquareCoordinates)
-        // {
-        //
-        //     int xInWorldCoordinates = (pointInWorldMapSquareCoordinates.X * GameWorldView.MAP_TILE_WIDTH) +
-        //                               (GameWorldView.MAP_TILE_WIDTH / 2);
-        //     int yInWorldCoordinates = pointInWorldMapSquareCoordinates.Y * GameWorldView.MAP_TILE_HEIGHT +
-        //                               (GameWorldView.MAP_TILE_HEIGHT / 2);
-        //
-        //     return new XnaPoint(xInWorldCoordinates, yInWorldCoordinates);
-        // }
 
     }
 }

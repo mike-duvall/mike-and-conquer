@@ -830,13 +830,6 @@ namespace mike_and_conquer_simulation.gameworld
         internal MapTileInstance FindMapTileInstance(MapTileLocation mapTileLocation)
         {
 
-            // foreach (MapTileInstance nextBasicMapSquare in this.gameMap.MapTileInstanceList)
-            // {
-            //     if (nextBasicMapSquare.ContainsPoint(mapTileLocation.WorldCoordinatesAsPoint))
-            //     {
-            //         return nextBasicMapSquare;
-            //     }
-            // }
             int x = mapTileLocation.XInWorldMapTileCoordinates;
             int y = mapTileLocation.YInWorldMapTileCoordinates;
 
@@ -848,16 +841,6 @@ namespace mike_and_conquer_simulation.gameworld
 
         public  MapTileInstance FindMapTileInstanceAllowNull(MapTileLocation mapTileLocation)
         {
-
-            // foreach (MapTileInstance nextBasicMapSquare in this.gameMap.MapTileInstanceList)
-            // {
-            //     if (nextBasicMapSquare.ContainsPoint(mapTileLocation.WorldCoordinatesAsPoint))
-            //     {
-            //         return nextBasicMapSquare;
-            //     }
-            // }
-
-
 
             int numRows = this.gameMap.NumRows;
             int numColumns = this.gameMap.NumColumns;
@@ -871,9 +854,6 @@ namespace mike_and_conquer_simulation.gameworld
             }
 
             return this.gameMap.MapTileInstanceArray[x, y];
-
-
-            // return null;
 
         }
 
@@ -892,19 +872,6 @@ namespace mike_and_conquer_simulation.gameworld
             //         sandbagMapTileLocation.WorldMapTileCoordinatesAsPoint.Y);
             // }
 
-
-            // foreach (MapTileInstance nextMapTileInstance in this.gameMap.MapTileInstanceList)
-            // {
-            //     if (nextMapTileInstance.IsBlockingTerrain)
-            //     {
-            //
-            //         MapTileLocation mapTileLocation = nextMapTileInstance.MapTileLocation;
-            //         
-            //         navigationGraph.MakeNodeBlockingNode(
-            //             mapTileLocation.WorldMapTileCoordinatesAsPoint.X,
-            //             mapTileLocation.WorldMapTileCoordinatesAsPoint.Y);
-            //     }
-            // }
 
             int numRows = this.gameMap.MapTileInstanceArray.GetLength(1);
             int numColumns = this.gameMap.MapTileInstanceArray.GetLength(0);
@@ -929,11 +896,6 @@ namespace mike_and_conquer_simulation.gameworld
                 }
 
             }
-
-
-
-
-
 
             navigationGraph.RebuildAdajencyGraph();
 

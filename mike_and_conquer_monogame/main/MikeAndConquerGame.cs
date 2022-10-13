@@ -130,8 +130,6 @@ namespace mike_and_conquer_monogame.main
 
             simulationStateListenerList = new List<SimulationStateListener>();
             
-            
-            
             simulationStateListenerList.Add(new InitializeUIWhenScenarioInitializedEventHandler(this));
             
             simulationStateListenerList.Add(new AddMinigunnerViewWhenMinigunnerCreatedEventHandler(this));
@@ -551,14 +549,7 @@ namespace mike_and_conquer_monogame.main
             
         
             base.Update(gameTime);
-        
-            // lock (inputCommandQueue)
-            // {
-            //     foreach (AsyncViewCommand command in inputCommandQueue)
-            //     {
-            //         command.Process();
-            //     }
-            // }
+       
         
             lock (inputCommandQueue)
             {
@@ -569,16 +560,12 @@ namespace mike_and_conquer_monogame.main
                 }
             }
         
-        
-        
             KeyboardState newKeyboardState = Keyboard.GetState();
             
-
             gameWorldView.Update(gameTime, newKeyboardState);
             
             currentGameState = this.currentGameState.Update(gameTime);
             this.currentGameStateView.Update(gameTime);
-        
         
         }
 

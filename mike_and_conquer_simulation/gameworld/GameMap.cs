@@ -1,7 +1,6 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-// using mike_and_conquer.gameview;
 using Stream = System.IO.Stream;
 
 using BinaryReader = System.IO.BinaryReader;
@@ -50,14 +49,7 @@ namespace mike_and_conquer_simulation.gameworld
         public const string W2_TEM = "w2.tem";
 
 
-        // private List<MapTileInstance> mapTileInstanceList;
-
         private MapTileInstance[,] mapTileInstanceArray;
-
-        // public List<MapTileInstance> MapTileInstanceList
-        // {
-        //     get { return mapTileInstanceList; }
-        // }
 
         public MapTileInstance[,] MapTileInstanceArray
         {
@@ -96,7 +88,6 @@ namespace mike_and_conquer_simulation.gameworld
 
             InitializeBlockTerrainMap();
 
-            // mapTileInstanceList = new List<MapTileInstance>();
             mapTileInstanceArray = new MapTileInstance[numColumns, numRows];
 
 
@@ -120,9 +111,7 @@ namespace mike_and_conquer_simulation.gameworld
                     MapTileInstance mapTileInstance =
                         new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), textureKey, imageIndex, isBlockingTerrain);
 
-                    // this.MapTileInstanceList.Add(mapTileInstance);
                     this.mapTileInstanceArray[x, y] = mapTileInstance;
-
                     
                     x++;
 
@@ -138,39 +127,6 @@ namespace mike_and_conquer_simulation.gameworld
                 }
             }
         }
-
-
-        // Used for unit tests
-        // public GameMap(int[,] nodeArray)
-        // {
-        //     mapTileInstanceList = new List<MapTileInstance>();
-        //
-        //     numRows = nodeArray.GetLength(0);
-        //     numColumns = nodeArray.GetLength(1);
-        //
-        //     for (int y = 0; y < numRows; y++)
-        //     {
-        //         for (int x = 0; x < numColumns; x++)
-        //         {
-        //             string dummyTexture = "";
-        //             byte dummyImageIndex = 0;
-        //
-        //             if (nodeArray[y, x] == 1)
-        //             {
-        //                 MapTileInstance mapTileInstance =
-        //                     new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), dummyTexture, dummyImageIndex, true);
-        //                 this.MapTileInstanceList.Add(mapTileInstance);
-        //             }
-        //             else
-        //             {
-        //                 MapTileInstance mapTileInstance =
-        //                     new MapTileInstance(MapTileLocation.CreateFromWorldMapTileCoordinates(x, y), dummyTexture, dummyImageIndex, false);
-        //                 this.MapTileInstanceList.Add(mapTileInstance);
-        //             }
-        //         }
-        //     }
-        // }
-
 
         private byte CalculateImageIndexForTextureKey(string textureKey, List<byte> allBytes, int column, int row, int offset)
         {
@@ -325,13 +281,6 @@ namespace mike_and_conquer_simulation.gameworld
 
         public void Reset()
         {
-            // foreach (MapTileInstance mapTileInstance in MapTileInstanceList)
-            // {
-            //     // mapTileInstance.ClearAllMinigunnerSlots();
-            //     mapTileInstance.Visibility = MapTileInstance.MapTileVisibility.NotVisible;
-            // }
-
-
 
             for (int row = 0; row < numRows; row++)
             {

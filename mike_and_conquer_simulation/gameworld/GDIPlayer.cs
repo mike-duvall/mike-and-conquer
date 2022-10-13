@@ -327,7 +327,6 @@ namespace mike_and_conquer_simulation.gameworld
                     UnitDeletedEventData.EventType,
                     serializedEventData);
 
-
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
 
         }
@@ -337,10 +336,6 @@ namespace mike_and_conquer_simulation.gameworld
         {
             Unit foundUnit = FindUnitWithUnitId(unitId);
             unitList.Remove(foundUnit);
-
-
-            // MinigunnerCreateEventData.EventType
-
 
             PublishUnitDeletedEvent(unitId);
         }

@@ -84,60 +84,6 @@ namespace mike_and_conquer_simulation.main
 
 
         }
-        // private void PublishInitializeScenarioEvent(
-        //     int mapWidth,
-        //     int mapHeight,
-        //     List<MapTileInstance> mapTileInstanceList,
-        //     List<TerrainItem> terrainItemList)
-        // {
-        //
-        //     List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList =
-        //         new List<MapTileInstanceCreateEventData>();
-        //
-        //     foreach (MapTileInstance mapTileInstance in mapTileInstanceList)
-        //     {
-        //         MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
-        //             mapTileInstance.MapTileInstanceId,
-        //             mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
-        //             mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
-        //             mapTileInstance.TextureKey,
-        //             mapTileInstance.ImageIndex,
-        //             mapTileInstance.IsBlockingTerrain,
-        //             mapTileInstance.Visibility.ToString()
-        //             );
-        //
-        //         mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
-        //     }
-        //
-        //     List<TerrainItemCreateEventData> terrainItemCreateEventDataList =
-        //         new List<TerrainItemCreateEventData>();
-        //
-        //     foreach (TerrainItem terrainItem in terrainItemList)
-        //     {
-        //         TerrainItemCreateEventData terrainItemCreateEventData = new TerrainItemCreateEventData(
-        //             terrainItem.MapTileLocation.XInWorldMapTileCoordinates,
-        //             terrainItem.MapTileLocation.YInWorldMapTileCoordinates,
-        //             terrainItem.TerrainItemType);
-        //         terrainItemCreateEventDataList.Add(terrainItemCreateEventData);
-        //
-        //     }
-        //
-        //     ScenarioInitializedEventData initializedEventData = new ScenarioInitializedEventData(
-        //         mapWidth,
-        //         mapHeight,
-        //         mapTileInstanceCreateEventDataList,
-        //         terrainItemCreateEventDataList);
-        //
-        //     string serializedEventData = JsonConvert.SerializeObject(initializedEventData);
-        //     SimulationStateUpdateEvent simulationStateUpdateEvent = 
-        //         new SimulationStateUpdateEvent(
-        //                 ScenarioInitializedEventData.EventType,
-        //                 serializedEventData
-        //             );
-        //
-        //     PublishEvent(simulationStateUpdateEvent);
-        //
-        // }
 
         private void PublishInitializeScenarioEvent(
             int mapWidth,
@@ -148,24 +94,6 @@ namespace mike_and_conquer_simulation.main
 
             List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList =
                 new List<MapTileInstanceCreateEventData>();
-
-            // foreach (MapTileInstance mapTileInstance in mapTileInstanceList)
-            // {
-            //     MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
-            //         mapTileInstance.MapTileInstanceId,
-            //         mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
-            //         mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
-            //         mapTileInstance.TextureKey,
-            //         mapTileInstance.ImageIndex,
-            //         mapTileInstance.IsBlockingTerrain,
-            //         mapTileInstance.Visibility.ToString()
-            //         );
-            //
-            //     mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
-            // }
-
-            // int numRows = mapTileInstanceArray.GetLength(1);
-            // int numColumns = mapTileInstanceArray.GetLength(0);
 
             int numRows = gameWorld.gameMap.NumRows;
             int numColumns = gameWorld.gameMap.NumColumns;
@@ -620,20 +548,6 @@ namespace mike_and_conquer_simulation.main
 
 
         }
-
-        // private SimulationOptions.GameSpeed ConvertGameSpeedStringToEnum(String gameSpeedAsString)
-        // {
-        //     if (gameSpeedAsString == "Slowest") return SimulationOptions.GameSpeed.Slowest;
-        //     if (gameSpeedAsString == "Slower") return SimulationOptions.GameSpeed.Slower;
-        //     if (gameSpeedAsString == "Slow") return SimulationOptions.GameSpeed.Slow;
-        //     if (gameSpeedAsString == "Moderate") return SimulationOptions.GameSpeed.Moderate;
-        //     if (gameSpeedAsString == "Normal") return SimulationOptions.GameSpeed.Normal;
-        //     if (gameSpeedAsString == "Fast") return SimulationOptions.GameSpeed.Fast;
-        //     if (gameSpeedAsString == "Faster") return SimulationOptions.GameSpeed.Faster;
-        //     if (gameSpeedAsString == "Fastest") return SimulationOptions.GameSpeed.Fastest;
-        //
-        //     throw new Exception("Could not map game speed string of:" + gameSpeedAsString);
-        // }
 
         public void PostCommand(AsyncSimulationCommand command)
         {
