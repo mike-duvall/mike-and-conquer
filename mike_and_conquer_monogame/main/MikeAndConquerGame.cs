@@ -63,6 +63,7 @@ namespace mike_and_conquer_monogame.main
 
         private RAISpriteFrameManager raiSpriteFrameManager;
 
+        private bool topLevelWindowsHasBeenBroughtToForeground = false;
 
 
         public MikeAndConquerGame()
@@ -85,13 +86,14 @@ namespace mike_and_conquer_monogame.main
                 _graphics.IsFullScreen = true;
                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
                 // Having to set HardwareModeSwitch to false to make screenshots work for my tests
                 // only on the Thinkpad laptop for some reason
                 _graphics.HardwareModeSwitch = false;
 
 
-                Form myForm = (Form)Form.FromHandle(this.Window.Handle);
-                myForm.Activate();
+                // Form myForm = (Form)Form.FromHandle(this.Window.Handle);
+                // myForm.Activate();
 
 
             }
@@ -161,9 +163,18 @@ namespace mike_and_conquer_monogame.main
 
         internal void BringGameWindowToForeground()
         {
-            Thread.Sleep(1000);
+            // When
+            //      _graphics.HardwareModeSwitch = false;
+            // is used when setting full screen
+            // it many times results in the top level window of the game 
+            // not having focus
+            // This method, BringGameWindowToForeground() , based on web search results,
+            // Seems to fix that, but seems to only reliably work for
+            // If I call it in the Update() loop
+
             Form myForm = (Form)Form.FromHandle(this.Window.Handle);
             myForm.Activate();
+            topLevelWindowsHasBeenBroughtToForeground = true;
         }
 
         internal void PostCommand(RawCommandUI rawCommandUi)
@@ -523,17 +534,17 @@ namespace mike_and_conquer_monogame.main
 
         }
 
-        private bool activated = false;
 
         protected override void Update(GameTime gameTime)
         {
 
 
-            if (!activated)
+            if (!topLevelWindowsHasBeenBroughtToForeground)
             {
-                Form myForm = (Form)Form.FromHandle(this.Window.Handle);
-                myForm.Activate();
-                activated = true;
+                BringGameWindowToForeground();
+                // Form myForm = (Form)Form.FromHandle(this.Window.Handle);
+                // myForm.Activate();
+                // topLevelWindowsHasBeenBroughtToForeground = true;
 
             }
 
