@@ -1042,12 +1042,6 @@ namespace mike_and_conquer_monogame.main
         {
             GameOptions.instance.DrawShroud = drawShroud;
             GameOptions.instance.MapZoomLevel = mapZoomLevel;
-
-            int x = 3;
-
-            bool drawShroud2 = GameOptions.instance.DrawShroud;
-            float mapZoomLevel2 = GameOptions.instance.MapZoomLevel;
-            x = 4;
         }
     }
 }
