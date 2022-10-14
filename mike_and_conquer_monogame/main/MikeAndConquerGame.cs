@@ -91,11 +91,6 @@ namespace mike_and_conquer_monogame.main
                 // only on the Thinkpad laptop for some reason
                 _graphics.HardwareModeSwitch = false;
 
-
-                // Form myForm = (Form)Form.FromHandle(this.Window.Handle);
-                // myForm.Activate();
-
-
             }
             else
             {
@@ -108,23 +103,9 @@ namespace mike_and_conquer_monogame.main
                 // graphics.PreferredBackBufferWidth = 1024;
                 // graphics.PreferredBackBufferHeight = 768;
 
-
             }
 
-             // For some reason, if HardwareModeSwitch is false
-             // It doesn't always make the game window the top window
-             // in the foreground
-             // if (_graphics.HardwareModeSwitch == false)
-             // {
-             //     BringGameWindowToForeground();
-             // }
-
-
             Content.RootDirectory = "Content";
-
-//            var graphicsProfile = _graphics.GraphicsProfile;
-//            var isFixedTimeStep = this.IsFixedTimeStep;
-//            var synchronizeWithVerticalRetrace = _graphics.SynchronizeWithVerticalRetrace;
 
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             this.IsFixedTimeStep = false;
@@ -148,14 +129,11 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
 
             IsMouseVisible = true;
-            // double currentResolution = TimerHelper.GetCurrentResolution();
-            // gameWorld = new GameWorld();
             gameWorldView = new GameWorldView();
             
             raiSpriteFrameManager = new RAISpriteFrameManager();
             spriteSheet = new SpriteSheet();
             currentGameState = new PlayingGameState();
-
 
             MikeAndConquerGame.instance = this;
         }
@@ -182,7 +160,6 @@ namespace mike_and_conquer_monogame.main
 
             AsyncViewCommand command = ConvertRawCommand(rawCommandUi);
             this.PostCommand(command);
-
 
         }
 
@@ -542,10 +519,6 @@ namespace mike_and_conquer_monogame.main
             if (!topLevelWindowsHasBeenBroughtToForeground)
             {
                 BringGameWindowToForeground();
-                // Form myForm = (Form)Form.FromHandle(this.Window.Handle);
-                // myForm.Activate();
-                // topLevelWindowsHasBeenBroughtToForeground = true;
-
             }
 
 
