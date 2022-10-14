@@ -1,24 +1,12 @@
 ﻿
-
-// using System;
 using ScreenCapture = mike_and_conquer_monogame.main.ScreenCapture;
 using MemoryStream = System.IO.MemoryStream;
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
-
-// using String = System.String;
-// using System.Drawing;
-// using System.Drawing.Imaging;
-// using System.IO;
-// using System.Runtime.InteropServices;
-// using System.Windows.Forms;
-// using mike_and_conquer_monogame.main;
 
 namespace mike_and_conquer_monogame.commands
 {
     internal class GetScreenshotCommand : AsyncViewCommand
     {
-
-
         protected override void ProcessImpl()
         {
 
