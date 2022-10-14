@@ -4,6 +4,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
+
+// This code found here:  https://social.msdn.microsoft.com/Forums/sqlserver/en-US/809b1a37-8c7f-4670-b0ca-68ced54eb5a4/hot-to-get-active-window-screenshot?forum=csharpgeneral
+// Not sure what original source is
+
+
 namespace mike_and_conquer_monogame.main
 {
     /// <summary>
