@@ -30,6 +30,9 @@ namespace mike_and_conquer_simulation.main
         private int destinationY;
 
 
+        // private MapTileInstance currentMapTileInstance;
+
+
         public Minigunner()
         {
             state = State.IDLE;
@@ -212,77 +215,9 @@ namespace mike_and_conquer_simulation.main
 
 
 
-        // public override void Update()
-        // {
-        //
-        //
-        //     if (currentCommand == Command.FOLLOW_PATH)
-        //     {
-        //         if (IsAtDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates))
-        //         {
-        //             currentCommand = Command.NONE;
-        //             state = State.IDLE;
-        //
-        //             SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-        //             simulationStateUpdateEvent.EventType = UnitArrivedAtDestinationEventData.EventType;
-        //             UnitArrivedAtDestinationEventData eventData = new UnitArrivedAtDestinationEventData();
-        //             eventData.UnitId = this.UnitId;
-        //             eventData.Timestamp = DateTime.Now.Ticks;
-        //
-        //
-        //             eventData.XInWorldCoordinates = (int) Math.Round(this.gameWorldLocation.X, 0);
-        //             eventData.YInWorldCoordinates = (int) Math.Round(this.gameWorldLocation.Y, 0);
-        //
-        //             simulationStateUpdateEvent.EventData = JsonConvert.SerializeObject(eventData);
-        //
-        //             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        //
-        //
-        //         }
-        //         else
-        //         {
-        //             if (gameWorldLocation.X < destinationXInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.X += movementDelta;
-        //             }
-        //             else if (gameWorldLocation.X > destinationXInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.X -= movementDelta;
-        //             }
-        //
-        //             if (gameWorldLocation.Y < destinationYInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.Y += movementDelta;
-        //             }
-        //             else if (gameWorldLocation.Y > destinationYInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.Y -= movementDelta;
-        //             }
-        //
-        //             SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-        //             simulationStateUpdateEvent.EventType = UnitPositionChangedEventData.EventType;
-        //             UnitPositionChangedEventData eventData = new UnitPositionChangedEventData();
-        //             eventData.UnitId = this.UnitId;
-        //
-        //
-        //             eventData.XInWorldCoordinates = (int)Math.Round(this.gameWorldLocation.X, 0);
-        //             eventData.YInWorldCoordinates = (int)Math.Round(this.gameWorldLocation.Y, 0);
-        //
-        //             simulationStateUpdateEvent.EventData = JsonConvert.SerializeObject(eventData);
-        //
-        //             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        //
-        //
-        //         }
-        //
-        //     }
-        //
-        // }
-
-
         public override void Update()
         {
-            // UpdateVisibleMapTiles();
+            UpdateVisibleMapTiles();
             if (this.currentCommand == Command.NONE)
             {
                 HandleCommandNone();
@@ -529,6 +464,73 @@ namespace mike_and_conquer_simulation.main
             return (gameWorldLocation.Y < (destinationY + movementDistanceEpsilon));
         }
 
+        private void UpdateVisibleMapTiles()
+        {
+
+            // TODO: Consider removing this if statement once map shroud is fully working
+            // if (GameOptions.instance.DrawShroud == false)
+            // {
+            //     return;
+            // }
+
+
+            // MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y);
+
+            // MapTileInstance possibleNewMapTileInstance =
+            //     GameWorld.instance.FindMapTileInstance(
+            //         MapTileLocation.CreateFromWorldCoordinatesInVector2(GameWorldLocation.WorldCoordinatesAsVector2));
+
+            MapTileInstance possibleNewMapTileInstance =
+                GameWorld.instance.FindMapTileInstance(
+                    MapTileLocation.CreateFromWorldCoordinates(
+                        (int)this.GameWorldLocation.X,
+                        (int)this.GameWorldLocation.Y)
+                    );
+
+            if (possibleNewMapTileInstance == currentMapTileInstance)
+            {
+                return;
+            }
+
+            currentMapTileInstance = possibleNewMapTileInstance;
+
+            // TODO:  Code south needs to handle literal edge cases where minigunner is near edge of 
+            // map and there is NO east or west tile, etc
+            UpdateNearbyMapTileVisibility(0, 0, MapTileInstance.MapTileVisibility.Visible);
+
+
+
+            // east side
+            UpdateNearbyMapTileVisibility(1, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);
+
+            // UpdateNearbyMapTileVisibility(2, 1, MapTileInstance.MapTileVisibility.Visible);
+
+
+            // west side
+            UpdateNearbyMapTileVisibility(-1, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(-1, 0, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(-1, 1, MapTileInstance.MapTileVisibility.Visible);
+
+            // north side
+            UpdateNearbyMapTileVisibility(-1, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, -1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, -1, MapTileInstance.MapTileVisibility.Visible);
+
+
+            // south side
+            UpdateNearbyMapTileVisibility(-1, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(0, 1, MapTileInstance.MapTileVisibility.Visible);
+            UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);
+
+        }
+
+
+        private bool MapTileHasVisibility(MapTileInstance mapTileInstance, MapTileInstance.MapTileVisibility expectedVisbility)
+        {
+            return mapTileInstance != null && mapTileInstance.Visibility == expectedVisbility;
+        }
 
 
 

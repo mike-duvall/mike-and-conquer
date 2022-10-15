@@ -20,6 +20,10 @@ using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.main;
 using Newtonsoft.Json;
 
+using MemoryStream = System.IO.MemoryStream;
+using Form = System.Windows.Forms.Form;
+
+
 namespace mike_and_conquer_monogame.main
 {
     public class MikeAndConquerGame : Game
@@ -59,6 +63,7 @@ namespace mike_and_conquer_monogame.main
 
         private RAISpriteFrameManager raiSpriteFrameManager;
 
+        private bool topLevelWindowsHasBeenBroughtToForeground = false;
 
 
         public MikeAndConquerGame()
@@ -75,11 +80,17 @@ namespace mike_and_conquer_monogame.main
 
             new GameOptions();
 
-            if (GameOptions.instance.IsFullScreen)
-            {
+            
+             if (GameOptions.instance.IsFullScreen)
+             {
                 _graphics.IsFullScreen = true;
                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+                // Having to set HardwareModeSwitch to false to make screenshots work for my tests
+                // only on the Thinkpad laptop for some reason
+                _graphics.HardwareModeSwitch = false;
+
             }
             else
             {
@@ -88,59 +99,67 @@ namespace mike_and_conquer_monogame.main
                 // graphics.PreferredBackBufferHeight = 1024;
                 _graphics.PreferredBackBufferWidth = 1280;
                 _graphics.PreferredBackBufferHeight = 768;
-
+                 
                 // graphics.PreferredBackBufferWidth = 1024;
                 // graphics.PreferredBackBufferHeight = 768;
 
-
             }
 
-
             Content.RootDirectory = "Content";
-
-//            var graphicsProfile = _graphics.GraphicsProfile;
-//            var isFixedTimeStep = this.IsFixedTimeStep;
-//            var synchronizeWithVerticalRetrace = _graphics.SynchronizeWithVerticalRetrace;
 
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             this.IsFixedTimeStep = false;
             _graphics.SynchronizeWithVerticalRetrace = false;
 
             simulationStateListenerList = new List<SimulationStateListener>();
-
-
-
+            
             simulationStateListenerList.Add(new InitializeUIWhenScenarioInitializedEventHandler(this));
-
+            
             simulationStateListenerList.Add(new AddMinigunnerViewWhenMinigunnerCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
-
+            
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
-
+            
             simulationStateListenerList.Add(new CreatePlannedPathViewWhenUnitMovementPlanCreatedEventHandler(this));
             simulationStateListenerList.Add(new RemovePlannedStepViewWhenUnitArrivesAtPathStepEventHandler(this));
+            
+            simulationStateListenerList.Add( new UpdateMapTileViewVisibilityWhenMapTileVisibilityChangedEventHandler(this));
+
+            simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
 
             IsMouseVisible = true;
-            // double currentResolution = TimerHelper.GetCurrentResolution();
-            // gameWorld = new GameWorld();
             gameWorldView = new GameWorldView();
-
+            
             raiSpriteFrameManager = new RAISpriteFrameManager();
             spriteSheet = new SpriteSheet();
             currentGameState = new PlayingGameState();
 
-
             MikeAndConquerGame.instance = this;
         }
 
+
+        internal void BringGameWindowToForeground()
+        {
+            // When
+            //      _graphics.HardwareModeSwitch = false;
+            // is used when setting full screen
+            // it many times results in the top level window of the game 
+            // not having focus
+            // This method, BringGameWindowToForeground() , based on web search results,
+            // Seems to fix that, but seems to only reliably work for
+            // If I call it in the Update() loop
+
+            Form myForm = (Form)Form.FromHandle(this.Window.Handle);
+            myForm.Activate();
+            topLevelWindowsHasBeenBroughtToForeground = true;
+        }
 
         internal void PostCommand(RawCommandUI rawCommandUi)
         {
 
             AsyncViewCommand command = ConvertRawCommand(rawCommandUi);
             this.PostCommand(command);
-
 
         }
 
@@ -205,8 +224,16 @@ namespace mike_and_conquer_monogame.main
                 ClickCommandBody commandBody =
                     JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
 
-
                 ReleaseLeftMouseButtonCommand command = new ReleaseLeftMouseButtonCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+
+            }
+            else if (rawCommand.CommandType.Equals(SetUIOptionsCommand.CommandName))
+            {
+                SetUIOptionsCommandBody commandBody =
+                    JsonConvert.DeserializeObject<SetUIOptionsCommandBody>(rawCommand.CommandData);
+
+                SetUIOptionsCommand command = new SetUIOptionsCommand(commandBody.DrawShroud, commandBody.MapZoomLevel);
                 return command;
 
             }
@@ -243,12 +270,10 @@ namespace mike_and_conquer_monogame.main
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // gameWorld.InitializeDefaultMap();
 
             LoadTextures();
-
-
-            // gameWorld.InitializeNavigationGraph();
+            
+            
             gameWorldView.LoadContent();
 
 
@@ -489,26 +514,27 @@ namespace mike_and_conquer_monogame.main
 
         protected override void Update(GameTime gameTime)
         {
+
+
+            if (!topLevelWindowsHasBeenBroughtToForeground)
+            {
+                BringGameWindowToForeground();
+            }
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 MikeAndConquerGame.instance.logger.LogError("Exiting because Escape key was pressed");
                 Exit();
             }
-
+        
             // TODO: Add your update logic here
             
-
+        
             base.Update(gameTime);
-
-            // lock (inputCommandQueue)
-            // {
-            //     foreach (AsyncViewCommand command in inputCommandQueue)
-            //     {
-            //         command.Process();
-            //     }
-            // }
-
+       
+        
             lock (inputCommandQueue)
             {
                 while (inputCommandQueue.Count > 0)
@@ -517,18 +543,14 @@ namespace mike_and_conquer_monogame.main
                     anEvent.Process();
                 }
             }
-
-
-
+        
             KeyboardState newKeyboardState = Keyboard.GetState();
-
-
+            
             gameWorldView.Update(gameTime, newKeyboardState);
-
+            
             currentGameState = this.currentGameState.Update(gameTime);
             this.currentGameStateView.Update(gameTime);
-
-
+        
         }
 
 
@@ -545,6 +567,11 @@ namespace mike_and_conquer_monogame.main
             gameWorldView.AddMinigunnerView(id, x, y);
             // MinigunnerView minigunnerView = new GdiMinigunnerView(id, x, y);
             // unitViewList.Add(minigunnerView);
+        }
+
+        public void RemoveUnitView(int unitId)
+        {
+            gameWorldView.RemoveUnitView(unitId);
         }
 
         public void AddJeepView(int id, int x, int y)
@@ -579,15 +606,15 @@ namespace mike_and_conquer_monogame.main
         protected override void Draw(GameTime gameTime)
         {
             Viewport originalViewport = GraphicsDevice.Viewport;
-
+            
             GraphicsDevice.Clear(Color.Crimson);
-
+             
             currentGameStateView.Draw(gameTime);
             //
             // DrawMap(gameTime);
             // DrawSidebar(gameTime);
             // DrawGameCursor(gameTime);
-
+            
             // GraphicsDevice.Viewport = defaultViewport;
             GraphicsDevice.Viewport = originalViewport;
             base.Draw(gameTime);
@@ -730,6 +757,7 @@ namespace mike_and_conquer_monogame.main
                 //     visibilityEnumValue);
 
                 gameWorldView.AddMapTileInstanceView(
+                    mapTileInstanceCreateEventData.MapTileInstanceId,
                     mapTileInstanceCreateEventData.XInWorldMapTileCoordinates,
                     mapTileInstanceCreateEventData.YInWorldMapTileCoordinates,
                     mapTileInstanceCreateEventData.ImageIndex,
@@ -973,6 +1001,21 @@ namespace mike_and_conquer_monogame.main
             return unitView;
         }
 
+        public MemoryStream GetScreenshotViaEvent()
+        {
+            GetScreenshotCommand command = new GetScreenshotCommand();
+
+            lock (inputCommandQueue)
+            {
+                inputCommandQueue.Enqueue(command);
+            }
+
+            MemoryStream memoryStream = command.GetMemoryStream();
+            return memoryStream;
+
+        }
+
+
 
         public UnitView GetUnitViewById(int unitId)
         {
@@ -990,5 +1033,15 @@ namespace mike_and_conquer_monogame.main
         }
 
 
+        public void UpdateMapTileViewVisibility(MapTileVisibilityUpdatedEventData eventData)
+        {
+            GameWorldView.instance.UpdateMapTileViewVisibility(eventData);
+        }
+
+        public void SetUIOptions(bool drawShroud, float mapZoomLevel)
+        {
+            GameOptions.instance.DrawShroud = drawShroud;
+            GameOptions.instance.MapZoomLevel = mapZoomLevel;
+        }
     }
 }

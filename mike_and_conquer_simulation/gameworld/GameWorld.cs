@@ -144,8 +144,8 @@ namespace mike_and_conquer_simulation.gameworld
         public void InitializeDefaultMap()
         {
             LoadMap();
-             navigationGraph = new NavigationGraph(this.gameMap.numColumns, this.gameMap.numRows);
-             InitializeNavigationGraph();
+            navigationGraph = new NavigationGraph(this.gameMap.NumColumns, this.gameMap.NumRows);
+            InitializeNavigationGraph();
         }
 
         // public void InitializeTestMap(int[,] obstacleArray)
@@ -516,17 +516,17 @@ namespace mike_and_conquer_simulation.gameworld
         }
 
 
-        private void AssertIsValidMinigunnerPosition(Point positionInWorldCoordinates)
-        {
-            foreach (MapTileInstance nexBasicMapSquare in this.gameMap.MapTileInstanceList)
-            {
-                if (nexBasicMapSquare.ContainsPoint(positionInWorldCoordinates) &&
-                    nexBasicMapSquare.IsBlockingTerrain)
-                {
-                    throw new BadMinigunnerLocationException(positionInWorldCoordinates);
-                }
-            }
-        }
+        // private void AssertIsValidMinigunnerPosition(Point positionInWorldCoordinates)
+        // {
+        //     foreach (MapTileInstance nexBasicMapSquare in this.gameMap.MapTileInstanceList)
+        //     {
+        //         if (nexBasicMapSquare.ContainsPoint(positionInWorldCoordinates) &&
+        //             nexBasicMapSquare.IsBlockingTerrain)
+        //         {
+        //             throw new BadMinigunnerLocationException(positionInWorldCoordinates);
+        //         }
+        //     }
+        // }
 
 
 
@@ -545,6 +545,12 @@ namespace mike_and_conquer_simulation.gameworld
         public MCV CreateMCV(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             return gdiPlayer.CreateMCV(xInWorldCoordinates, yInWorldCoordinates);
+        }
+
+
+        public void RemoveUnit(int unitId)
+        {
+            gdiPlayer.RemoveUnit(unitId);
         }
 
         public Unit FindUnitWithUnitId(int unitId)
@@ -824,13 +830,11 @@ namespace mike_and_conquer_simulation.gameworld
         internal MapTileInstance FindMapTileInstance(MapTileLocation mapTileLocation)
         {
 
-            foreach (MapTileInstance nextBasicMapSquare in this.gameMap.MapTileInstanceList)
-            {
-                if (nextBasicMapSquare.ContainsPoint(mapTileLocation.WorldCoordinatesAsPoint))
-                {
-                    return nextBasicMapSquare;
-                }
-            }
+            int x = mapTileLocation.XInWorldMapTileCoordinates;
+            int y = mapTileLocation.YInWorldMapTileCoordinates;
+
+            return this.gameMap.MapTileInstanceArray[x, y];
+
             throw new Exception("Unable to find MapTileInstance at coordinates, x:" + mapTileLocation.WorldCoordinatesAsPoint.X  + ", y:" +  mapTileLocation.WorldCoordinatesAsPoint.Y);
 
         }
@@ -838,15 +842,18 @@ namespace mike_and_conquer_simulation.gameworld
         public  MapTileInstance FindMapTileInstanceAllowNull(MapTileLocation mapTileLocation)
         {
 
-            foreach (MapTileInstance nextBasicMapSquare in this.gameMap.MapTileInstanceList)
+            int numRows = this.gameMap.NumRows;
+            int numColumns = this.gameMap.NumColumns;
+
+            int x = mapTileLocation.XInWorldMapTileCoordinates;
+            int y = mapTileLocation.YInWorldMapTileCoordinates;
+
+            if (x >= numColumns || y >= numRows)
             {
-                if (nextBasicMapSquare.ContainsPoint(mapTileLocation.WorldCoordinatesAsPoint))
-                {
-                    return nextBasicMapSquare;
-                }
+                return null;
             }
 
-            return null;
+            return this.gameMap.MapTileInstanceArray[x, y];
 
         }
 
@@ -866,17 +873,28 @@ namespace mike_and_conquer_simulation.gameworld
             // }
 
 
-            foreach (MapTileInstance nextMapTileInstance in this.gameMap.MapTileInstanceList)
-            {
-                if (nextMapTileInstance.IsBlockingTerrain)
-                {
+            int numRows = this.gameMap.MapTileInstanceArray.GetLength(1);
+            int numColumns = this.gameMap.MapTileInstanceArray.GetLength(0);
 
-                    MapTileLocation mapTileLocation = nextMapTileInstance.MapTileLocation;
+
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int column = 0; column < numColumns; column++)
+                {
+                    MapTileInstance nextMapTileInstance = this.gameMap.MapTileInstanceArray[column, row];
+
+                    if (nextMapTileInstance.IsBlockingTerrain)
+                    {
                     
-                    navigationGraph.MakeNodeBlockingNode(
-                        mapTileLocation.WorldMapTileCoordinatesAsPoint.X,
-                        mapTileLocation.WorldMapTileCoordinatesAsPoint.Y);
+                        MapTileLocation mapTileLocation = nextMapTileInstance.MapTileLocation;
+                        
+                        navigationGraph.MakeNodeBlockingNode(
+                            mapTileLocation.WorldMapTileCoordinatesAsPoint.X,
+                            mapTileLocation.WorldMapTileCoordinatesAsPoint.Y);
+                    }
+
                 }
+
             }
 
             navigationGraph.RebuildAdajencyGraph();
@@ -900,8 +918,8 @@ namespace mike_and_conquer_simulation.gameworld
 
         public bool IsPointOnMap(Point pointInWorldCoordinates)
         {
-            int largestXValue = (this.gameMap.numColumns * GameWorld.MAP_TILE_WIDTH) -1;
-            int largestYValue = (this.gameMap.numRows * GameWorld.MAP_TILE_HEIGHT) -1;
+            int largestXValue = (this.gameMap.NumColumns * GameWorld.MAP_TILE_WIDTH) -1;
+            int largestYValue = (this.gameMap.NumRows * GameWorld.MAP_TILE_HEIGHT) -1;
 
             return (pointInWorldCoordinates.X >= 0 &&
                     pointInWorldCoordinates.X < largestXValue &&

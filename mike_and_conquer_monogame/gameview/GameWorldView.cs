@@ -38,6 +38,8 @@ using ImmutablePalette = mike_and_conquer_monogame.openra.ImmutablePalette;
 
 using Matrix = Microsoft.Xna.Framework.Matrix;
 
+using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+
 namespace mike_and_conquer_monogame.gameview
 {
     public class GameWorldView
@@ -604,6 +606,30 @@ namespace mike_and_conquer_monogame.gameview
 
             if (GameOptions.instance.DrawShroud)
             {
+
+
+                // Update all visibility masks before drawing, instead of while drawing, because
+                // tiles can be made visible not just by unit movement
+                // but also by logics that determines if a tile is surrounded by other visible tiles
+                foreach (MapTileInstanceView basicMapSquareView in GameWorldView.instance.MapTileInstanceViewList)
+                {
+                    basicMapSquareView.UpdateVisbilityMask();
+                }
+
+                // Do two passes, because above loop could have uncovered new visible tiles, which in turn
+                // could make even more tiles visible.  Doing these two loops is solving a flicker issue where
+                // a tile that should be visible is momentarily not visible or in shade, do to it becoming visible
+                // because of state of surrounding tiles, but not getting updated to visible until two full passes of this
+                // loop.  One pass makes the flicker period shorter, but doesn't fully solve it.
+                // Two passes appears to fully solve it.
+                //  May want to investigate alternative algorithm that does updates in a different order or perhaps
+                // Tries updating nearby tiles when it makes another tile visible
+                foreach (MapTileInstanceView basicMapSquareView in GameWorldView.instance.MapTileInstanceViewList)
+                {
+                    basicMapSquareView.UpdateVisbilityMask();
+                }
+
+
                 foreach (MapTileInstanceView basicMapSquareView in GameWorldView.instance.MapTileInstanceViewList)
                 {
                     basicMapSquareView.DrawVisbilityMask(gameTime, spriteBatch);
@@ -1412,11 +1438,12 @@ namespace mike_and_conquer_monogame.gameview
         //     }
         //
         // }
-        public void AddMapTileInstanceView(int xInWorldMapTileCoordinates, int yInWorldMapTileCoordinates,
+        public void AddMapTileInstanceView(int mapTileInstanceId, int xInWorldMapTileCoordinates, int yInWorldMapTileCoordinates,
             byte imageIndex, string textureKey, bool isBlockingTerrain,
             MapTileInstanceView.MapTileVisibility visibilityEnumValue)
         {
             MapTileInstanceView view = new MapTileInstanceView(
+                mapTileInstanceId,
                 xInWorldMapTileCoordinates,
                 yInWorldMapTileCoordinates,
                 imageIndex,
@@ -1444,6 +1471,12 @@ namespace mike_and_conquer_monogame.gameview
             unitViewList.Add(view);
         }
 
+
+        public void RemoveUnitView(int unitId)
+        {
+            UnitView unitView = FindUnitViewById(unitId);
+            unitViewList.Remove(unitView);
+        }
         public void AddMCVView(int id, int x, int y)
         {
             MCVView view = new MCVView(id, x, y);
@@ -1496,7 +1529,7 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        private UnitView FindUnitById(int unitId)
+        private UnitView FindUnitViewById(int unitId)
         {
             UnitView foundUnitView = null;
             foreach (UnitView unitView in unitViewList)
@@ -1514,13 +1547,13 @@ namespace mike_and_conquer_monogame.gameview
 
         public void CreatePlannedPathView(int unitId, List<PathStep> pathStepList)
         {
-            UnitView unitView = FindUnitById(unitId);
+            UnitView unitView = FindUnitViewById(unitId);
             unitView.CreatePlannedPathView(pathStepList);
         }
 
         public void RemovePlannedStepView(int unitId, PathStep pathStep)
         {
-            UnitView unitView = FindUnitById(unitId);
+            UnitView unitView = FindUnitViewById(unitId);
             unitView.RemovePlannedPathStepView(pathStep);
         }
 
@@ -1538,6 +1571,54 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
+        public void UpdateMapTileViewVisibility(MapTileVisibilityUpdatedEventData eventData)
+        {
+
+            MapTileInstanceView mapTileInstanceView =  FindMapTileInstanceView(eventData.MapTileInstanceId);
+
+            Enum.TryParse(eventData.Visibility,
+                out MapTileInstanceView.MapTileVisibility visibilityEnumValue);
+
+            mapTileInstanceView.visibility = visibilityEnumValue;
+
+        }
+
+
+        public MapTileInstanceView FindMapTileInstanceView(int mapTileInstnaceViewId)
+        {
+            foreach (MapTileInstanceView view in this.MapTileInstanceViewList)
+            {
+                if (view.mapTileInstanceId == mapTileInstnaceViewId)
+                {
+                    return view;
+                }
+            }
+
+            throw new Exception("Did not find MapTileInstanceView with id=" + mapTileInstnaceViewId);
+        }
+
+        public MapTileInstanceView FindMapTileInstanceViewAllowNull(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            foreach (MapTileInstanceView mapTileInstanceView in this.MapTileInstanceViewList)
+            {
+                if (mapTileInstanceView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates))
+                {
+                    return mapTileInstanceView;
+                }
+            }
+
+            return null;
+
+        }
+
+        public MapTileInstanceView FindAdjacentMapTileInstanceViewAllowNull(MapTileLocation mapTileLocation, MapTileLocation.TILE_LOCATION tileLocation)
+        {
+            MapTileLocation adjacentMapTileLocation = mapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
+
+            return this.FindMapTileInstanceViewAllowNull(
+                adjacentMapTileLocation.WorldCoordinatesAsPoint.X,
+                adjacentMapTileLocation.WorldCoordinatesAsPoint.Y);
+        }
 
 
     }

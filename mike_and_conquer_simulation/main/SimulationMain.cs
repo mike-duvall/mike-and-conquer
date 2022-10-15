@@ -84,30 +84,44 @@ namespace mike_and_conquer_simulation.main
 
 
         }
+
         private void PublishInitializeScenarioEvent(
             int mapWidth,
             int mapHeight,
-            List<MapTileInstance> mapTileInstanceList,
+            MapTileInstance[,] mapTileInstanceArray,
             List<TerrainItem> terrainItemList)
         {
 
             List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList =
                 new List<MapTileInstanceCreateEventData>();
 
-            foreach (MapTileInstance mapTileInstance in mapTileInstanceList)
+            int numRows = gameWorld.gameMap.NumRows;
+            int numColumns = gameWorld.gameMap.NumColumns;
+
+
+            for (int row = 0; row < numRows; row++)
             {
-                MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
-                    mapTileInstance.MapTileInstanceId,
-                    mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
-                    mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
-                    mapTileInstance.TextureKey,
-                    mapTileInstance.ImageIndex,
-                    mapTileInstance.IsBlockingTerrain,
-                    mapTileInstance.Visibility.ToString()
+                for (int column = 0; column < numColumns; column++)
+                {
+                    MapTileInstance mapTileInstance = mapTileInstanceArray[column, row];
+
+                    MapTileInstanceCreateEventData mapTileCreateEventData = new MapTileInstanceCreateEventData(
+                        mapTileInstance.MapTileInstanceId,
+                        mapTileInstance.MapTileLocation.XInWorldMapTileCoordinates,
+                        mapTileInstance.MapTileLocation.YInWorldMapTileCoordinates,
+                        mapTileInstance.TextureKey,
+                        mapTileInstance.ImageIndex,
+                        mapTileInstance.IsBlockingTerrain,
+                        mapTileInstance.Visibility.ToString()
                     );
 
-                mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
+                    mapTileInstanceCreateEventDataList.Add(mapTileCreateEventData);
+
+                }
+
             }
+
+
 
             List<TerrainItemCreateEventData> terrainItemCreateEventDataList =
                 new List<TerrainItemCreateEventData>();
@@ -129,7 +143,7 @@ namespace mike_and_conquer_simulation.main
                 terrainItemCreateEventDataList);
 
             string serializedEventData = JsonConvert.SerializeObject(initializedEventData);
-            SimulationStateUpdateEvent simulationStateUpdateEvent = 
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
                         ScenarioInitializedEventData.EventType,
                         serializedEventData
@@ -138,6 +152,7 @@ namespace mike_and_conquer_simulation.main
             PublishEvent(simulationStateUpdateEvent);
 
         }
+
 
 
         public void AddListener(SimulationStateListener listener)
@@ -346,6 +361,11 @@ namespace mike_and_conquer_simulation.main
         }
 
 
+        internal void RemoveUnit(int unitId)
+        {
+            gameWorld.RemoveUnit(unitId);
+        }
+
 
 
 
@@ -409,6 +429,11 @@ namespace mike_and_conquer_simulation.main
         internal void SetGameSpeed(SimulationOptions.GameSpeed aGameSpeed)
         {
             this.simulationOptions.CurrentGameSpeed = aGameSpeed;
+        }
+
+        internal SimulationOptions GetSimulationOptions()
+        {
+            return simulationOptions;
         }
 
 
@@ -493,33 +518,30 @@ namespace mike_and_conquer_simulation.main
                 SetSimulationOptionsCommandBody commandBody =
                     JsonConvert.DeserializeObject<SetSimulationOptionsCommandBody>(rawCommand.CommandData);
 
-                SimulationOptions.GameSpeed inputGameSpeed = ConvertGameSpeedStringToEnum(commandBody.GameSpeed);
+                SimulationOptions.GameSpeed inputGameSpeed = SimulationOptions.ConvertGameSpeedStringToEnum(commandBody.GameSpeed);
                 SetGameSpeedCommand aCommand = new SetGameSpeedCommand();
                 aCommand.GameSpeed = inputGameSpeed;
 
                 return aCommand;
 
             }
+            else if (rawCommand.CommandType.Equals(RemoveUnitCommand.CommandName))
+            {
+
+                RemoveUnitCommandBody commandBody =
+                    JsonConvert.DeserializeObject<RemoveUnitCommandBody>(rawCommand.CommandData);
+
+                RemoveUnitCommand command = new RemoveUnitCommand();
+                command.UnitId = commandBody.UnitId;
+                return command;
+            }
+
             else
             {
                 throw new Exception("Unknown CommandType:" + rawCommand.CommandType);
             }
 
 
-        }
-
-        private SimulationOptions.GameSpeed ConvertGameSpeedStringToEnum(String gameSpeedAsString)
-        {
-            if (gameSpeedAsString == "Slowest") return SimulationOptions.GameSpeed.Slowest;
-            if (gameSpeedAsString == "Slower") return SimulationOptions.GameSpeed.Slower;
-            if (gameSpeedAsString == "Slow") return SimulationOptions.GameSpeed.Slow;
-            if (gameSpeedAsString == "Moderate") return SimulationOptions.GameSpeed.Moderate;
-            if (gameSpeedAsString == "Normal") return SimulationOptions.GameSpeed.Normal;
-            if (gameSpeedAsString == "Fast") return SimulationOptions.GameSpeed.Fast;
-            if (gameSpeedAsString == "Faster") return SimulationOptions.GameSpeed.Faster;
-            if (gameSpeedAsString == "Fastest") return SimulationOptions.GameSpeed.Fastest;
-
-            throw new Exception("Could not map game speed string of:" + gameSpeedAsString);
         }
 
         public void PostCommand(AsyncSimulationCommand command)
@@ -543,8 +565,7 @@ namespace mike_and_conquer_simulation.main
 
             gameWorld.StartScenario(playerController);
             
-            PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceList, gameWorld.terrainItemList);
-
+            PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
         }
 
 
