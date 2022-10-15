@@ -533,12 +533,7 @@ namespace mike_and_conquer_simulation.main
 
                 RemoveUnitCommand command = new RemoveUnitCommand();
                 command.UnitId = commandBody.UnitId;
-                // CreateMinigunnerCommand createUnit = new CreateMinigunnerCommand();
-                // createUnit.X = commandBody.StartLocationXInWorldCoordinates;
-                // createUnit.Y = commandBody.StartLocationYInWorldCoordinates;
-
                 return command;
-
             }
 
             else
@@ -570,9 +565,7 @@ namespace mike_and_conquer_simulation.main
 
             gameWorld.StartScenario(playerController);
             
-            // PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceList, gameWorld.terrainItemList);
             PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
-
         }
 
 

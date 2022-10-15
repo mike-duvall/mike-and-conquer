@@ -5,7 +5,6 @@ using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.pathfinding;
 using Newtonsoft.Json;
 
-// using NumericsVector2 = System.Numerics.Vector2;
 
 using MapTileInstance = mike_and_conquer_simulation.gameworld.MapTileInstance;
 
@@ -526,45 +525,6 @@ namespace mike_and_conquer_simulation.main
             UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);
 
         }
-
-
-
-        // private void PublishMapTileVisibilityUpdatedEvent(int mapTileInstanceId, MapTileInstance.MapTileVisibility mapTileVisibility)
-        // {
-        //
-        //     MapTileVisibilityUpdatedEventData eventData = new MapTileVisibilityUpdatedEventData(
-        //         mapTileInstanceId,
-        //         mapTileVisibility.ToString()
-        //     );
-        //
-        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
-        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
-        //         new SimulationStateUpdateEvent(
-        //             UnitMoveOrderEventData.EventType,
-        //             serializedEventData);
-        //
-        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        // }
-        //
-
-        // MapTileInstance FindNearbyMapTileByOffset(int xOffset, int yOffset)
-        // {
-        //     // return FindNearbyMapTileByOffset(this.GameWorldLocation.WorldCoordinatesAsVector2, xOffset, yOffset);
-        //     return FindNearbyMapTileByOffset(this.currentMapTileInstance.MapTileLocation.WorldCoordinatesAsVector2,
-        //         xOffset, yOffset);
-        //
-        // }
-
-        // MapTileInstance FindNearbyMapTileByOffset(NumericsVector2 basePosition, int xOffset, int yOffset)
-        // {
-        //     MapTileLocation offsetMapTileLocation =
-        //         MapTileLocation.CreateFromWorldCoordinatesInVector2(basePosition)
-        //             .IncrementWorldMapTileX(xOffset)
-        //             .IncrementWorldMapTileY(yOffset);
-        //
-        //     MapTileInstance mapTileInstance = GameWorld.instance.FindMapTileInstanceAllowNull(offsetMapTileLocation);
-        //     return mapTileInstance;
-        // }
 
 
         private bool MapTileHasVisibility(MapTileInstance mapTileInstance, MapTileInstance.MapTileVisibility expectedVisbility)

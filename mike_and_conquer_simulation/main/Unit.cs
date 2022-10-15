@@ -97,11 +97,6 @@ namespace mike_and_conquer_simulation.main
         {
             MapTileInstance mapTileInstance = FindNearbyMapTileByOffset(xOffset, yOffset);
 
-            // if (mapTileInstance != null && mapTileInstance.PositionInWorldCoordinates.X == 612 &&
-            //     mapTileInstance.PositionInWorldCoordinates.Y == 276 && mapTileVisibility == MapTileInstance.MapTileVisibility.Visible)
-            // {
-            //     int x = 3;
-            // }
             if (mapTileInstance != null && mapTileInstance.Visibility != MapTileInstance.MapTileVisibility.Visible)
             {
                 mapTileInstance.Visibility = mapTileVisibility;
@@ -113,10 +108,10 @@ namespace mike_and_conquer_simulation.main
 
         protected MapTileInstance FindNearbyMapTileByOffset(int xOffset, int yOffset)
         {
-            // return FindNearbyMapTileByOffset(this.GameWorldLocation.WorldCoordinatesAsVector2, xOffset, yOffset);
-            return FindNearbyMapTileByOffset(this.currentMapTileInstance.MapTileLocation.WorldCoordinatesAsVector2,
-                xOffset, yOffset);
-
+            return FindNearbyMapTileByOffset(
+                this.currentMapTileInstance.MapTileLocation.WorldCoordinatesAsVector2,
+                xOffset,
+                yOffset);
         }
 
         protected MapTileInstance FindNearbyMapTileByOffset(NumericsVector2 basePosition, int xOffset, int yOffset)

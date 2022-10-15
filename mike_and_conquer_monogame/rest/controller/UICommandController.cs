@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using mike_and_conquer_monogame.commands;
+
+
 using mike_and_conquer_monogame.commands.ui;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_monogame.rest.domain;
-// using mike_and_conquer_simulation.rest.controller;
 
-// using WeatherForecast = mike_and_conquer_simulation.rest.domain.WeatherForecast;
+
+
 
 namespace mike_and_conquer_monogame.rest.controller
 {
     [ApiController]
-    //    [Route("[controller]")]
     [Route("ui/command")]
 
 
