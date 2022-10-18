@@ -6,7 +6,7 @@ using mike_and_conquer_simulation.events;
 
 namespace mike_and_conquer_monogame.commands
 {
-    public class InitiInitalizeUiCommand : AsyncViewCommand
+    public class InitializeUiCommand : AsyncViewCommand
     {
 
         private readonly int mapWidth;
@@ -14,7 +14,7 @@ namespace mike_and_conquer_monogame.commands
         private readonly List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList;
         private readonly List<TerrainItemCreateEventData> terrainItemCreateEventDataList;
 
-        public InitiInitalizeUiCommand(
+        public InitializeUiCommand(
             int mapWidth,
             int mapHeight,
             List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList,

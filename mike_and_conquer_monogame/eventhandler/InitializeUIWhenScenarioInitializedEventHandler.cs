@@ -25,7 +25,7 @@ namespace mike_and_conquer_monogame.eventhandler
                 ScenarioInitializedEventData eventData =
                     JsonConvert.DeserializeObject<ScenarioInitializedEventData>(anEvent.EventData);
 
-                InitiInitalizeUiCommand command = new InitiInitalizeUiCommand(
+                InitializeUiCommand command = new InitializeUiCommand(
                     eventData.MapWidth,
                     eventData.MapHeight,
                     eventData.MapTileInstanceCreateEventDataList,
