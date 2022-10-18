@@ -9,7 +9,7 @@ namespace mike_and_conquer_simulation.events
         public const string EventType = "MapTileVisibilityUpdated";
 
 
-        public int MapTileInstanceId { get; set; }
+        public int MapTileInstanceId { get;  }
 
         public string Visibility { get; }
 

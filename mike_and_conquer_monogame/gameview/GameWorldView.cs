@@ -1571,12 +1571,12 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        public void UpdateMapTileViewVisibility(MapTileVisibilityUpdatedEventData eventData)
+        public void UpdateMapTileViewVisibility(int mapTileInstanceId,  string visibility)
         {
 
-            MapTileInstanceView mapTileInstanceView =  FindMapTileInstanceView(eventData.MapTileInstanceId);
+            MapTileInstanceView mapTileInstanceView =  FindMapTileInstanceView(mapTileInstanceId);
 
-            Enum.TryParse(eventData.Visibility,
+            Enum.TryParse(visibility,
                 out MapTileInstanceView.MapTileVisibility visibilityEnumValue);
 
             mapTileInstanceView.visibility = visibilityEnumValue;

@@ -1,24 +1,26 @@
 ﻿
 using mike_and_conquer_monogame.main;
 
-using mike_and_conquer_simulation.events;
 
 namespace mike_and_conquer_monogame.commands
 {
     public class UpdateUnitViewPositionCommand : AsyncViewCommand
     {
 
+        private readonly int unitId;
+        private readonly int xInWorldCoordinates;
+        private readonly int yInWorldCoordinates;
 
-        private UnitPositionChangedEventData unitPositionChangedEventData;
-
-        public UpdateUnitViewPositionCommand(UnitPositionChangedEventData data)
+        public UpdateUnitViewPositionCommand(int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            this.unitPositionChangedEventData = data;
+            this.unitId = unitId;
+            this.xInWorldCoordinates = xInWorldCoordinates;
+            this.yInWorldCoordinates = yInWorldCoordinates;
         }
 
         protected override void ProcessImpl()
         {
-            MikeAndConquerGame.instance.UpdateUnitViewPosition(unitPositionChangedEventData);
+            MikeAndConquerGame.instance.UpdateUnitViewPosition(unitId, xInWorldCoordinates, yInWorldCoordinates);
         }
     }
 }

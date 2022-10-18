@@ -714,47 +714,37 @@ namespace mike_and_conquer_monogame.main
             _spriteBatch.Draw(mapRect, coor, Color.White);
         }
 
-
-
-
-        public void UpdateUnitViewPosition(UnitPositionChangedEventData unitPositionChangedEventData)
+        public void UpdateUnitViewPosition(int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {
             foreach (UnitView unitView in gameWorldView.UnitViewList)
             {
-                if (unitView.UnitId == unitPositionChangedEventData.UnitId)
+                if (unitView.UnitId == unitId)
                 {
-                    unitView.XInWorldCoordinates = unitPositionChangedEventData.XInWorldCoordinates;
-                    unitView.YInWorldCoordinates = unitPositionChangedEventData.YInWorldCoordinates;
+                    unitView.XInWorldCoordinates = xInWorldCoordinates;
+                    unitView.YInWorldCoordinates = yInWorldCoordinates;
                 }
             }
 
         }
 
-        public void InitializeUI(ScenarioInitializedEventData scenarioInitializedEventData)
+        // public void InitializeUI(ScenarioInitializedEventData scenarioInitializedEventData)
+        public void InitializeUI(
+            int theMapWidth,
+            int theMapHeight,
+            List<MapTileInstanceCreateEventData> mapTileInstanceCreateEventDataList,
+            List<TerrainItemCreateEventData> terrainItemCreateEventDataList)
         {
 
             gameWorldView.HandleReset();
-            // hasScenarioBeenInitialized = false;
-            // mapWidth = -10;
-            // mapHeight = -10;
 
-            this.mapWidth = scenarioInitializedEventData.MapWidth;
-            this.mapHeight = scenarioInitializedEventData.MapHeight;
+            this.mapWidth = theMapWidth;
+            this.mapHeight = theMapHeight;
 
-            foreach (MapTileInstanceCreateEventData mapTileInstanceCreateEventData in scenarioInitializedEventData
-                         .MapTileInstanceCreateEventDataList)
+            foreach (MapTileInstanceCreateEventData mapTileInstanceCreateEventData in mapTileInstanceCreateEventDataList)
             {
-                // public MapTileInstanceView(int imageIndex, string textureKey, bool isBlockingTerrain, MapTileVisibility mapTileVisibility)
-
 
                 Enum.TryParse(mapTileInstanceCreateEventData.Visibility,
                     out MapTileInstanceView.MapTileVisibility visibilityEnumValue);
-
-                // MapTileInstanceView mapTileInstanceView = new MapTileInstanceView(
-                //     mapTileInstanceCreateEventData.ImageIndex,
-                //     mapTileInstanceCreateEventData.TextureKey,
-                //     mapTileInstanceCreateEventData.IsBlockingTerrain,
-                //     visibilityEnumValue);
 
                 gameWorldView.AddMapTileInstanceView(
                     mapTileInstanceCreateEventData.MapTileInstanceId,
@@ -767,8 +757,7 @@ namespace mike_and_conquer_monogame.main
 
             }
 
-            foreach (TerrainItemCreateEventData terrainItemCreateEventData in scenarioInitializedEventData
-                         .TerrainItemCreateEventDataList)
+            foreach (TerrainItemCreateEventData terrainItemCreateEventData in terrainItemCreateEventDataList)
             {
                 gameWorldView.AddTerrainItemView(
                     terrainItemCreateEventData.XInWorldMapTileCoordinates,
@@ -1033,9 +1022,9 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        public void UpdateMapTileViewVisibility(MapTileVisibilityUpdatedEventData eventData)
+        public void UpdateMapTileViewVisibility(int mapTileInstanceId, string visibility)
         {
-            GameWorldView.instance.UpdateMapTileViewVisibility(eventData);
+            GameWorldView.instance.UpdateMapTileViewVisibility(mapTileInstanceId, visibility);
         }
 
         public void SetUIOptions(bool drawShroud, float mapZoomLevel)
