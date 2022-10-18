@@ -22,10 +22,13 @@ namespace mike_and_conquer_monogame.eventhandler
 
             if (anEvent.EventType.Equals(UnitPositionChangedEventData.EventType))
             {
-                UnitPositionChangedEventData unitPositionChangedEventData =
+                UnitPositionChangedEventData eventData =
                     JsonConvert.DeserializeObject<UnitPositionChangedEventData>(anEvent.EventData);
 
-                UpdateUnitViewPositionCommand command = new UpdateUnitViewPositionCommand(unitPositionChangedEventData);
+                UpdateUnitViewPositionCommand command = new UpdateUnitViewPositionCommand(
+                    eventData.UnitId,
+                    eventData.XInWorldCoordinates,
+                    eventData.YInWorldCoordinates);
                 mikeAndConquerGame.PostCommand(command);
 
             }

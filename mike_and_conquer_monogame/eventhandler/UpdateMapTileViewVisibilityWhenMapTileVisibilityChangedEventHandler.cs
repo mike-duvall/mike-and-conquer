@@ -13,6 +13,7 @@ namespace mike_and_conquer_monogame.eventhandler
         private MikeAndConquerGame mikeAndConquerGame = null;
 
 
+
         public UpdateMapTileViewVisibilityWhenMapTileVisibilityChangedEventHandler(MikeAndConquerGame aGame)
         {
             this.mikeAndConquerGame = aGame;
@@ -26,7 +27,7 @@ namespace mike_and_conquer_monogame.eventhandler
                 MapTileVisibilityUpdatedEventData eventData =
                     JsonConvert.DeserializeObject<MapTileVisibilityUpdatedEventData>(anEvent.EventData);
 
-                UpdateMapTileViewVisibilityCommand command = new UpdateMapTileViewVisibilityCommand(eventData);
+                UpdateMapTileViewVisibilityCommand command = new UpdateMapTileViewVisibilityCommand(eventData.MapTileInstanceId, eventData.Visibility);
                 mikeAndConquerGame.PostCommand(command);
             }
 

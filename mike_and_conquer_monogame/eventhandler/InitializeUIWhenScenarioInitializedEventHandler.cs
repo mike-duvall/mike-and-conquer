@@ -22,11 +22,15 @@ namespace mike_and_conquer_monogame.eventhandler
 
             if (anEvent.EventType.Equals(ScenarioInitializedEventData.EventType))
             {
-                ScenarioInitializedEventData scenarioInitializedEventData =
+                ScenarioInitializedEventData eventData =
                     JsonConvert.DeserializeObject<ScenarioInitializedEventData>(anEvent.EventData);
 
-                InitalizeUICommand initializedEventHandlerCommand = new InitalizeUICommand(scenarioInitializedEventData);
-                mikeAndConquerGame.PostCommand(initializedEventHandlerCommand);
+                InitializeUiCommand command = new InitializeUiCommand(
+                    eventData.MapWidth,
+                    eventData.MapHeight,
+                    eventData.MapTileInstanceCreateEventDataList,
+                    eventData.TerrainItemCreateEventDataList);
+                mikeAndConquerGame.PostCommand(command);
 
             }
 

@@ -1,23 +1,24 @@
 ﻿
 using mike_and_conquer_monogame.main;
 
-using mike_and_conquer_simulation.events;
 
 namespace mike_and_conquer_monogame.commands
 {
     public class UpdateMapTileViewVisibilityCommand : AsyncViewCommand
     {
 
-        private MapTileVisibilityUpdatedEventData eventData;
+        private readonly int mapTileInstanceId;
+        private readonly string visibility;
 
-        public UpdateMapTileViewVisibilityCommand(MapTileVisibilityUpdatedEventData data)
+        public UpdateMapTileViewVisibilityCommand(int mapTileInstanceId, string visibility)
         {
-            this.eventData = data;
+            this.mapTileInstanceId = mapTileInstanceId;
+            this.visibility = visibility;
         }
 
         protected override void ProcessImpl()
         {
-            MikeAndConquerGame.instance.UpdateMapTileViewVisibility(eventData);
+            MikeAndConquerGame.instance.UpdateMapTileViewVisibility(mapTileInstanceId, visibility);
         }
     }
 }
