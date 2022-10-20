@@ -539,8 +539,12 @@ namespace mike_and_conquer_monogame.main
             {
                 while (inputCommandQueue.Count > 0)
                 {
-                    AsyncViewCommand anEvent = inputCommandQueue.Dequeue();
-                    anEvent.Process();
+                    AsyncViewCommand command = inputCommandQueue.Dequeue();
+                    command.Process();
+                    if (command.ThrownException != null)
+                    {
+                        logger.LogError(command.ThrownException.ToString());
+                    }
                 }
             }
         

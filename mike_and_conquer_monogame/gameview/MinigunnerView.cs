@@ -37,6 +37,7 @@ namespace mike_and_conquer_monogame.gameview
 
             this.unitSize = new UnitSize(12, 16);
 
+
             this.unitSelectionCursor = new UnitSelectionCursor(this, XInWorldCoordinates, YInWorldCoordinates);
             // this.destinationSquare = new DestinationSquare();
             this.drawDestinationSquare = false;
