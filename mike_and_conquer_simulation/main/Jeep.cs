@@ -1,10 +1,13 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Drawing;
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.pathfinding;
 using Newtonsoft.Json;
+
+using Math = System.Math;
+
 
 namespace mike_and_conquer_simulation.main
 {
@@ -19,8 +22,8 @@ namespace mike_and_conquer_simulation.main
         public Command currentCommand;
 
 
-        private int destinationXInWorldCoordinates;
-        private int destinationYInWorldCoordinates;
+        // private int destinationXInWorldCoordinates;
+        // private int destinationYInWorldCoordinates;
 
         private List<Point> path;
 
@@ -114,21 +117,21 @@ namespace mike_and_conquer_simulation.main
         private List<PathStep> ConvertWorldCoordinatePointsToMapTilePathSteps(List<Point> listOfPoints)
         {
             List<PathStep> listOfPathSteps = new List<PathStep>();
-
+        
             foreach (Point point in listOfPoints)
             {
-
+        
                 MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(point.X, point.Y);
-
+        
                 PathStep pathStep = new PathStep(
                     mapTileLocation.XInWorldMapTileCoordinates,
                     mapTileLocation.YInWorldMapTileCoordinates);
-
+        
                 listOfPathSteps.Add(pathStep);
             }
-
+        
             return listOfPathSteps;
-
+        
         }
 
 

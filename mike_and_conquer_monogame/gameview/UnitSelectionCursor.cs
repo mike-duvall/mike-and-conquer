@@ -295,8 +295,6 @@ namespace mike_and_conquer_monogame.gameview
             //     gameWorldLocation.WorldCoordinatesAsVector2.Y + selectionCursorOffset.Y);
 
 
-            Pickup here
-            See kanban
 
             selectionCursorPosition = new Vector2(
                 myUnitView.XInWorldCoordinates + selectionCursorOffset.X,
