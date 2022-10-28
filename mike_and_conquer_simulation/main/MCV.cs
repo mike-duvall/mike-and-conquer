@@ -71,17 +71,6 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-        // public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
-        // {
-        //     currentCommand = Command.FOLLOW_PATH;
-        //     state = State.MOVING;
-        //     this.destinationXInWorldCoordinates = destinationXInWorldCoordinates;
-        //     this.destinationYInWorldCoordinates = destinationYInWorldCoordinates;
-        //
-        //     PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-        //
-        // }
-
         public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
 
@@ -90,7 +79,6 @@ namespace mike_and_conquer_simulation.main
                 GameWorld.instance.FindMapTileInstance(
                     MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y));
 
-            //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
             int startColumn = (int)this.GameWorldLocation.X / GameWorld.MAP_TILE_WIDTH;
             int startRow = (int)this.GameWorldLocation.Y / GameWorld.MAP_TILE_HEIGHT;
             Point startPoint = new Point(startColumn, startRow);
@@ -168,50 +156,6 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-
-
-        // public override void Update()
-        // {
-        //     UpdateVisibleMapTiles();
-        //     if (currentCommand == Command.FOLLOW_PATH)
-        //     {
-        //         if (IsAtDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates))
-        //         {
-        //             currentCommand = Command.NONE;
-        //             state = State.IDLE;
-        //
-        //             PublishUnitArrivedAtDestinationEvent();
-        //
-        //         }
-        //         else
-        //         {
-        //             if (gameWorldLocation.X < destinationXInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.X += movementDelta;
-        //             }
-        //             else if (gameWorldLocation.X > destinationXInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.X -= movementDelta;
-        //             }
-        //
-        //             if (gameWorldLocation.Y < destinationYInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.Y += movementDelta;
-        //             }
-        //             else if (gameWorldLocation.Y > destinationYInWorldCoordinates)
-        //             {
-        //                 gameWorldLocation.Y -= movementDelta;
-        //             }
-        //
-        //             PublishUnitPositionChangedEventData();
-        //
-        //
-        //
-        //         }
-        //
-        //     }
-        // }
-
         public override void Update()
         {
             UpdateVisibleMapTiles();
@@ -223,11 +167,6 @@ namespace mike_and_conquer_simulation.main
             {
                 HandleCommandFollowPath();
             }
-            // else if (this.currentCommand == Command.ATTACK_TARGET)
-            // {
-            //     HandleCommandAttackTarget(gameTime);
-            // }
-
 
         }
 
@@ -442,10 +381,6 @@ namespace mike_and_conquer_simulation.main
             currentMapTileInstance = possibleNewMapTileInstance;
 
 
-
-
-            // TODO:  Code south needs to handle literal edge cases where minigunner is near edge of 
-            // map and there is NO east or west tile, etc
             UpdateNearbyMapTileVisibility(0, 0, MapTileInstance.MapTileVisibility.Visible);
 
 
