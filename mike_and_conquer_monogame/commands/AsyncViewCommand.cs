@@ -10,6 +10,12 @@ namespace mike_and_conquer_monogame.commands
         private ManualResetEvent condition;
         private Exception thrownException;
 
+        public Exception ThrownException
+        {
+            get { return thrownException; }
+        }
+
+
         public AsyncViewCommand()
         {
             this.result = null;

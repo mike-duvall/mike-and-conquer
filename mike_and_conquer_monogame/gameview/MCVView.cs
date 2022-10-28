@@ -5,15 +5,16 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
- 
+
+using XnaPoint = Microsoft.Xna.Framework.Point;
+
 namespace mike_and_conquer_monogame.gameview
 {
     public class MCVView : UnitView
     {
         private UnitSprite unitSprite;
-        // private UnitSelectionCursor unitSelectionCursor;
+        private UnitSelectionCursor unitSelectionCursor;
         private DestinationSquare destinationSquare;
-        // private MCV myMCV;
         private bool drawDestinationSquare;
 
         //        enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
@@ -22,25 +23,6 @@ namespace mike_and_conquer_monogame.gameview
         public const string SHP_FILE_NAME = "Shp\\mcv.shp";
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
-
-
-        // public MCVView(MCV mcv)
-        // {
-        //     this.myMCV = mcv;
-        //     this.unitSprite = new UnitSprite(SPRITE_KEY);
-        //     this.unitSprite.drawBoundingRectangle = false;
-        //     this.unitSprite.drawShadow = true;
-        //     // this.mcvSelectionBox = new MCVSelectionBox();
-        //     this.unitSelectionCursor = new UnitSelectionCursor(myMCV, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.X, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.Y);
-        //
-        //     this.destinationSquare = new DestinationSquare();
-        //     this.drawDestinationSquare = false;
-        //
-        //     AnimationSequence animationSequence = new AnimationSequence(1);
-        //     animationSequence.AddFrame(0);
-        //     unitSprite.AddAnimationSequence(0, animationSequence);
-        //
-        // }
 
 
         public MCVView(int unitId,  int xInWorldCoordinates, int yInWorldCoordinates)
@@ -54,7 +36,11 @@ namespace mike_and_conquer_monogame.gameview
             this.unitSprite.drawBoundingRectangle = false;
             this.unitSprite.drawShadow = true;
             // this.mcvSelectionBox = new MCVSelectionBox();
-            // this.unitSelectionCursor = new UnitSelectionCursor(myMCV, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.X, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.Y);
+
+            this.unitSize = new UnitSize(36, 36);
+            this.selectionCursorOffset = new XnaPoint(-18, -14);
+
+            this.unitSelectionCursor = new UnitSelectionCursor(this, XInWorldCoordinates, YInWorldCoordinates);
 
             // this.destinationSquare = new DestinationSquare();
             this.drawDestinationSquare = false;
@@ -68,7 +54,7 @@ namespace mike_and_conquer_monogame.gameview
 
         internal override void Update(GameTime gameTime)
         {
-            // unitSelectionCursor.Update(gameTime);
+            unitSelectionCursor.Update(gameTime);
         }
 
 
@@ -79,8 +65,6 @@ namespace mike_and_conquer_monogame.gameview
             //     return;
             // }
 
-            // unitSprite.DrawNoShadow(gameTime, spriteBatch, myMCV.GameWorldLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
-
 
             Vector2 worldCoordinatesAsVector2 = new Vector2(
                 XInWorldCoordinates,
@@ -89,10 +73,10 @@ namespace mike_and_conquer_monogame.gameview
             unitSprite.DrawNoShadow(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
 
 
-            // if (myMCV.selected)
-            // {
-            //     unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
-            // }
+            if (Selected)
+            {
+                unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
+            }
 
 
         }
@@ -106,9 +90,6 @@ namespace mike_and_conquer_monogame.gameview
             //     return;
             // }
 
-            // unitSprite.DrawShadowOnly(gameTime, spriteBatch, myMCV.GameWorldLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
-
-
 
             Vector2 worldCoordinatesAsVector2 = new Vector2(
                 XInWorldCoordinates,
@@ -116,10 +97,12 @@ namespace mike_and_conquer_monogame.gameview
 
             unitSprite.DrawShadowOnly(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
 
-            // if (myMCV.selected)
-            // {
-            //     unitSelectionCursor.DrawShadowOnly(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
-            // }
+
+            if (Selected)
+            {
+                unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
+            }
+
 
         }
 
