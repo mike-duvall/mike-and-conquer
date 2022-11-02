@@ -39,7 +39,9 @@ namespace mike_and_conquer_monogame.main
         private int mapWidth = -10;
         private int mapHeight = -10;
 
-//        private List<UnitView> unitViewList;
+        //        private List<UnitView> unitViewList;
+
+        private int mouseCounter = 0;
 
         private Queue<AsyncViewCommand> inputCommandQueue;
 
@@ -198,6 +200,15 @@ namespace mike_and_conquer_monogame.main
 
                 RightClickCommand command =
                     new RightClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+            else if (rawCommand.CommandType.Equals(LeftClickMCVCommand.CommandName))
+            {
+                SelectUnitCommandBody commandBody =
+                    JsonConvert.DeserializeObject<SelectUnitCommandBody>(rawCommand.CommandData);
+
+                LeftClickMCVCommand command =
+                    new LeftClickMCVCommand(commandBody.UnitId);
                 return command;
             }
 
@@ -521,6 +532,8 @@ namespace mike_and_conquer_monogame.main
                 BringGameWindowToForeground();
             }
 
+            FixMousePointerProblem();
+
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -556,6 +569,27 @@ namespace mike_and_conquer_monogame.main
             this.currentGameStateView.Update(gameTime);
         
         }
+
+
+        private void FixMousePointerProblem()
+        {
+            // This is a hack fix to fix an issue where if you change this.IsMouseVisible to false
+            // while the Windows pointer is showing the mouse pointer arrow with the blue sworl "busy" icon on the side
+            // it will continue to show a frozen(non moving) copy of the blue sworl "busy" icon, even after it 
+            // stops showing and updating the normal Winodws mouse pointer (in favor of my manually handled one)
+            // TODO:  Investigate replacing countdown timer with direct call to (possibly to native Windows API) to determine
+            // native mouse pointer "busy" status, and wait until ti goes "not busy"
+            if (mouseCounter < 20)
+            {
+                this.IsMouseVisible = true;
+                mouseCounter++;
+            }
+            else
+            {
+                this.IsMouseVisible = false;
+            }
+        }
+
 
 
         public void AddMinigunnerView(int id, int x, int y)
@@ -918,13 +952,85 @@ namespace mike_and_conquer_monogame.main
         }
 
 
+        public void LeftClickMCV(int unitId)
+        {
+
+            UnitView foundUnitView = null;
+
+            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            {
+                if (unitView.UnitId == unitId)
+                {
+                    foundUnitView = unitView;
+                }
+            }
+
+            if (foundUnitView != null)
+            {
+
+                // Vector2 minigunnerLocation = new Vector2();
+                // minigunnerLocation.X = mcv.GameWorldLocation.WorldCoordinatesAsVector2.X;
+                // minigunnerLocation.Y = mcv.GameWorldLocation.WorldCoordinatesAsVector2.Y - 20;
+
+                Vector2 unitViewWorldCoordinatesVector2 = new Vector2(foundUnitView.XInWorldCoordinates,
+                    foundUnitView.YInWorldCoordinates);
+
+                Vector2 transformedLocation = GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewWorldCoordinatesVector2);
+
+                // Vector2 transformedLocation =
+                //     GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(mcv
+                //         .GameWorldLocation.WorldCoordinatesAsVector2);
+
+                int screenWidth = GameWorldView.instance.ScreenWidth;
+                int screenHeight = GameWorldView.instance.ScreenHeight;
+
+
+
+
+
+                new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    MouseInputHandler.DoLeftMouseClick(
+                        (uint)transformedLocation.X,
+                        (uint)transformedLocation.Y,
+                        GameWorldView.instance.ScreenWidth,
+                        GameWorldView.instance.ScreenHeight);
+                
+                }).Start();
+
+            }
+            else
+            {
+                throw new Exception("Did not find unitview with id:" + unitId +
+                                    ", PS, figure out how to better handle this error");
+            }
+
+
+            // Vector2 transformedLocation =
+            //     ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
+
+            // new Thread(() =>
+            // {
+            //     Thread.CurrentThread.IsBackground = true;
+            //     MouseInputHandler.DoRightMouseClick(
+            //         (uint)transformedLocation.X,
+            //         (uint)transformedLocation.Y,
+            //         GameWorldView.instance.ScreenWidth,
+            //         GameWorldView.instance.ScreenHeight);
+            //
+            // }).Start();
+
+        }
+
+
+
 
         public void MoveMouse(int xInWorldCoordinates, int yInWorldCoordinates)
         {
 
             Vector2 transformedLocation =
                 ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
-
 
             new Thread(() =>
             {

@@ -2,25 +2,24 @@
 
 namespace mike_and_conquer_monogame.commands.ui
 {
-    public class RightClickCommand : AsyncViewCommand
+    public class LeftClickMCVCommand : AsyncViewCommand
     {
 
 
-        private int xInWorldCoordinates;
-        private int yInWorldCoordinates;
+        private int unitId;
 
 
-        public const string CommandName = "RightClick";
+        public const string CommandName = "LeftClickMCV";
 
-        public RightClickCommand(int xInWorldCoordinates, int yInWorldCoordinates)
+        public LeftClickMCVCommand(int unitId)
         {
-            this.xInWorldCoordinates = xInWorldCoordinates;
-            this.yInWorldCoordinates = yInWorldCoordinates;
+            this.unitId = unitId;
+
         }
 
         protected override void ProcessImpl()
         {
-            MikeAndConquerGame.instance.RightClick(xInWorldCoordinates, yInWorldCoordinates);
+            MikeAndConquerGame.instance.LeftClickMCV(unitId);
 
         }
     }

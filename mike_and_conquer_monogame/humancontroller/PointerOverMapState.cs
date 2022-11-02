@@ -23,7 +23,7 @@ namespace mike_and_conquer_monogame.humancontroller
             //     return new PointerOverSidebarState();
             // }
             //
-            // GameWorldView.instance.gameCursor.SetToMainCursor();
+            GameWorldView.instance.gameCursor.SetToMainCursor();
 
             Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
 
@@ -35,6 +35,11 @@ namespace mike_and_conquer_monogame.humancontroller
             // {
             //     UpdateMousePointerWhenMCVSelected(mouseWorldLocationPoint);
             // }
+
+            if (GameWorldView.instance.IsMCVSelected())
+            {
+                UpdateMousePointerWhenMCVSelected(mouseWorldLocationPoint);
+            }
 
 
             if (MouseInputUtil.LeftMouseButtonClicked(newMouseState, oldMouseState))
@@ -294,21 +299,23 @@ namespace mike_and_conquer_monogame.humancontroller
         //     }
         // }
 
-        // private static void UpdateMousePointerWhenMCVSelected(Point mousePositionAsPointInWorldCoordinates)
-        // {
-        //     if (GameWorld.instance.IsPointOverMCV(mousePositionAsPointInWorldCoordinates))
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToBuildConstructionYardCursor();
-        //     }
-        //     else if (GameWorld.instance.IsValidMoveDestination(mousePositionAsPointInWorldCoordinates))
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToMoveToLocationCursor();
-        //     }
-        //     else
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToMovementNotAllowedCursor();
-        //     }
-        // }
+
+
+        private static void UpdateMousePointerWhenMCVSelected(Point mousePositionAsPointInWorldCoordinates)
+        {
+            if (GameWorldView.instance.IsPointOverMCV(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
+            {
+                GameWorldView.instance.gameCursor.SetToBuildConstructionYardCursor();
+            }
+            else if (GameWorldView.instance.IsValidMoveDestination(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
+            {
+                GameWorldView.instance.gameCursor.SetToMoveToLocationCursor();
+            }
+            else
+            {
+                GameWorldView.instance.gameCursor.SetToMovementNotAllowedCursor();
+            }
+        }
 
 
     }
