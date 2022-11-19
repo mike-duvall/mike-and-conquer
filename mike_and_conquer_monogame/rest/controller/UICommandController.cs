@@ -39,7 +39,7 @@ namespace mike_and_conquer_monogame.rest.controller
                 rawCommand.CommandType = incomingRawCommand.CommandType;
                 rawCommand.CommandData = incomingRawCommand.CommandData;
                 
-                MikeAndConquerGame.instance.PostCommand(rawCommand);
+                MikeAndConquerGame.instance.ProcessUiCommandSynchronously(rawCommand);
 
                 return new OkObjectResult(new { Message = "Command Accepted" });
 
