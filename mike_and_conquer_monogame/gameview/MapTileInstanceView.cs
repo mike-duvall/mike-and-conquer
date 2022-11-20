@@ -40,6 +40,13 @@ namespace mike_and_conquer_monogame.gameview
         private bool isBlockingTerrain;
 
 
+
+        public bool IsBlockingTerrain
+        {
+            get { return isBlockingTerrain;}
+        }
+
+
         public MapTileVisibility visibility;
 
         private Texture2D mapTileBorder;

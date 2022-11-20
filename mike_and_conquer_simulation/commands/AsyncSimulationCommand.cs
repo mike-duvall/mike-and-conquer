@@ -59,16 +59,29 @@ namespace mike_and_conquer_simulation.commands
         // setting a result
         public Object GetResult()
         {
+            // condition.WaitOne();
+            // if (thrownException != null)
+            // {
+            //     throw thrownException;
+            // }
+            // else
+            // {
+            //     return result;
+            // }
+            WaitUntilCompleted();
+            return result;
+        }
+
+        public void WaitUntilCompleted()
+        {
             condition.WaitOne();
             if (thrownException != null)
             {
                 throw thrownException;
             }
-            else
-            {
-                return result;
-            }
+
         }
+
 
         public Exception ThrownException
         {

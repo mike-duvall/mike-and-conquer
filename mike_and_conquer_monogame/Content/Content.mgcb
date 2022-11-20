@@ -51,6 +51,10 @@
 #begin e1.shp
 /copy:e1.shp
 
+#begin mouse.shp
+/copy:mouse.shp
+
+
 
 #begin Shp/mcv.shp
 /copy:Shp/mcv.shp

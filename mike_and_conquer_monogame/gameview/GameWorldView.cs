@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework.Input;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.events;
@@ -40,12 +41,13 @@ using Matrix = Microsoft.Xna.Framework.Matrix;
 
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 
+
 namespace mike_and_conquer_monogame.gameview
 {
     public class GameWorldView
     {
 
-        // public GameCursor gameCursor;
+        public GameCursor gameCursor;
 
 
         public static int MAP_TILE_WIDTH = 24;
@@ -235,7 +237,7 @@ namespace mike_and_conquer_monogame.gameview
 
 
             // DrawSidebar(gameTime);
-            // DrawGameCursor(gameTime);
+            DrawGameCursor(gameTime);
         }
 
 
@@ -368,26 +370,26 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        // private void DrawGameCursor(GameTime gameTime)
-        // {
-        //     MikeAndConquerGame.instance.GraphicsDevice.Viewport = defaultViewport;
-        //     const BlendState nullBlendState = null;
-        //     const DepthStencilState nullDepthStencilState = null;
-        //     const RasterizerState nullRasterizerState = null;
-        //     const Effect nullEffect = null;
-        //
-        //     spriteBatch.Begin(
-        //         SpriteSortMode.Deferred,
-        //         nullBlendState,
-        //         SamplerState.PointClamp,
-        //         nullDepthStencilState,
-        //         nullRasterizerState,
-        //         nullEffect);
-        //     gameCursor.Draw(gameTime, spriteBatch);
-        //     spriteBatch.End();
-        //
-        //
-        // }
+        private void DrawGameCursor(GameTime gameTime)
+        {
+            MikeAndConquerGame.instance.GraphicsDevice.Viewport = defaultViewport;
+            const BlendState nullBlendState = null;
+            const DepthStencilState nullDepthStencilState = null;
+            const RasterizerState nullRasterizerState = null;
+            const Effect nullEffect = null;
+        
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                nullBlendState,
+                SamplerState.PointClamp,
+                nullDepthStencilState,
+                nullRasterizerState,
+                nullEffect);
+            gameCursor.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
+        
+        
+        }
 
 
         // private void DrawSidebar(GameTime gameTime)
@@ -883,14 +885,29 @@ namespace mike_and_conquer_monogame.gameview
         // }
 
 
+
+
         public void LoadContent()
+        {
+            try
+            {
+                DoLoadContent();
+            }
+            catch (Exception e)
+            {
+                MikeAndConquerGame.instance.logger.LogError(e, "Exception in GameWorldView::LoadContent()");
+                throw e;
+            }
+        }
+
+        public void DoLoadContent()
         {
 
             // CreateBasicMapSquareViews();
 //            CreateTerrainItemViews();
 
             spriteBatch = new SpriteBatch(MikeAndConquerGame.instance.GraphicsDevice);
-            // gameCursor = new GameCursor(1, 1);
+            gameCursor = new GameCursor(1, 1);
 
             this.defaultViewport = MikeAndConquerGame.instance.GraphicsDevice.Viewport;
             SetupMapViewportAndCamera();
@@ -1168,7 +1185,7 @@ namespace mike_and_conquer_monogame.gameview
             oldKeyboardState = newKeyboardState;
 
             MikeAndConquerGame.instance.SwitchToNewGameStateViewIfNeeded();
-            // gameCursor.Update(gameTime);
+            gameCursor.Update(gameTime);
 
             // if (GameWorld.instance.GDIBarracks != null)
             // {
@@ -1619,6 +1636,133 @@ namespace mike_and_conquer_monogame.gameview
                 adjacentMapTileLocation.WorldCoordinatesAsPoint.X,
                 adjacentMapTileLocation.WorldCoordinatesAsPoint.Y);
         }
+
+
+        public bool IsMCVSelected()
+        {
+            foreach (UnitView unitView in unitViewList)
+            {
+                if (unitView.Selected == true)
+                {
+                    if (unitView.GetType().Name.Equals(typeof(MCVView).Name))
+                    {
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
+
+        public bool IsPointOverMCV(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            return false;
+        }
+
+
+        public bool IsValidMoveDestination(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            bool isValidMoveDestination = true;
+
+            // MapTileInstance clickedMapTileInstance =
+            //     FindMapTileInstanceAllowNull(
+            //         MapTileLocation.CreateFromWorldCoordinates(pointInWorldCoordinates.X, pointInWorldCoordinates.Y));
+
+
+            MapTileInstanceView clickedMapTileInstanceView =
+                FindMapTileInstanceViewAllowNull(xInWorldCoordinates, yInWorldCoordinates);
+
+
+            if (clickedMapTileInstanceView == null)
+            {
+                isValidMoveDestination = false;
+            }
+            else if (clickedMapTileInstanceView.IsBlockingTerrain)
+            {
+                isValidMoveDestination = false;
+            }
+
+
+            // foreach (Sandbag nextSandbag in MikeAndConquerGame.instance.gameWorld.sandbagList)
+            // {
+            //
+            //     if (nextSandbag.ContainsPoint(pointInWorldCoordinates))
+            //     {
+            //         isValidMoveDestination = false;
+            //     }
+            // }
+            //
+            // if (GDIConstructionYard != null)
+            // {
+            //     if (GDIConstructionYard.ContainsPoint(pointInWorldCoordinates))
+            //     {
+            //         isValidMoveDestination = false;
+            //     }
+            // }
+
+            return isValidMoveDestination;
+        }
+
+        // public bool IsPointOverEnemy(Point pointInWorldCoordinates)
+        // {
+        //     // foreach (Minigunner nextNodMinigunner in nodMinigunnerList)
+        //     // {
+        //     //     if (nextNodMinigunner.ContainsPoint(pointInWorldCoordinates.X, pointInWorldCoordinates.Y))
+        //     //     {
+        //     //         return true;
+        //     //     }
+        //     // }
+        //     //
+        //     // return false;
+        //     //
+        //     return nodPlayer.IsPointOverMinigunner(pointInWorldCoordinates);
+        // }
+
+        // public bool IsPointOverMCV(Point pointInWorldCoordinates)
+        // {
+        //
+        //     // if (this.mcv != null)
+        //     // {
+        //     //     if (mcv.ContainsPoint(pointInWorldCoordinates.X, pointInWorldCoordinates.Y))
+        //     //     {
+        //     //         return true;
+        //     //     }
+        //     // }
+        //     //
+        //     // return false;
+        //
+        //     return gdiPlayer.IsPointOverMCV(pointInWorldCoordinates);
+        // }
+
+
+        // public bool IsAMinigunnerSelected()
+        // {
+        //     // foreach (Minigunner nextMinigunner in gdiMinigunnerList)
+        //     // {
+        //     //     if (nextMinigunner.selected)
+        //     //     {
+        //     //         return true;
+        //     //     }
+        //     // }
+        //     // return false;
+        //     return gdiPlayer.IsAMinigunnerSelected();
+        // }
+        //
+        // public bool IsAnMCVSelected()
+        // {
+        //     // if (mcv != null)
+        //     // {
+        //     //     return mcv.selected;
+        //     // }
+        //     //
+        //     // return false;
+        //     return gdiPlayer.IsAnMCVSelected();
+        // }
+
+
+
 
 
     }

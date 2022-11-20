@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,14 +31,14 @@ namespace mike_and_conquer_monogame.main
         private SpriteBatch _spriteBatch;
         public ILogger logger;
 
-        // public MonogameSimulationStateListener monogameSimulationStateListener = null;
+
         public List<SimulationStateListener> simulationStateListenerList = null;
 
         private bool hasScenarioBeenInitialized = false;
         private int mapWidth = -10;
         private int mapHeight = -10;
 
-//        private List<UnitView> unitViewList;
+        private int mouseCounter = 0;
 
         private Queue<AsyncViewCommand> inputCommandQueue;
 
@@ -54,7 +53,6 @@ namespace mike_and_conquer_monogame.main
 
         private SpriteSheet spriteSheet;
 
-        // public GameWorld gameWorld;
         private GameWorldView gameWorldView;
 
         private GameState currentGameState;
@@ -155,13 +153,13 @@ namespace mike_and_conquer_monogame.main
             topLevelWindowsHasBeenBroughtToForeground = true;
         }
 
-        internal void PostCommand(RawCommandUI rawCommandUi)
+
+        internal void ProcessUiCommandSynchronously(RawCommandUI rawCommandUi)
         {
-
             AsyncViewCommand command = ConvertRawCommand(rawCommandUi);
-            this.PostCommand(command);
-
+            command.Process();
         }
+
 
         internal AsyncViewCommand ConvertRawCommand(RawCommandUI rawCommand)
         {
@@ -200,7 +198,6 @@ namespace mike_and_conquer_monogame.main
                     new RightClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
-
             else if (rawCommand.CommandType.Equals(LeftClickAndHoldCommand.CommandName))
             {
                 ClickCommandBody commandBody =
@@ -270,16 +267,10 @@ namespace mike_and_conquer_monogame.main
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
             LoadTextures();
-            
-            
+           
             gameWorldView.LoadContent();
 
-
-
-
-            // TODO: use this.Content to load your game content here
         }
 
 
@@ -498,10 +489,6 @@ namespace mike_and_conquer_monogame.main
 
         }
 
-
-
-
-
         private void LoadTmpFile(string tmpFileName)
         {
             raiSpriteFrameManager.LoadAllTexturesFromTmpFile(tmpFileName);
@@ -520,6 +507,8 @@ namespace mike_and_conquer_monogame.main
             {
                 BringGameWindowToForeground();
             }
+
+            FixMousePointerProblem();
 
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -558,19 +547,30 @@ namespace mike_and_conquer_monogame.main
         }
 
 
+        private void FixMousePointerProblem()
+        {
+            // This is a hack fix to fix an issue where if you change this.IsMouseVisible to false
+            // while the Windows pointer is showing the mouse pointer arrow with the blue sworl "busy" icon on the side
+            // it will continue to show a frozen(non moving) copy of the blue sworl "busy" icon, even after it 
+            // stops showing and updating the normal Winodws mouse pointer (in favor of my manually handled one)
+            // TODO:  Investigate replacing countdown timer with direct call to (possibly to native Windows API) to determine
+            // native mouse pointer "busy" status, and wait until ti goes "not busy"
+            if (mouseCounter < 20)
+            {
+                this.IsMouseVisible = true;
+                mouseCounter++;
+            }
+            else
+            {
+                this.IsMouseVisible = false;
+            }
+        }
+
+
+
         public void AddMinigunnerView(int id, int x, int y)
         {
-            // UnitView unitView = new UnitView();
-            // unitView.UnitId = id;
-            // unitView.XInWorldCoordinates = x;
-            // unitView.YInWorldCoordinates = y;
-            // unitView.type = "Minigunner";
-            // unitView.color = Color.Chocolate;
-            // unitViewList.Add(unitView);
-
             gameWorldView.AddMinigunnerView(id, x, y);
-            // MinigunnerView minigunnerView = new GdiMinigunnerView(id, x, y);
-            // unitViewList.Add(minigunnerView);
         }
 
         public void RemoveUnitView(int unitId)
@@ -580,30 +580,12 @@ namespace mike_and_conquer_monogame.main
 
         public void AddJeepView(int id, int x, int y)
         {
-            // UnitView unitView = new UnitView();
-            // unitView.UnitId = id;
-            // unitView.XInWorldCoordinates = x;
-            // unitView.YInWorldCoordinates = y;
-            // unitView.type = "Jeep";
-            // unitView.color = Color.Blue;
-            // unitViewList.Add(unitView);
             gameWorldView.AddJeepView(id, x, y);
         }
 
         public void AddMCVView(int id, int x, int y)
         {
-            // // hasJeepBeenCreated = true;
-            // // jeepX = x;
-            // // jeepY = y;
-            // UnitView unitView = new UnitView();
-            // unitView.UnitId = id;
-            // unitView.XInWorldCoordinates = x;
-            // unitView.YInWorldCoordinates = y;
-            // unitView.type = "MCV";
-            // unitView.color = Color.Yellow;
-            // unitViewList.Add(unitView);
             gameWorldView.AddMCVView(id, x, y);
-
         }
 
 
@@ -627,96 +609,6 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        // protected override void Draw(GameTime gameTime)
-        // {
-        //     GraphicsDevice.Clear(Color.CornflowerBlue);
-        //     _spriteBatch.Begin();
-        //
-        //
-        //     if (hasScenarioBeenInitialized)
-        //     {
-        //         DrawMap();
-        //     }
-        //
-        //
-        //
-        //     foreach (UnitView unitView in unitViewList)
-        //     {
-        //         DrawRectangleAtCoordinate(unitView.XInWorldCoordinates, unitView.YInWorldCoordinates, unitView.color );
-        //     }
-        //
-        //     // TODO: Add your drawing code here
-        //
-        //     _spriteBatch.End();
-        //     base.Draw(gameTime);
-        // }
-
-        private void DrawMap()
-        {
-
-            for(int column = 0; column < this.mapWidth; column++) 
-                for(int row = 0; row < this.mapHeight; row++)
-                    DrawUnfilledRectangleAtCoordinate(column * 24, row * 24, 24, 24, Color.Red);
-
-        }
-
-        void DrawRectangleAtCoordinate(int x, int y, Color aColor)
-        {
-            int width = 10;
-            int height = 10;
-            Texture2D rect = new Texture2D(GraphicsDevice, width, height);
-
-            Color[] data = new Color[width * height];
-            for (int i = 0; i < data.Length; ++i) data[i] = aColor;
-            rect.SetData(data);
-
-            Vector2 coor = new Vector2(x, y);
-            _spriteBatch.Draw(rect, coor, Color.White);
-        }
-
-        private Texture2D mapRect = null;
-        void DrawUnfilledRectangleAtCoordinate(int x, int y, int width, int height, Color color)
-        {
-            if (mapRect == null)
-            {
-                mapRect = new Texture2D(GraphicsDevice, width, height);
-                Color[] data = new Color[width * height];
-                // Draw top line
-                for (int i = 0; i < width; ++i) data[i] = color;
-
-                // Draw left line
-                for (int i = 0; i < width * height; i++)
-                {
-                    if (i % width == 0)
-                    {
-                        data[i] = color;
-                    }
-                }
-
-                // Draw right line
-                for (int i = 0; i < width * height; i++)
-                {
-                    if ((i + 1) % width == 0)
-                    {
-                        data[i] = color;
-                    }
-                }
-
-
-                // Draw bottom line
-                for (int i = width * height - width; i < width * height; i++) data[i] = color;
-
-                // 012
-                // 345        
-                // 678
-
-                mapRect.SetData(data);
-
-            }
-
-            Vector2 coor = new Vector2(x, y);
-            _spriteBatch.Draw(mapRect, coor, Color.White);
-        }
 
         public void UpdateUnitViewPosition(int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {
@@ -731,7 +623,6 @@ namespace mike_and_conquer_monogame.main
 
         }
 
-        // public void InitializeUI(ScenarioInitializedEventData scenarioInitializedEventData)
         public void InitializeUI(
             int theMapWidth,
             int theMapHeight,
@@ -834,13 +725,22 @@ namespace mike_and_conquer_monogame.main
             StartScenarioCommand command = new StartScenarioCommand();
             command.GDIPlayerController = playerController;
             SimulationMain.instance.PostCommand(command);
+            command.WaitUntilCompleted();
 
+        }
+
+        private UnitView GetUnitViewByIdViaCommand(int unitId)
+        {
+            GetMinigunnerViewCommand command = new GetMinigunnerViewCommand(GameWorldView.instance, unitId);
+            PostCommand(command);
+            UnitView unitView = (UnitView) command.GetResult();
+            return unitView;
         }
 
         public void SelectUnit(int unitId)
         {
 
-            UnitView unitView = this.gameWorldView.GetUnitViewById(unitId);
+            UnitView unitView = GetUnitViewByIdViaCommand(unitId);
 
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = unitView.XInWorldCoordinates;
@@ -852,16 +752,7 @@ namespace mike_and_conquer_monogame.main
             int screenWidth = GameWorldView.instance.ScreenWidth;
             int screenHeight = GameWorldView.instance.ScreenHeight;
 
-            // It appears that this mouse clicking code needs to run in a thread other than the main game processing thread
-            // maybe because it has sleeps in it?
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                /* run your code here */
-                // Console.WriteLine("Hello, world");
-                MouseInputHandler.DoLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
-
-            }).Start();
+            MouseInputHandler.DoLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
 
         }
 
@@ -884,18 +775,11 @@ namespace mike_and_conquer_monogame.main
             Vector2 transformedLocation =
                 ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                /* run your code here */
-                // Console.WriteLine("Hello, world");
-                MouseInputHandler.DoLeftMouseClick(
-                    (uint)transformedLocation.X,
-                    (uint)transformedLocation.Y,
-                    GameWorldView.instance.ScreenWidth,
-                    GameWorldView.instance.ScreenHeight);
-
-            }).Start();
+            MouseInputHandler.DoLeftMouseClick(
+                (uint)transformedLocation.X,
+                (uint)transformedLocation.Y,
+                GameWorldView.instance.ScreenWidth,
+                GameWorldView.instance.ScreenHeight);
 
         }
 
@@ -904,18 +788,14 @@ namespace mike_and_conquer_monogame.main
             Vector2 transformedLocation =
                 ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                MouseInputHandler.DoRightMouseClick(
-                    (uint)transformedLocation.X,
-                    (uint)transformedLocation.Y,
-                    GameWorldView.instance.ScreenWidth,
-                    GameWorldView.instance.ScreenHeight);
-
-            }).Start();
+            MouseInputHandler.DoRightMouseClick(
+                (uint)transformedLocation.X,
+                (uint)transformedLocation.Y,
+                GameWorldView.instance.ScreenWidth,
+                GameWorldView.instance.ScreenHeight);
 
         }
+
 
 
 
@@ -925,17 +805,11 @@ namespace mike_and_conquer_monogame.main
             Vector2 transformedLocation =
                 ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
-
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                MouseInputHandler.MoveMouseToCoordinates(
-                    (uint)transformedLocation.X,
-                    (uint)transformedLocation.Y,
-                    GameWorldView.instance.ScreenWidth,
-                    GameWorldView.instance.ScreenHeight);
-
-            }).Start();
+            MouseInputHandler.MoveMouseToCoordinates(
+                (uint)transformedLocation.X,
+                (uint)transformedLocation.Y,
+                GameWorldView.instance.ScreenWidth,
+                GameWorldView.instance.ScreenHeight);
 
         }
 
@@ -945,17 +819,11 @@ namespace mike_and_conquer_monogame.main
             Vector2 transformedLocation =
                 ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
-
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                MouseInputHandler.DoLeftMouseClickAndHold(
-                    (uint)transformedLocation.X,
-                    (uint)transformedLocation.Y,
-                    GameWorldView.instance.ScreenWidth,
-                    GameWorldView.instance.ScreenHeight);
-
-            }).Start();
+            MouseInputHandler.DoLeftMouseClickAndHold(
+                (uint)transformedLocation.X,
+                (uint)transformedLocation.Y,
+                GameWorldView.instance.ScreenWidth,
+                GameWorldView.instance.ScreenHeight);
 
         }
 
@@ -966,16 +834,11 @@ namespace mike_and_conquer_monogame.main
                 ConvertWorldCoordinatesToScreenCoordaintes(xInWorldCoordinates, yInWorldCoordinates);
 
 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                MouseInputHandler.DoReleaseLeftMouseClick(
-                    (uint)transformedLocation.X,
-                    (uint)transformedLocation.Y,
-                    GameWorldView.instance.ScreenWidth,
-                    GameWorldView.instance.ScreenHeight);
-
-            }).Start();
+            MouseInputHandler.DoReleaseLeftMouseClick(
+                (uint)transformedLocation.X,
+                (uint)transformedLocation.Y,
+                GameWorldView.instance.ScreenWidth,
+                GameWorldView.instance.ScreenHeight);
 
         }
 

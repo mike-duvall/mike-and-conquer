@@ -16,8 +16,6 @@ namespace mike_and_conquer_monogame.gameview
         public bool Selected { get; set; }
 
 
-        public String type;
-
         public Color color;
 
         protected UnitSize unitSize;

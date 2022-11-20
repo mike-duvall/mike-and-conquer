@@ -16,14 +16,12 @@ namespace mike_and_conquer_monogame.rest.controller
     public class UIUnitQueryController : ControllerBase
     {
 
-        private readonly ILogger<AdminCommandController> _logger;
+        private readonly ILogger<UIUnitQueryController> _logger;
 
-        public UIUnitQueryController(ILogger<AdminCommandController> logger)
+        public UIUnitQueryController(ILogger<UIUnitQueryController> logger)
         {
             _logger = logger;
         }
-
-
 
 
         [HttpGet]
@@ -40,6 +38,7 @@ namespace mike_and_conquer_monogame.rest.controller
 
             return new OkObjectResult(restUnit);
         }
+
 
 
     }
