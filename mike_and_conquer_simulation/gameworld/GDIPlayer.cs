@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.main;
@@ -29,6 +30,13 @@ namespace mike_and_conquer_simulation.gameworld
             get { return unitList; }
         }
 
+
+        private GDIConstructionYard gdiConstructionYard;
+
+        public GDIConstructionYard GDIConstructionYard
+        {
+            get { return gdiConstructionYard; }
+        }
 
         // private GDIBarracks gdiBarracks;
         // public GDIBarracks GDIBarracks
@@ -282,6 +290,54 @@ namespace mike_and_conquer_simulation.gameworld
 
         }
 
+
+        public GDIConstructionYard CreateConstructionYardFromMCV()
+        {
+            MCV mcv = null;
+
+            foreach (Unit unit in unitList)
+            {
+                if (unit is MCV)
+                {
+                    mcv = (MCV)unit;
+                }
+            }
+
+            if (mcv != null)
+            {
+
+                RemoveUnit(mcv.UnitId);
+
+                MapTileLocation gdiConstrtuctionsYardMapTileLocation =
+                    MapTileLocation.CreateFromWorldCoordinates((int) mcv.GameWorldLocation.X, (int) mcv.GameWorldLocation.Y);
+                gdiConstructionYard = new GDIConstructionYard(gdiConstrtuctionsYardMapTileLocation);
+
+
+
+                int unidId = -1;
+
+
+                PublishUnitCreateEvent(
+                    GDIConstructionYardCreatedEventData.EventType,
+                    unidId,
+                    gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.X,
+                    gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.Y);
+
+            }
+            else
+            {
+                throw new Exception("Did not find MCV when attempting to create ConstructionYard");
+            }
+
+
+
+
+
+
+
+            return gdiConstructionYard;
+
+        }
 
         private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {

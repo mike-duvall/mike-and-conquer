@@ -64,7 +64,7 @@ namespace mike_and_conquer_monogame.humancontroller
                 MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonUnclicked");
                 leftMouseDownStartPoint.X = -1;
                 leftMouseDownStartPoint.Y = -1;
-                Boolean handledEvent = HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);
+                bool handledEvent = HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);
                 // if (!handledEvent)
                 // {
                 //     handledEvent = CheckForAndHandleLeftClickOnEnemyUnit(mouseWorldLocationPoint);
