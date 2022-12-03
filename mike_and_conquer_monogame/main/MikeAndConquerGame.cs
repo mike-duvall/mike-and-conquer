@@ -116,7 +116,9 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add(new AddMinigunnerViewWhenMinigunnerCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
-            
+            simulationStateListenerList.Add(new AddGDIConstructionYardViewWhenGDIConstructionYardCreated(this));
+
+
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
             
             simulationStateListenerList.Add(new CreatePlannedPathViewWhenUnitMovementPlanCreatedEventHandler(this));
@@ -448,13 +450,13 @@ namespace mike_and_conquer_monogame.main
             //     GDIBarracksView.SPRITE_KEY,
             //     raiSpriteFrameManager.GetSpriteFramesForUnit(GDIBarracksView.SHP_FILE_NAME),
             //     GDIBarracksView.SHP_FILE_COLOR_MAPPER);
-            //
-            // raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIConstructionYardView.SHP_FILE_NAME);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     GDIConstructionYardView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(GDIConstructionYardView.SHP_FILE_NAME),
-            //     GDIConstructionYardView.SHP_FILE_COLOR_MAPPER);
-            //
+            
+            raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIConstructionYardView.SHP_FILE_NAME);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                GDIConstructionYardView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(GDIConstructionYardView.SHP_FILE_NAME),
+                GDIConstructionYardView.SHP_FILE_COLOR_MAPPER);
+            
             raiSpriteFrameManager.LoadAllTexturesFromShpFile(PartiallyVisibileMapTileMask.SHP_FILE_NAME);
             spriteSheet.LoadUnitFramesFromSpriteFrames(PartiallyVisibileMapTileMask.SPRITE_KEY,
                 raiSpriteFrameManager.GetSpriteFramesForUnit(PartiallyVisibileMapTileMask.SHP_FILE_NAME),
@@ -586,6 +588,11 @@ namespace mike_and_conquer_monogame.main
         public void AddMCVView(int id, int x, int y)
         {
             gameWorldView.AddMCVView(id, x, y);
+        }
+
+        public void AddGDIConstructionYardView(int id, int x, int y)
+        {
+            gameWorldView.AddGDIConstructionYardView(id, x, y);
         }
 
 

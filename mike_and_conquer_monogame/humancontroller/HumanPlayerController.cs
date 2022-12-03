@@ -1,10 +1,12 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using mike_and_conquer_monogame.gameview;
+using mike_and_conquer_simulation.commands;
 using mike_and_conquer_simulation.gameworld;
 using MouseState = Microsoft.Xna.Framework.Input.MouseState;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 
+using SimulationMain = mike_and_conquer_simulation.main.SimulationMain;
 
 
 namespace mike_and_conquer_monogame.humancontroller
@@ -57,11 +59,11 @@ namespace mike_and_conquer_monogame.humancontroller
         //     // Reconsider how this is handled
         // }
 
-        public static Boolean CheckForAndHandleLeftClickOnFriendlyUnit(Point mouseLocation)
+        public static bool CheckForAndHandleLeftClickOnFriendlyUnit(Point mouseLocation)
         {
             int mouseX = mouseLocation.X;
             int mouseY = mouseLocation.Y;
-            Boolean handled = false;
+            bool handled = false;
             // foreach (Minigunner nextMinigunner in GameWorld.instance.GDIMinigunnerList)
             // {
             //     if (nextMinigunner.ContainsPoint(mouseX, mouseY))
@@ -78,52 +80,27 @@ namespace mike_and_conquer_monogame.humancontroller
                 if (unitView.ContainsPoint(mouseX, mouseY))
                 {
                     handled = true;
-                    // GameWorld.instance.SelectSingleGDIUnit(nextMinigunner);
-                    unitView.Selected = true;
 
+                    if (unitView is MCVView)
+                    {
+
+                        if (unitView.Selected)
+                        {
+                            // If left clicking on MCV that is already selected, build construction yard
+                            CreateGDIConstructionYardCommand command = new CreateGDIConstructionYardCommand();
+                            SimulationMain.instance.PostCommand(command);
+                        }
+
+                    }
+
+                    unitView.Selected = true;
                     // MikeAndConquerGame.instance.SoundManager.PlayUnitAwaitingOrders();
                 }
             }
 
 
-
-
-            // if (!handled)
-            // {
-            //     handled = CheckForAndHandleLeftClickOnMCV(mouseX, mouseY);
-            // }
-
             return handled;
         }
-
-
-        // private static bool CheckForAndHandleLeftClickOnMCV(int mouseX, int mouseY)
-        // {
-        //     Boolean handled = false;
-        //     MCV mcv = GameWorld.instance.MCV;
-        //     if (mcv != null)
-        //     {
-        //         if (mcv.ContainsPoint(mouseX, mouseY))
-        //         {
-        //             handled = true;
-        //             if (mcv.selected == false)
-        //             {
-        //                 GameWorld.instance.SelectMCV(GameWorld.instance.MCV);
-        //             }
-        //             else
-        //             {
-        //                 MapTileLocation mapTileLocation =
-        //                     MapTileLocation.CreateFromWorldCoordinatesInVector2(mcv.GameWorldLocation.WorldCoordinatesAsVector2);
-        //                 MikeAndConquerGame.instance.RemoveMCV();
-        //                 MikeAndConquerGame.instance.AddGDIConstructionYard(mapTileLocation);
-        //             }
-        //         }
-        //     }
-        //
-        //     return handled;
-        // }
-
-
 
 
     }

@@ -171,6 +171,7 @@ namespace mike_and_conquer_monogame.gameview
             get { return unitViewList; }
         }
 
+        private GDIConstructionYardView gdiConstructionYardView = null;
 
         // public List<MinigunnerView> NodMinigunnerViewList
         // {
@@ -500,10 +501,10 @@ namespace mike_and_conquer_monogame.gameview
             //     GameWorldView.instance.GDIBarracksView.DrawShadowOnly(gameTime, spriteBatch);
             // }
             //
-            // if (GameWorldView.instance.GdiConstructionYardView != null)
-            // {
-            //     GameWorldView.instance.GdiConstructionYardView.DrawShadowOnly(gameTime, spriteBatch);
-            // }
+            if (gdiConstructionYardView != null)
+            {
+                gdiConstructionYardView.DrawShadowOnly(gameTime, spriteBatch);
+            }
 
 
             // foreach (SandbagView nextSandbagView in GameWorldView.instance.SandbagViewList)
@@ -683,12 +684,12 @@ namespace mike_and_conquer_monogame.gameview
             // {
             //     GameWorldView.instance.GDIBarracksView.DrawNoShadow(gameTime, spriteBatch);
             // }
-            //
-            // if (GameWorldView.instance.GdiConstructionYardView != null)
-            // {
-            //     GameWorldView.instance.GdiConstructionYardView.DrawNoShadow(gameTime, spriteBatch);
-            // }
-            //
+            
+            if (gdiConstructionYardView != null)
+            {
+                gdiConstructionYardView.DrawNoShadow(gameTime, spriteBatch);
+            }
+            
             // foreach (SandbagView nextSandbagView in GameWorldView.instance.SandbagViewList)
             // {
             //     nextSandbagView.DrawNoShadow(gameTime, spriteBatch);
@@ -717,6 +718,8 @@ namespace mike_and_conquer_monogame.gameview
             {
                 nextTerrainView.DrawNoShadow(gameTime, spriteBatch);
             }
+
+            
 
             spriteBatch.End();
         }
@@ -784,7 +787,7 @@ namespace mike_and_conquer_monogame.gameview
             // sandbagViewList.Clear();
             // nodTurretViewList.Clear();
             // projectile120MmViewList.Clear();
-             // gdiConstructionYardView = null;
+            gdiConstructionYardView = null;
              // gdiBarracksView = null;
              // barracksSidebarIconView = null;
              // minigunnerSidebarIconView = null;
@@ -1501,6 +1504,12 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
+        public void AddGDIConstructionYardView(int id, int x, int y)
+        {
+            gdiConstructionYardView = new GDIConstructionYardView(id, x, y);
+
+        }
+
         public void AddJeepView(int id, int x, int y)
         {
             unitViewList.Add(new JeepView(id, x, y));
@@ -1658,7 +1667,25 @@ namespace mike_and_conquer_monogame.gameview
 
         public bool IsPointOverMCV(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            return false;
+
+            MCVView foundMCVView = null;
+            foreach (UnitView unitView in this.UnitViewList)
+            {
+                if (unitView is MCVView)
+                {
+                    foundMCVView = (MCVView)unitView;
+                }
+            }
+
+            if (foundMCVView != null)
+            {
+                return foundMCVView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates);
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
 

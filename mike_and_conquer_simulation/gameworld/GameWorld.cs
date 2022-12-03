@@ -547,6 +547,11 @@ namespace mike_and_conquer_simulation.gameworld
             return gdiPlayer.CreateMCV(xInWorldCoordinates, yInWorldCoordinates);
         }
 
+        public GDIConstructionYard CreateConstructionYardFromMCV()
+        {
+            return gdiPlayer.CreateConstructionYardFromMCV();
+        }
+
 
         public void RemoveUnit(int unitId)
         {

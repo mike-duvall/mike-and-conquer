@@ -335,30 +335,13 @@ namespace mike_and_conquer_simulation.main
 
         internal MCV CreateMCV(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-
             return gameWorld.CreateMCV(xInWorldCoordinates, yInWorldCoordinates);
-
-            // MCV mcv = new MCV();
-            // mcv.GameWorldLocation.X = x;
-            // mcv.GameWorldLocation.Y = y;
-            // unitList.Add(mcv);
-            //
-            // SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-            // simulationStateUpdateEvent.EventType = MCVCreateEventData.EventType;
-            // MCVCreateEventData eventData = new MCVCreateEventData();
-            // eventData.UnitId = mcv.UnitId;
-            // eventData.X = x;
-            // eventData.Y = y;
-            //
-            // simulationStateUpdateEvent.EventData = JsonConvert.SerializeObject(eventData);
-            //
-            // foreach (SimulationStateListener listener in listeners)
-            // {
-            //     listener.Update(simulationStateUpdateEvent);
-            // }
-            //
-            // return mcv;
         }
+
+        internal GDIConstructionYard CreateConstructionYardFromMCV()
+        {
+            return gameWorld.CreateConstructionYardFromMCV();
+        } 
 
 
         internal void RemoveUnit(int unitId)
