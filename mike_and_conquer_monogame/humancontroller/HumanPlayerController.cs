@@ -63,7 +63,7 @@ namespace mike_and_conquer_monogame.humancontroller
         {
             int mouseX = mouseLocation.X;
             int mouseY = mouseLocation.Y;
-            Boolean handled = false;
+            bool handled = false;
             // foreach (Minigunner nextMinigunner in GameWorld.instance.GDIMinigunnerList)
             // {
             //     if (nextMinigunner.ContainsPoint(mouseX, mouseY))
@@ -80,15 +80,9 @@ namespace mike_and_conquer_monogame.humancontroller
                 if (unitView.ContainsPoint(mouseX, mouseY))
                 {
                     handled = true;
-                    // GameWorld.instance.SelectSingleGDIUnit(nextMinigunner);
 
                     if (unitView is MCVView)
                     {
-
-                        // OrderUnitToMoveCommand command = new OrderUnitToMoveCommand();
-                        // command.UnitId = unitId;
-                        // command.DestinationXInWorldCoordinates = centerOfSquare.X;
-                        // command.DestinationYInWorldCoordinates = centerOfSquare.Y;
 
                         if (unitView.Selected)
                         {
@@ -104,42 +98,9 @@ namespace mike_and_conquer_monogame.humancontroller
                 }
             }
 
-            // if (!handled)
-            // {
-            //     handled = CheckForAndHandleLeftClickOnMCV(mouseX, mouseY);
-            // }
 
             return handled;
         }
-
-
-        // private static bool CheckForAndHandleLeftClickOnMCV(int mouseX, int mouseY)
-        // {
-        //     Boolean handled = false;
-        //     MCV mcv = GameWorld.instance.MCV;
-        //     if (mcv != null)
-        //     {
-        //         if (mcv.ContainsPoint(mouseX, mouseY))
-        //         {
-        //             handled = true;
-        //             if (mcv.selected == false)
-        //             {
-        //                 GameWorld.instance.SelectMCV(GameWorld.instance.MCV);
-        //             }
-        //             else
-        //             {
-        //                 MapTileLocation mapTileLocation =
-        //                     MapTileLocation.CreateFromWorldCoordinatesInVector2(mcv.GameWorldLocation.WorldCoordinatesAsVector2);
-        //                 MikeAndConquerGame.instance.RemoveMCV();
-        //                 MikeAndConquerGame.instance.AddGDIConstructionYard(mapTileLocation);
-        //             }
-        //         }
-        //     }
-        //
-        //     return handled;
-        // }
-
-
 
 
     }

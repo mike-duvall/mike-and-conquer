@@ -1667,7 +1667,6 @@ namespace mike_and_conquer_monogame.gameview
 
         public bool IsPointOverMCV(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            //return false;
 
             MCVView foundMCVView = null;
             foreach (UnitView unitView in this.UnitViewList)

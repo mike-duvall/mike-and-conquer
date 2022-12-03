@@ -23,7 +23,6 @@ namespace mike_and_conquer_monogame.eventhandler
                 GDIConstructionYardCreatedEventData eventData =
                     JsonConvert.DeserializeObject<GDIConstructionYardCreatedEventData>(anEvent.EventData);
 
-                // AddMCVViewCommand viewCommand = new AddMCVViewCommand(eventData.UnitId, eventData.X, eventData.Y);
                 AddGDIConstructionYardViewCommand command = new AddGDIConstructionYardViewCommand(
                     -1,
                     eventData.X,

@@ -20,7 +20,6 @@ namespace mike_and_conquer_monogame.gameview
         // TODO:  Consider something other than UnitSprite in future
         private UnitSprite unitSprite;
 
-        // private GDIConstructionYard myGdiConstructionYard;
         public int XInWorldCoordinates { get; set; }
         public int YInWorldCoordinates { get; set; }
 
@@ -28,8 +27,6 @@ namespace mike_and_conquer_monogame.gameview
 
         public const string SPRITE_KEY = "ConstructionYard";
 
-        // TODO:  SHP_FILE_NAME and ShpFileColorMapper don't really belong in this view
-        // Views should be agnostic about where the sprite data was loaded from
         public const string SHP_FILE_NAME = "Shp\\fact.shp";
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
@@ -43,7 +40,6 @@ namespace mike_and_conquer_monogame.gameview
             this.unitSprite.drawShadow = true;
             this.unitSprite.drawBoundingRectangle = false;
             this.unitSprite.middleOfSpriteInSpriteCoordinates.Y += (GameWorldView.MAP_TILE_HEIGHT / 2);
-            // this.myGdiConstructionYard = constructionYard;
 
             SetupAnimations();
         }

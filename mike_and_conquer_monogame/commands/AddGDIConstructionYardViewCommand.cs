@@ -20,9 +20,7 @@ namespace mike_and_conquer_monogame.commands
 
         protected override void ProcessImpl()
         {
-//            MikeAndConquerGame.instance.AddMCVView(unitId, x, y);
             MikeAndConquerGame.instance.AddGDIConstructionYardView(unitId, x, y);
-
         }
     }
 }

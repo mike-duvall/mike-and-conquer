@@ -5,8 +5,6 @@ namespace mike_and_conquer_simulation.commands
     internal class CreateConstructionYardFromMCVCommand : AsyncSimulationCommand
     {
 
-        // public const string CommandName = "CreateMCV";
-
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -17,9 +15,5 @@ namespace mike_and_conquer_simulation.commands
             result = SimulationMain.instance.CreateMCV(X, Y);
         }
 
-        public Minigunner GetMinigunner()
-        {
-            return (Minigunner) GetResult();
-        }
     }
 }
