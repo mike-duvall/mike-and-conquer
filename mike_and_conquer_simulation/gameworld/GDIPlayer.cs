@@ -130,6 +130,7 @@ namespace mike_and_conquer_simulation.gameworld
             }
 
             // UpdateGDIMinigunners();
+            UpdateConstructionYard();
             UpdateUnits();
 
         }
@@ -176,13 +177,13 @@ namespace mike_and_conquer_simulation.gameworld
         // }
         //
         //
-        // private void UpdateConstructionYard(GameTime gameTime)
-        // {
-        //     if (gdiConstructionYard != null)
-        //     {
-        //         gdiConstructionYard.Update(gameTime);
-        //     }
-        // }
+        private void UpdateConstructionYard()
+        {
+            if (gdiConstructionYard != null)
+            {
+                gdiConstructionYard.Update();
+            }
+        }
 
 
         // public void AddMinigunner(Minigunner newMinigunner)

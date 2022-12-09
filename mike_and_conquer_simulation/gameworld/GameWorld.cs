@@ -558,6 +558,12 @@ namespace mike_and_conquer_simulation.gameworld
             gdiPlayer.RemoveUnit(unitId);
         }
 
+        public void BeginBuildingBarracks()
+        {
+            gdiPlayer.GDIConstructionYard.StartBuildingBarracks();
+        }
+
+
         public Unit FindUnitWithUnitId(int unitId)
         {
             return gdiPlayer.FindUnitWithUnitId(unitId);

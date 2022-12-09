@@ -139,7 +139,7 @@ namespace mike_and_conquer_monogame.humancontroller
             mouseInput.mkhi.mi.dwFlags = mouseUpFlag;
             uint y2 = SendInput(1, ref mouseInput, mouseInputStructSize);
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(200);
 
         }
 

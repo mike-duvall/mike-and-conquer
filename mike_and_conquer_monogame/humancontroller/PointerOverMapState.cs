@@ -1,13 +1,19 @@
-﻿using System;
+﻿
 using Microsoft.Extensions.Logging;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using mike_and_conquer_monogame.gameview;
-using mike_and_conquer_monogame.main;
-using mike_and_conquer_simulation.commands;
-using mike_and_conquer_simulation.main;
-// using mike_and_conquer.gameobjects;
 
+using Math = System.Math;
+
+using Point = Microsoft.Xna.Framework.Point;
+using MouseState = Microsoft.Xna.Framework.Input.MouseState;
+
+using GameWorldView = mike_and_conquer_monogame.gameview.GameWorldView;
+using MikeAndConquerGame = mike_and_conquer_monogame.main.MikeAndConquerGame;
+using UnitView = mike_and_conquer_monogame.gameview.UnitView;
+using MapTileInstanceView = mike_and_conquer_monogame.gameview.MapTileInstanceView;
+
+using OrderUnitToMoveCommand = mike_and_conquer_simulation.commands.OrderUnitToMoveCommand;
+
+using SimulationMain = mike_and_conquer_simulation.main.SimulationMain;
 
 namespace mike_and_conquer_monogame.humancontroller
 {
@@ -18,11 +24,11 @@ namespace mike_and_conquer_monogame.humancontroller
 
         public override HumanControllerState Update(MouseState newMouseState, MouseState oldMouseState)
         {
-            // if (MouseInputUtil.IsOverSidebar(newMouseState))
-            // {
-            //     return new PointerOverSidebarState();
-            // }
-            //
+            if (MouseInputUtil.IsOverSidebar(newMouseState))
+            {
+                return new PointerOverSidebarState();
+            }
+            
             GameWorldView.instance.gameCursor.SetToMainCursor();
 
             Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
@@ -199,6 +205,7 @@ namespace mike_and_conquer_monogame.humancontroller
             SimulationMain.instance.PostCommand(command);
 
         }
+
 
 
         private bool CheckForAndHandleLeftClickOnMap(Point mouseLocation)

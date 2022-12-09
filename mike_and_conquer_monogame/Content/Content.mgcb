@@ -34,6 +34,14 @@
 /copy:tshadow.mrf
 
 
+#begin SideBar/e1icnh.tem
+/copy:SideBar/e1icnh.tem
+
+#begin SideBar/pyleicnh.tem
+/copy:SideBar/pyleicnh.tem
+
+
+
 #begin Effects/MapTilePaletteMapperEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -58,6 +66,11 @@
 
 #begin Shp/mcv.shp
 /copy:Shp/mcv.shp
+
+#begin Shp/pyle.shp
+/copy:Shp/pyle.shp
+
+
 
 #begin Shp/fact.shp
 /copy:Shp/fact.shp

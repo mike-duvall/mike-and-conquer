@@ -10,6 +10,7 @@ using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 using XnaPoint = Microsoft.Xna.Framework.Point;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
+using Point = Microsoft.Xna.Framework.Point;
 
 
 
@@ -27,7 +28,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Color = Microsoft.Xna.Framework.Color;
 
 using Viewport = Microsoft.Xna.Framework.Graphics.Viewport;
-// using BarracksSidebarIconView = mike_and_conquer.gameview.sidebar.BarracksSidebarIconView;
+using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
 // using MinigunnerSidebarIconView = mike_and_conquer.gameview.sidebar.MinigunnerSidebarIconView;
 
 using RenderTarget2D = Microsoft.Xna.Framework.Graphics.RenderTarget2D;
@@ -60,14 +61,14 @@ namespace mike_and_conquer_monogame.gameview
 
         private ShadowMapper shadowMapper;
         // private MinigunnerSidebarIconView minigunnerSidebarIconView;
-        // private BarracksSidebarIconView barracksSidebarIconView;
-        //
-        //
-        // public BarracksSidebarIconView BarracksSidebarIconView
-        // {
-        //     get { return barracksSidebarIconView; }
-        // }
-        //
+        private BarracksSidebarIconView barracksSidebarIconView;
+        
+        
+        public BarracksSidebarIconView BarracksSidebarIconView
+        {
+            get { return barracksSidebarIconView; }
+        }
+        
         // public MinigunnerSidebarIconView MinigunnerSidebarIconView
         // {
         //     get { return minigunnerSidebarIconView; }
@@ -194,10 +195,10 @@ namespace mike_and_conquer_monogame.gameview
         //     get { return gdiBarracksView; }
         // }
         //
-        // public GDIConstructionYardView GdiConstructionYardView
-        // {
-        //     get { return gdiConstructionYardView; }
-        // }
+        public GDIConstructionYardView GDIConstructionYardView
+        {
+            get { return gdiConstructionYardView; }
+        }
 
 
 
@@ -237,7 +238,7 @@ namespace mike_and_conquer_monogame.gameview
             DrawMap(gameTime);
 
 
-            // DrawSidebar(gameTime);
+            DrawSidebar(gameTime);
             DrawGameCursor(gameTime);
         }
 
@@ -393,39 +394,39 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        // private void DrawSidebar(GameTime gameTime)
-        // {
-        //     MikeAndConquerGame.instance.GraphicsDevice.Viewport = sidebarViewport;
-        //
-        //     const BlendState nullBlendState = null;
-        //     const DepthStencilState nullDepthStencilState = null;
-        //     const RasterizerState nullRasterizerState = null;
-        //     const Effect nullEffect = null;
-        //
-        //     spriteBatch.Begin(
-        //         SpriteSortMode.Deferred,
-        //         nullBlendState,
-        //         SamplerState.PointClamp,
-        //         nullDepthStencilState,
-        //         nullRasterizerState,
-        //         nullEffect,
-        //         sidebarViewportCamera.TransformMatrix);
-        //
-        //     spriteBatch.Draw(sidebarBackgroundRectangle,
-        //         new Rectangle(0, 0, sidebarViewport.Width / 2, sidebarViewport.Height / 2), Color.White);
-        //
-        //     if (minigunnerSidebarIconView != null)
-        //     {
-        //         minigunnerSidebarIconView.Draw(gameTime, spriteBatch);
-        //     }
-        //
-        //     if (barracksSidebarIconView != null)
-        //     {
-        //         barracksSidebarIconView.Draw(gameTime, spriteBatch);
-        //     }
-        //
-        //     spriteBatch.End();
-        // }
+        private void DrawSidebar(GameTime gameTime)
+        {
+            MikeAndConquerGame.instance.GraphicsDevice.Viewport = sidebarViewport;
+        
+            const BlendState nullBlendState = null;
+            const DepthStencilState nullDepthStencilState = null;
+            const RasterizerState nullRasterizerState = null;
+            const Effect nullEffect = null;
+        
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                nullBlendState,
+                SamplerState.PointClamp,
+                nullDepthStencilState,
+                nullRasterizerState,
+                nullEffect,
+                sidebarViewportCamera.TransformMatrix);
+        
+            spriteBatch.Draw(sidebarBackgroundRectangle,
+                new Rectangle(0, 0, sidebarViewport.Width / 2, sidebarViewport.Height / 2), Color.White);
+        
+            // if (minigunnerSidebarIconView != null)
+            // {
+            //     minigunnerSidebarIconView.Draw(gameTime, spriteBatch);
+            // }
+            //
+            if (barracksSidebarIconView != null)
+            {
+                barracksSidebarIconView.Draw(gameTime, spriteBatch);
+            }
+        
+            spriteBatch.End();
+        }
 
 
         private void UpdateMapTileRenderTarget(GameTime gameTime)
@@ -789,7 +790,7 @@ namespace mike_and_conquer_monogame.gameview
             // projectile120MmViewList.Clear();
             gdiConstructionYardView = null;
              // gdiBarracksView = null;
-             // barracksSidebarIconView = null;
+            barracksSidebarIconView = null;
              // minigunnerSidebarIconView = null;
         }
 
@@ -1195,11 +1196,11 @@ namespace mike_and_conquer_monogame.gameview
             //     minigunnerSidebarIconView.Update(gameTime);
             // }
             //
-            // if (GameWorld.instance.GDIConstructionYard != null)
+            // if (GameWorldView.instance.gdiConstructionYardView != null)
             // {
             //     barracksSidebarIconView.Update(gameTime);
             // }
-            //
+            
             // foreach (NodTurretView nodTurretView in nodTurretViewList)
             // {
             //     nodTurretView.Update(gameTime);
@@ -1507,8 +1508,19 @@ namespace mike_and_conquer_monogame.gameview
         public void AddGDIConstructionYardView(int id, int x, int y)
         {
             gdiConstructionYardView = new GDIConstructionYardView(id, x, y);
+            barracksSidebarIconView = new BarracksSidebarIconView(new Point(32, 24));
 
         }
+
+        public void NotifyBarracksStartedBuilding()
+        {
+            gdiConstructionYardView.IsBuildingBarracks = true;
+        }
+
+        Pickup here
+        Barracks building test is now passing, push current code
+        Then make start emitting build percent completed events and have UI update with each tick
+
 
         public void AddJeepView(int id, int x, int y)
         {

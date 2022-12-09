@@ -4,6 +4,8 @@
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
+using SimulationStateUpdateEvent = mike_and_conquer_simulation.events.SimulationStateUpdateEvent;
+using StartedBuildingBarracksEventData = mike_and_conquer_simulation.events.StartedBuildingBarracksEventData;
 
 namespace mike_and_conquer_simulation.main
 {
@@ -63,9 +65,68 @@ namespace mike_and_conquer_simulation.main
 
         public void StartBuildingBarracks()
         {
-            isBuildingBarracks = true;
-            buildBarracksPercentComplete = 0.0f;
+            if (!isBuildingBarracks)
+            {
+                isBuildingBarracks = true;
+                buildBarracksPercentComplete = 0.0f;
+                PublishStartBuildingBarracksEvent();
+            }
         }
+
+        private void PublishStartBuildingBarracksEvent()
+        {
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    StartedBuildingBarracksEventData.EventType,
+                    null);
+
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+
+
+        }
+
+        // private void PublishUnitArrivedAtPathStep(Point pathStepPoint)
+        // {
+        //
+        //     PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
+        //
+        //
+        //     UnitArrivedAtPathStepEventData eventData =
+        //         new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
+        //
+        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
+        //
+        //
+        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
+        //         new SimulationStateUpdateEvent(
+        //             UnitArrivedAtPathStepEventData.EventType,
+        //             serializedEventData);
+        //
+        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        // }
+
+
+        // private void PublishUnitArrivedAtPathStep(Point pathStepPoint)
+        // {
+        //
+        //     PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
+        //
+        //
+        //     UnitArrivedAtPathStepEventData eventData =
+        //         new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
+        //
+        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
+        //
+        //
+        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
+        //         new SimulationStateUpdateEvent(
+        //             UnitArrivedAtPathStepEventData.EventType,
+        //             serializedEventData);
+        //
+        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        // }
+
 
         // public void Update(GameTime gameTime)
         // {
@@ -83,6 +144,25 @@ namespace mike_and_conquer_simulation.main
         //         }
         //     }
         // }
+
+        public void Update()
+        {
+            // scaledBuildSpeed = baseBuildSpeed / GameOptions.instance.GameSpeedDelayDivisor;
+        
+            if (isBuildingBarracks)
+            {
+                // double buildIncrement = gameTime.ElapsedGameTime.TotalMilliseconds * scaledBuildSpeed;
+                double buildIncrement = .08;
+
+                buildBarracksPercentComplete += (float)buildIncrement;
+                if (buildBarracksPercentComplete >= 100.0f)
+                {
+                    isBarracksReadyToPlace = true;
+                    isBuildingBarracks = false;
+                }
+            }
+        }
+
 
 
         // public void CreateBarracksAtPosition(MapTileLocation mapTileLocation)
