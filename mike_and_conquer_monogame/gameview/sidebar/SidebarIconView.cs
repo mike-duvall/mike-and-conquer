@@ -81,8 +81,8 @@ namespace mike_and_conquer_monogame.gameview.sidebar
 
         }
 
-        // protected abstract bool IsBuilding();
-        // protected abstract int PercentBuildCompleted();
+        protected abstract bool IsBuilding();
+        protected abstract int PercentBuildCompleted();
 
         // This code for updating the buildIcon with percent progress shading
         // Manually sets and restore GraphicsDevice.renderTarget, so it needs to happen in the "Update" 
@@ -90,15 +90,15 @@ namespace mike_and_conquer_monogame.gameview.sidebar
         public void Update(GameTime gameTime)
         {
         
-            // if (IsBuilding())
-            // {
-            //     sidebarBuildIconSprite.isBuilding = true;
-            //     sidebarBuildIconSprite.SetPercentBuildComplete(PercentBuildCompleted());
-            // }
-            // else
-            // {
+            if (IsBuilding())
+            {
+                sidebarBuildIconSprite.isBuilding = true;
+                sidebarBuildIconSprite.SetPercentBuildComplete(PercentBuildCompleted());
+            }
+            else
+            {
                  sidebarBuildIconSprite.isBuilding = false;
-            // }
+            }
         }
 
 

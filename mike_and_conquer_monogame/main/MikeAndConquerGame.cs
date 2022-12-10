@@ -130,7 +130,9 @@ namespace mike_and_conquer_monogame.main
 
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardStartsBuildingBarracks(this));
 
+            simulationStateListenerList.Add(new UpdateBarracksPercentBuildCompleted(this));
 
+            
 
             IsMouseVisible = true;
             gameWorldView = new GameWorldView();
@@ -611,6 +613,11 @@ namespace mike_and_conquer_monogame.main
         public void NotifyBarracksStartedBuilding()
         {
             gameWorldView.NotifyBarracksStartedBuilding();
+        }
+
+        public void UpdateBarracksPercentCompleted(int percentCompleted)
+        {
+            gameWorldView.UpdateBarracksPercentCompleted(percentCompleted);
         }
 
 

@@ -3,6 +3,8 @@ using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.events;
 using Newtonsoft.Json;
 
+using UpdateBarracksPercentCompletedCommand = mike_and_conquer_monogame.commands.UpdateBarracksPercentCompletedCommand;
+
 
 namespace mike_and_conquer_monogame.eventhandler
 {
@@ -18,14 +20,13 @@ namespace mike_and_conquer_monogame.eventhandler
 
         public override void Update(SimulationStateUpdateEvent anEvent)
         {
-            if (anEvent.EventType.Equals(StartedBuildingBarracksEventData.EventType))
+            if (anEvent.EventType.Equals(BuildingBarracksPercentCompletedEventData.EventType))
             {
-                // MCVCreateEventData eventData =
-                //     JsonConvert.DeserializeObject<MCVCreateEventData>(anEvent.EventData);
+                BuildingBarracksPercentCompletedEventData eventData =
+                    JsonConvert.DeserializeObject<BuildingBarracksPercentCompletedEventData>(anEvent.EventData);
 
-                // AddMCVViewCommand viewCommand = new AddMCVViewCommand(eventData.UnitId, eventData.X, eventData.Y);
-
-                NotifyBarracksStartedBuildingCommand command = new NotifyBarracksStartedBuildingCommand();
+                UpdateBarracksPercentCompletedCommand command = new
+                    UpdateBarracksPercentCompletedCommand(eventData.PercentCompleted);
 
                 mikeAndConquerGame.PostCommand(command);
 

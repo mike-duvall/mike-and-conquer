@@ -1,11 +1,14 @@
 ﻿
 
-
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 using SimulationStateUpdateEvent = mike_and_conquer_simulation.events.SimulationStateUpdateEvent;
 using StartedBuildingBarracksEventData = mike_and_conquer_simulation.events.StartedBuildingBarracksEventData;
+using BuildingBarracksPercentCompletedEventData = mike_and_conquer_simulation.events.BuildingBarracksPercentCompletedEventData;
+using CompletedBuildingBarracksEventData = mike_and_conquer_simulation.events.CompletedBuildingBarracksEventData;
+
+using JsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace mike_and_conquer_simulation.main
 {
@@ -82,50 +85,19 @@ namespace mike_and_conquer_simulation.main
 
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-
-
         }
 
-        // private void PublishUnitArrivedAtPathStep(Point pathStepPoint)
-        // {
-        //
-        //     PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
-        //
-        //
-        //     UnitArrivedAtPathStepEventData eventData =
-        //         new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
-        //
-        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
-        //
-        //
-        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
-        //         new SimulationStateUpdateEvent(
-        //             UnitArrivedAtPathStepEventData.EventType,
-        //             serializedEventData);
-        //
-        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        // }
+        private void PublishCompletedBuildingBarracksEvent()
+        {
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    CompletedBuildingBarracksEventData.EventType,
+                    null);
 
 
-        // private void PublishUnitArrivedAtPathStep(Point pathStepPoint)
-        // {
-        //
-        //     PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
-        //
-        //
-        //     UnitArrivedAtPathStepEventData eventData =
-        //         new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
-        //
-        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
-        //
-        //
-        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
-        //         new SimulationStateUpdateEvent(
-        //             UnitArrivedAtPathStepEventData.EventType,
-        //             serializedEventData);
-        //
-        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        // }
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
 
 
         // public void Update(GameTime gameTime)
@@ -152,16 +124,42 @@ namespace mike_and_conquer_simulation.main
             if (isBuildingBarracks)
             {
                 // double buildIncrement = gameTime.ElapsedGameTime.TotalMilliseconds * scaledBuildSpeed;
-                double buildIncrement = .08;
+                double buildIncrement = 0.4;
 
                 buildBarracksPercentComplete += (float)buildIncrement;
+
+
                 if (buildBarracksPercentComplete >= 100.0f)
                 {
                     isBarracksReadyToPlace = true;
                     isBuildingBarracks = false;
+                    PublishCompletedBuildingBarracksEvent();
+                }
+                else
+                {
+                    PublishBuildingBarracksPercentCompleteEvent();
                 }
             }
         }
+
+
+        private void PublishBuildingBarracksPercentCompleteEvent()
+        {
+
+            BuildingBarracksPercentCompletedEventData eventData =
+                new BuildingBarracksPercentCompletedEventData(this.PercentBarracksBuildComplete);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    BuildingBarracksPercentCompletedEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+
+        }
+
 
 
 

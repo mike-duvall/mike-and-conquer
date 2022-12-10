@@ -1196,10 +1196,10 @@ namespace mike_and_conquer_monogame.gameview
             //     minigunnerSidebarIconView.Update(gameTime);
             // }
             //
-            // if (GameWorldView.instance.gdiConstructionYardView != null)
-            // {
-            //     barracksSidebarIconView.Update(gameTime);
-            // }
+            if (gdiConstructionYardView != null)
+            {
+                barracksSidebarIconView.Update(gameTime);
+            }
             
             // foreach (NodTurretView nodTurretView in nodTurretViewList)
             // {
@@ -1517,9 +1517,12 @@ namespace mike_and_conquer_monogame.gameview
             gdiConstructionYardView.IsBuildingBarracks = true;
         }
 
-        Pickup here
-        Barracks building test is now passing, push current code
-        Then make start emitting build percent completed events and have UI update with each tick
+
+        public void UpdateBarracksPercentCompleted(int percentCompleted)
+        {
+            gdiConstructionYardView.PercentBarracksBuildComplete = percentCompleted;
+        }
+
 
 
         public void AddJeepView(int id, int x, int y)

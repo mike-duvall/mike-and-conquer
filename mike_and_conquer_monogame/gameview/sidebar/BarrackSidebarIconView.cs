@@ -40,11 +40,21 @@ namespace mike_and_conquer_monogame.gameview.sidebar
         //     return constructionYard.IsBuildingBarracks;
         // }
 
+        protected override bool IsBuilding()
+        {
+            return GameWorldView.instance.GDIConstructionYardView.IsBuildingBarracks;
+        }
+
         // protected override int PercentBuildCompleted()
         // {
         //     GDIConstructionYard constructionYard = MikeAndConquerGame.instance.gameWorld.GDIConstructionYard;
         //     return constructionYard.PercentBarracksBuildComplete;
         // }
+
+        protected override int PercentBuildCompleted()
+        {
+            return GameWorldView.instance.GDIConstructionYardView.PercentBarracksBuildComplete;
+        }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
