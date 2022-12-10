@@ -1,9 +1,12 @@
-﻿using mike_and_conquer_monogame.commands;
-using mike_and_conquer_monogame.main;
-using mike_and_conquer_simulation.events;
-using Newtonsoft.Json;
+﻿
 
-using UpdateBarracksPercentCompletedCommand = mike_and_conquer_monogame.commands.UpdateBarracksPercentCompletedCommand;
+using SimulationStateListener = mike_and_conquer_simulation.events.SimulationStateListener;
+using SimulationStateUpdateEvent = mike_and_conquer_simulation.events.SimulationStateUpdateEvent;
+
+using StartedBuildingBarracksEventData = mike_and_conquer_simulation.events.StartedBuildingBarracksEventData;
+using NotifyBarracksStartedBuildingCommand = mike_and_conquer_monogame.commands.NotifyBarracksStartedBuildingCommand;
+
+using MikeAndConquerGame = mike_and_conquer_monogame.main.MikeAndConquerGame;
 
 
 namespace mike_and_conquer_monogame.eventhandler
@@ -18,21 +21,17 @@ namespace mike_and_conquer_monogame.eventhandler
             this.mikeAndConquerGame = aGame;
         }
 
+
         public override void Update(SimulationStateUpdateEvent anEvent)
         {
-            if (anEvent.EventType.Equals(BuildingBarracksPercentCompletedEventData.EventType))
+            if (anEvent.EventType.Equals(StartedBuildingBarracksEventData.EventType))
             {
-                BuildingBarracksPercentCompletedEventData eventData =
-                    JsonConvert.DeserializeObject<BuildingBarracksPercentCompletedEventData>(anEvent.EventData);
-
-                UpdateBarracksPercentCompletedCommand command = new
-                    UpdateBarracksPercentCompletedCommand(eventData.PercentCompleted);
-
+                NotifyBarracksStartedBuildingCommand command = new NotifyBarracksStartedBuildingCommand();
                 mikeAndConquerGame.PostCommand(command);
-
             }
 
-
         }
+
+
     }
 }

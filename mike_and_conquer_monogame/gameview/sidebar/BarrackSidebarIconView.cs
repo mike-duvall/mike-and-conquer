@@ -21,7 +21,6 @@ namespace mike_and_conquer_monogame.gameview.sidebar
         public const string SHP_FILE_NAME = "SideBar/pyleicnh.tem";
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
-
         public BarracksSidebarIconView(Point position) : base(position)
         {
         }
@@ -31,25 +30,13 @@ namespace mike_and_conquer_monogame.gameview.sidebar
             return SPRITE_KEY;
         }
 
-        // protected override bool IsBuilding()
-        // {
-        //     return false;
-        //     // TODO:  Make GDIConstructionYard and Barrackas implement Buildable interface?
-        //     // With methods for IsBulding() and PercentBuildCompleted() ?
-        //     GDIConstructionYard constructionYard = MikeAndConquerGame.instance.gameWorld.GDIConstructionYard;
-        //     return constructionYard.IsBuildingBarracks;
-        // }
-
         protected override bool IsBuilding()
         {
+            // TODO:  Make GDIConstructionYard and Barrackas implement Buildable interface?
+            // With methods for IsBulding() and PercentBuildCompleted() ?
             return GameWorldView.instance.GDIConstructionYardView.IsBuildingBarracks;
         }
 
-        // protected override int PercentBuildCompleted()
-        // {
-        //     GDIConstructionYard constructionYard = MikeAndConquerGame.instance.gameWorld.GDIConstructionYard;
-        //     return constructionYard.PercentBarracksBuildComplete;
-        // }
 
         protected override int PercentBuildCompleted()
         {
@@ -59,11 +46,10 @@ namespace mike_and_conquer_monogame.gameview.sidebar
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime,spriteBatch);
-            // GDIConstructionYard constructionYard = MikeAndConquerGame.instance.gameWorld.GDIConstructionYard;
-            // if (constructionYard.IsBarracksReadyToPlace)
-            // {
-            //     readyOverlay.Draw(gameTime, spriteBatch);
-            // }
+            if (GameWorldView.instance.GDIConstructionYardView.IsBarracksReadyToPlace)
+            {
+                readyOverlay.Draw(gameTime, spriteBatch);
+            }
 
         }
 

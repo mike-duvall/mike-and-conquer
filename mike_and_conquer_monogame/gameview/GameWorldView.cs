@@ -1518,6 +1518,12 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
+        public void NotifyBarracksCompletedBuilding()
+        {
+            gdiConstructionYardView.IsBarracksReadyToPlace = true;
+            gdiConstructionYardView.IsBuildingBarracks = false;
+        }
+
         public void UpdateBarracksPercentCompleted(int percentCompleted)
         {
             gdiConstructionYardView.PercentBarracksBuildComplete = percentCompleted;

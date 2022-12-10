@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using MemoryStream = System.IO.MemoryStream;
 using Form = System.Windows.Forms.Form;
 using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
+using ReadyOverlay = mike_and_conquer_monogame.gameview.sidebar.ReadyOverlay;
 
 namespace mike_and_conquer_monogame.main
 {
@@ -129,10 +130,10 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
 
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardStartsBuildingBarracks(this));
-
             simulationStateListenerList.Add(new UpdateBarracksPercentBuildCompleted(this));
+            simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardCompletesBuildingBarracks (this));
 
-            
+
 
             IsMouseVisible = true;
             gameWorldView = new GameWorldView();
@@ -394,7 +395,7 @@ namespace mike_and_conquer_monogame.main
             // spriteSheet.LoadSingleTextureFromFile(MissionAccomplishedMessage.ACCOMPLISHED_SPRITE_KEY, "Accomplished");
             // spriteSheet.LoadSingleTextureFromFile(MissionFailedMessage.FAILED_SPRITE_KEY, "Failed");
             // spriteSheet.LoadSingleTextureFromFile(DestinationSquare.SPRITE_KEY, DestinationSquare.SPRITE_KEY);
-            // spriteSheet.LoadSingleTextureFromFile(ReadyOverlay.SPRITE_KEY, ReadyOverlay.SPRITE_KEY);
+             spriteSheet.LoadSingleTextureFromFile(ReadyOverlay.SPRITE_KEY, ReadyOverlay.SPRITE_KEY);
 
         }
 
@@ -613,6 +614,11 @@ namespace mike_and_conquer_monogame.main
         public void NotifyBarracksStartedBuilding()
         {
             gameWorldView.NotifyBarracksStartedBuilding();
+        }
+
+        public void NotifyBarracksCompletedBuilding()
+        {
+            gameWorldView.NotifyBarracksCompletedBuilding();
         }
 
         public void UpdateBarracksPercentCompleted(int percentCompleted)

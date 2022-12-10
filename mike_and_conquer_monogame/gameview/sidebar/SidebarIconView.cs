@@ -1,10 +1,5 @@
 ﻿
 
-// using Microsoft.Xna.Framework;
-// using Microsoft.Xna.Framework.Graphics;
-// using mike_and_conquer.gamesprite;
-// using mike_and_conquer.main;
-// using mike_and_conquer.openra;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
@@ -22,7 +17,7 @@ namespace mike_and_conquer_monogame.gameview.sidebar
     {
 
         protected SidebarBuildIconSprite sidebarBuildIconSprite;
-        // protected ReadyOverlay readyOverlay;
+        protected ReadyOverlay readyOverlay;
 
 
         private Point position;
@@ -44,7 +39,7 @@ namespace mike_and_conquer_monogame.gameview.sidebar
                     textureInRealColorValues,
                     MikeAndConquerGame.instance.SpriteSheet.GetUnitFramesForShpFile(GetSpriteKey())[0].FrameData);
             
-            // readyOverlay = new ReadyOverlay();
+            readyOverlay = new ReadyOverlay();
 
         }
 
@@ -112,7 +107,6 @@ namespace mike_and_conquer_monogame.gameview.sidebar
         {
 
             sidebarBuildIconSprite.Draw(gameTime, spriteBatch, new Vector2(position.X, position.Y));
-//            readyOverlay.Draw(gameTime,spriteBatch);
         }
 
     }

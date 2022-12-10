@@ -49,6 +49,7 @@ namespace mike_and_conquer_monogame.rest.controller
             if (gdiConstructionYardView != null)
             {
                 sidebar.barracksIsBuilding = gdiConstructionYardView.IsBuildingBarracks;
+                sidebar.barracksReadyToPlace = gdiConstructionYardView.IsBarracksReadyToPlace;
 
             }
 

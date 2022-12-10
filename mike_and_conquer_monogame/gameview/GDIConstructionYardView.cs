@@ -26,6 +26,8 @@ namespace mike_and_conquer_monogame.gameview
         public bool IsBuildingBarracks { get; set; }
         public int PercentBarracksBuildComplete { get; set; }
 
+        public bool IsBarracksReadyToPlace { get; set; }
+
 
         public const string SPRITE_KEY = "ConstructionYard";
 
