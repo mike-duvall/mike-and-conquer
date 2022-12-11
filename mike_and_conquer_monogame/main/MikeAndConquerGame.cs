@@ -21,7 +21,8 @@ using Newtonsoft.Json;
 
 using MemoryStream = System.IO.MemoryStream;
 using Form = System.Windows.Forms.Form;
-
+using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
+using ReadyOverlay = mike_and_conquer_monogame.gameview.sidebar.ReadyOverlay;
 
 namespace mike_and_conquer_monogame.main
 {
@@ -128,6 +129,12 @@ namespace mike_and_conquer_monogame.main
 
             simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
 
+            simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardStartsBuildingBarracks(this));
+            simulationStateListenerList.Add(new UpdateBarracksPercentBuildCompleted(this));
+            simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardCompletesBuildingBarracks (this));
+
+
+
             IsMouseVisible = true;
             gameWorldView = new GameWorldView();
             
@@ -189,6 +196,15 @@ namespace mike_and_conquer_monogame.main
 
                 LeftClickCommand command =
                     new LeftClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
+                return command;
+            }
+            if (rawCommand.CommandType.Equals(LeftClickSidebarCommand.CommandName))
+            {
+                ClickSidebarCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ClickSidebarCommandBody>(rawCommand.CommandData);
+
+                LeftClickSidebarCommand command =
+                    new LeftClickSidebarCommand(commandBody.SidebarIconName);
                 return command;
             }
             else if (rawCommand.CommandType.Equals(RightClickCommand.CommandName))
@@ -379,7 +395,7 @@ namespace mike_and_conquer_monogame.main
             // spriteSheet.LoadSingleTextureFromFile(MissionAccomplishedMessage.ACCOMPLISHED_SPRITE_KEY, "Accomplished");
             // spriteSheet.LoadSingleTextureFromFile(MissionFailedMessage.FAILED_SPRITE_KEY, "Failed");
             // spriteSheet.LoadSingleTextureFromFile(DestinationSquare.SPRITE_KEY, DestinationSquare.SPRITE_KEY);
-            // spriteSheet.LoadSingleTextureFromFile(ReadyOverlay.SPRITE_KEY, ReadyOverlay.SPRITE_KEY);
+             spriteSheet.LoadSingleTextureFromFile(ReadyOverlay.SPRITE_KEY, ReadyOverlay.SPRITE_KEY);
 
         }
 
@@ -435,16 +451,16 @@ namespace mike_and_conquer_monogame.main
             //     MinigunnerSidebarIconView.SPRITE_KEY,
             //     raiSpriteFrameManager.GetSpriteFramesForUnit(MinigunnerSidebarIconView.SHP_FILE_NAME),
             //     MinigunnerSidebarIconView.SHP_FILE_COLOR_MAPPER);
-            //
-            // raiSpriteFrameManager.LoadAllTexturesFromShpFile(BarracksSidebarIconView.SHP_FILE_NAME);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     BarracksSidebarIconView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(BarracksSidebarIconView.SHP_FILE_NAME),
-            //     BarracksSidebarIconView.SHP_FILE_COLOR_MAPPER);
-            //
-            //
-            //
-            //
+            
+            raiSpriteFrameManager.LoadAllTexturesFromShpFile(BarracksSidebarIconView.SHP_FILE_NAME);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                BarracksSidebarIconView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(BarracksSidebarIconView.SHP_FILE_NAME),
+                BarracksSidebarIconView.SHP_FILE_COLOR_MAPPER);
+            
+            
+            
+            
             // raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIBarracksView.SHP_FILE_NAME);
             // spriteSheet.LoadUnitFramesFromSpriteFrames(
             //     GDIBarracksView.SPRITE_KEY,
@@ -593,6 +609,21 @@ namespace mike_and_conquer_monogame.main
         public void AddGDIConstructionYardView(int id, int x, int y)
         {
             gameWorldView.AddGDIConstructionYardView(id, x, y);
+        }
+
+        public void NotifyBarracksStartedBuilding()
+        {
+            gameWorldView.NotifyBarracksStartedBuilding();
+        }
+
+        public void NotifyBarracksCompletedBuilding()
+        {
+            gameWorldView.NotifyBarracksCompletedBuilding();
+        }
+
+        public void UpdateBarracksPercentCompleted(int percentCompleted)
+        {
+            gameWorldView.UpdateBarracksPercentCompleted(percentCompleted);
         }
 
 
@@ -787,6 +818,38 @@ namespace mike_and_conquer_monogame.main
                 (uint)transformedLocation.Y,
                 GameWorldView.instance.ScreenWidth,
                 GameWorldView.instance.ScreenHeight);
+
+        }
+
+
+        public void LeftClickSidebar(string sidebarIconName)
+        {
+            Point position = new Point();
+
+            if (sidebarIconName == "Barracks")
+            {
+                position = GameWorldView.instance.BarracksSidebarIconView.GetPosition();
+            }
+            else
+            {
+                throw new Exception("Unknown sidebarIconName:" + sidebarIconName);
+            }
+
+            Vector2 positionInWorldCoordinates = new Vector2(position.X, position.Y);
+
+            Vector2 transformedLocation =
+                GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinatesForSidebar(positionInWorldCoordinates);
+
+
+            int screenWidth = GameWorldView.instance.ScreenWidth;
+            int screenHeight = GameWorldView.instance.ScreenHeight;
+
+
+            MouseInputHandler.MoveMouseToCoordinates((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+
+            MouseInputHandler.DoLeftMouseClick((uint)transformedLocation.X, (uint)transformedLocation.Y, screenWidth, screenHeight);
+
+
 
         }
 

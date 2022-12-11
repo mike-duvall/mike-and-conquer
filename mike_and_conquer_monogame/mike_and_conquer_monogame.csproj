@@ -45,6 +45,7 @@
   <ItemGroup>
     <Folder Include="gamestate\" />
     <Folder Include="gamesprite\" />
+    <Folder Include="gameview\sidebar\" />
     <Folder Include="openra\" />
   </ItemGroup>
 </Project>

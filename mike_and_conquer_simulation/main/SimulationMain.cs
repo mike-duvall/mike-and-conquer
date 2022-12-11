@@ -350,7 +350,10 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-
+        internal void BeginBuildingBarracks()
+        {
+            gameWorld.BeginBuildingBarracks();
+        }
 
         public void OrderUnitToMove(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
