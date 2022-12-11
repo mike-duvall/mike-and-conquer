@@ -28,22 +28,10 @@ namespace mike_and_conquer_monogame.rest.controller
         public ActionResult Get()
         {
 
-            // UnitView unitView = MikeAndConquerGame.instance.GetUnitViewByIdByEvent(unitId);
-            //
-            //
-            // RestUnit restUnit = new RestUnit();
-            //
-            // restUnit.UnitId = unitView.UnitId;
-            // restUnit.Selected = unitView.Selected;
-            //
-            // return new OkObjectResult(restUnit);
-
-
             RestSidebar sidebar = new RestSidebar();
             sidebar.buildBarracksEnabled = false;
             sidebar.buildMinigunnerEnabled = false;
             sidebar.barracksIsBuilding = false;
-
 
             GDIConstructionYardView gdiConstructionYardView =  GameWorldView.instance.GDIConstructionYardView;
             if (gdiConstructionYardView != null)
@@ -53,15 +41,6 @@ namespace mike_and_conquer_monogame.rest.controller
 
             }
 
-
-            // GDIConstructionYard constructionYard = GameWorld.instance.GDIConstructionYard;
-            // if (constructionYard != null)
-            // {
-            //     sidebar.barracksIsBuilding = constructionYard.IsBuildingBarracks;
-            //     sidebar.barracksReadyToPlace = constructionYard.IsBarracksReadyToPlace;
-            // }
-            //
-            //
             if (GameWorldView.instance.BarracksSidebarIconView != null)
             {
                 sidebar.buildBarracksEnabled = true;
@@ -73,8 +52,6 @@ namespace mike_and_conquer_monogame.rest.controller
             //     sidebar.buildMinigunnerEnabled = true;
             // }
             //
-            // return Ok(sidebar);
-
             return new OkObjectResult(sidebar);
         }
 
