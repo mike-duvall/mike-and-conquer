@@ -1,16 +1,22 @@
 ﻿
 
+
 using UnitSprite = mike_and_conquer_monogame.gamesprite.UnitSprite;
 using ShpFileColorMapper = mike_and_conquer_monogame.gamesprite.ShpFileColorMapper;
 using GdiShpFileColorMapper = mike_and_conquer_monogame.gamesprite.GdiShpFileColorMapper;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+
+using SystemDrawingPoint = System.Drawing.Point;
+using XnaPoint = Microsoft.Xna.Framework.Point;
+
 
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
-
+using SimulationMapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 
 namespace mike_and_conquer_monogame.gameview
 {
@@ -105,6 +111,39 @@ namespace mike_and_conquer_monogame.gameview
         //     }
         //
         // }
+
+
+        // public bool ContainsPoint(SimulationMapTileLocation worldCoordinatesAsPoint)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
+
+
+        public bool ContainsPoint(SimulationMapTileLocation simulationMapTileLocation)
+        {
+            int width = 72;
+            int height = 48;
+
+            // int leftX = (int)mapTileLocation.WorldCoordinatesAsVector2.X - (width / 2);
+            // int topY = (int)mapTileLocation.WorldCoordinatesAsVector2.Y - (height / 2);
+
+            SystemDrawingPoint locationAsPoint = simulationMapTileLocation.WorldCoordinatesAsPoint;
+
+            // int leftX = locationAsPoint.X - (width / 2);
+            // int topY = locationAsPoint.Y - (height / 2);
+            int leftX = this.XInWorldCoordinates - (width / 2);
+            int topY = this.YInWorldCoordinates - (height / 2);
+
+            XnaPoint xnaPoint = new XnaPoint();
+            xnaPoint.X = locationAsPoint.X;
+            xnaPoint.Y = locationAsPoint.Y;
+
+
+            Rectangle boundRectangle = new Rectangle(leftX, topY, width, height);
+            return boundRectangle.Contains(xnaPoint);
+
+
+        }
 
 
 

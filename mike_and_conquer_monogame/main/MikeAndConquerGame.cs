@@ -304,9 +304,42 @@ namespace mike_and_conquer_monogame.main
 
         private void LoadBarracksPlacementTexture()
         {
-            // LoadTmpFile(BarracksPlacementIndicatorView.FILE_NAME);
-            // MapBlackMapTileFramePixelsToToTransparent(BarracksPlacementIndicatorView.FILE_NAME);
+            LoadTmpFile(BarracksPlacementIndicatorView.FILE_NAME);
+            MapBlackMapTileFramePixelsToToTransparent(BarracksPlacementIndicatorView.FILE_NAME);
         }
+
+        private void MapBlackMapTileFramePixelsToToTransparent(string tmpFileName)
+        {
+            List<MapTileFrame> mapTileFrameList = spriteSheet.GetMapTileFrameForTmpFile(tmpFileName);
+            foreach (MapTileFrame mapTileFrame in mapTileFrameList)
+            {
+                Texture2D theTexture = mapTileFrame.Texture;
+                int numPixels = theTexture.Height * theTexture.Width;
+                Color[] originalTexturePixelData = new Color[numPixels];
+                Color[] changedTexturePixelData = new Color[numPixels];
+                theTexture.GetData(originalTexturePixelData);
+
+                int i = 0;
+                foreach (Color color in originalTexturePixelData)
+                {
+                    if (color.R == 0)
+                    {
+                        Color newColor = new Color(0, 0, 0, 0);
+                        changedTexturePixelData[i] = newColor;
+                    }
+                    else
+                    {
+                        changedTexturePixelData[i] = color;
+                    }
+
+                    i++;
+                }
+                theTexture.SetData(changedTexturePixelData);
+
+            }
+
+        }
+
 
 
         public const string CLEAR1_SHP = "clear1.tem";

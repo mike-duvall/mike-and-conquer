@@ -10,9 +10,9 @@ using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 using XnaPoint = Microsoft.Xna.Framework.Point;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
-using Point = Microsoft.Xna.Framework.Point;
 
 
+using SimulationMapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 
 using BlendState = Microsoft.Xna.Framework.Graphics.BlendState;
 using DepthStencilState = Microsoft.Xna.Framework.Graphics.DepthStencilState;
@@ -41,6 +41,9 @@ using ImmutablePalette = mike_and_conquer_monogame.openra.ImmutablePalette;
 using Matrix = Microsoft.Xna.Framework.Matrix;
 
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+using TILE_LOCATION = mike_and_conquer_simulation.gameworld.MapTileLocation.TILE_LOCATION;
+
+using MonogameUtil = mike_and_conquer_monogame.util.MonogameUtil;
 
 
 namespace mike_and_conquer_monogame.gameview
@@ -207,9 +210,11 @@ namespace mike_and_conquer_monogame.gameview
 
         public static GameWorldView instance;
 
-        // private BarracksPlacementIndicatorView barracksPlacementIndicatorView;
-        //
-        // public BarracksPlacementIndicator barracksBarracksPlacementIndicator;
+        private BarracksPlacementIndicatorView barracksPlacementIndicatorView;
+
+
+        // TODO Revisit, make this private?
+        public BarracksPlacementIndicator barracksBarracksPlacementIndicator;
 
 
         public GameWorldView()
@@ -674,13 +679,13 @@ namespace mike_and_conquer_monogame.gameview
                 Color.White);
 
 
-            // if (barracksPlacementIndicatorView != null)
-            // {
-            //     barracksPlacementIndicatorView.Draw(gameTime, spriteBatch);
-            // }
-            //
-            //
-            //
+            if (barracksPlacementIndicatorView != null)
+            {
+                barracksPlacementIndicatorView.Draw(gameTime, spriteBatch);
+            }
+            
+            
+            
             // if (GameWorldView.instance.GDIBarracksView != null)
             // {
             //     GameWorldView.instance.GDIBarracksView.DrawNoShadow(gameTime, spriteBatch);
@@ -964,7 +969,6 @@ namespace mike_and_conquer_monogame.gameview
             LoadTShadow15MrfTexture();
             LoadTShadow16MrfTexture();
 
-//            LoadTmpFile(BarracksPlacementIndicatorView.FILE_NAME);
         }
 
         private void LoadTUnitsMrfTexture()
@@ -1375,12 +1379,12 @@ namespace mike_and_conquer_monogame.gameview
             return positionInCameraViewportCoordinates;
         }
 
-        // public XnaPoint ConvertScreenLocationToWorldLocation(XnaPoint screenLocation)
-        // {
-        //     XnaVector2 screenLocationAsPoint = PointUtil.ConvertPointToXnaVector2(screenLocation);
-        //     XnaVector2 resultXnaVector2 =  XnaVector2.Transform(screenLocationAsPoint, Matrix.Invert(mapViewportCamera.TransformMatrix));
-        //     return PointUtil.ConvertXnaVector2ToPoint(resultXnaVector2);
-        // }
+        public XnaPoint ConvertScreenLocationToWorldLocation(XnaPoint screenLocation)
+        {
+            XnaVector2 screenLocationAsPoint = MonogameUtil.ConvertXnaPointToXnaVector2(screenLocation);
+            XnaVector2 resultXnaVector2 =  XnaVector2.Transform(screenLocationAsPoint, Matrix.Invert(mapViewportCamera.TransformMatrix));
+            return MonogameUtil.ConvertXnaVector2ToXnaPoint(resultXnaVector2);
+        }
 
 
 
@@ -1416,32 +1420,38 @@ namespace mike_and_conquer_monogame.gameview
 
 
 
-        // public void Notify_PlacingBarracks()
-        // {
-        //     if (barracksPlacementIndicatorView == null)
-        //     {
-        //         barracksBarracksPlacementIndicator = new BarracksPlacementIndicator(
-        //             MapTileLocation.CreateFromWorldCoordinatesInXnaVector2(GameWorld.instance.GDIConstructionYard.MapTileLocation.WorldCoordinatesAsXnaVector2));
-        //
-        //         barracksPlacementIndicatorView = new BarracksPlacementIndicatorView(barracksBarracksPlacementIndicator);
-        //     }
-        //
-        // }
-        //
-        // public void Notify_PlacingBarracksWithMouseOverMap(Point mouseLocationInScreenCoordinates)
-        // {
-        //     Point mouseLocationWordCoordinates =
-        //         ConvertScreenLocationToWorldLocation(mouseLocationInScreenCoordinates);
-        //
-        //     barracksBarracksPlacementIndicator.UpdateLocationInWorldCoordinates(mouseLocationWordCoordinates);
-        // }
+        public void Notify_PlacingBarracks()
+        {
+            if (barracksPlacementIndicatorView == null)
+            {
+                // barracksBarracksPlacementIndicator = new BarracksPlacementIndicator(
+                //     MapTileLocation.CreateFromWorldCoordinatesInXnaVector2(GameWorld.instance.GDIConstructionYard.MapTileLocation.WorldCoordinatesAsXnaVector2));
 
-        // public void Notify_DonePlacingBarracks()
-        // {
-        //     barracksPlacementIndicatorView = null;
-        //     barracksBarracksPlacementIndicator = null;
-        // }
-        //
+                MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(
+                    GDIConstructionYardView.XInWorldCoordinates,
+                    GDIConstructionYardView.YInWorldCoordinates);
+                barracksBarracksPlacementIndicator = new BarracksPlacementIndicator(mapTileLocation);
+
+        
+                barracksPlacementIndicatorView = new BarracksPlacementIndicatorView(barracksBarracksPlacementIndicator);
+            }
+        
+        }
+        
+        public void Notify_PlacingBarracksWithMouseOverMap(XnaPoint mouseLocationInScreenCoordinates)
+        {
+            XnaPoint mouseLocationWordCoordinates =
+                ConvertScreenLocationToWorldLocation(mouseLocationInScreenCoordinates);
+        
+            barracksBarracksPlacementIndicator.UpdateLocationInWorldCoordinates(mouseLocationWordCoordinates);
+        }
+
+        public void Notify_DonePlacingBarracks()
+        {
+            barracksPlacementIndicatorView = null;
+            barracksBarracksPlacementIndicator = null;
+        }
+        
         // public void AddProjectile120mmView(Projectile120mm projectile120Mm)
         // {
         //     projectile120MmViewList.Add(new Projectile120mmView(projectile120Mm));
@@ -1508,7 +1518,7 @@ namespace mike_and_conquer_monogame.gameview
         public void AddGDIConstructionYardView(int id, int x, int y)
         {
             gdiConstructionYardView = new GDIConstructionYardView(id, x, y);
-            barracksSidebarIconView = new BarracksSidebarIconView(new Point(32, 24));
+            barracksSidebarIconView = new BarracksSidebarIconView(new XnaPoint(32, 24));
 
         }
 
@@ -1646,6 +1656,8 @@ namespace mike_and_conquer_monogame.gameview
 
         public MapTileInstanceView FindMapTileInstanceViewAllowNull(int xInWorldCoordinates, int yInWorldCoordinates)
         {
+            // TODO:  If MapTileInstanceViewList was a two dimensional array, we could just directly comput the instance
+            // instead of scanning all views and asking if they contain the point
             foreach (MapTileInstanceView mapTileInstanceView in this.MapTileInstanceViewList)
             {
                 if (mapTileInstanceView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates))
@@ -1709,6 +1721,131 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
+        public bool IsPointAdjacentToConstructionYardAndClearForBuilding(XnaPoint pointInWordlCoordinates)
+        {
+            // MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(pointInWordlCoordinates.X, pointInWordlCoordinates.Y);
+            // MapTileInstance mapTileInstance = this.FindMapTileInstanceAllowNull(mapTileLocation);
+
+            MapTileInstanceView mapTileInstanceView =  this.FindMapTileInstanceViewAllowNull(pointInWordlCoordinates.X, pointInWordlCoordinates.Y);
+            if (mapTileInstanceView == null)
+            {
+                return false;
+            }
+
+            return IsMapTileInstanceAdjacentToConstructionYard(mapTileInstanceView) &&
+                   IsMapTileInstanceViewClearForBuilding(mapTileInstanceView);
+
+        }
+
+
+        // private bool IsMapTileInstanceClearForBuilding(MapTileInstance mapTileInstance)
+        // {
+        //     return !mapTileInstance.IsBlockingTerrain &&
+        //            !GDIConstructionYard.ContainsPoint(mapTileInstance.MapTileLocation.WorldCoordinatesAsPoint);
+        //
+        // }
+
+        private bool IsMapTileInstanceViewClearForBuilding(MapTileInstanceView mapTileInstanceView)
+        {
+            return !mapTileInstanceView.IsBlockingTerrain &&
+                   !GDIConstructionYardView.ContainsPoint(mapTileInstanceView.SimulationMapTileLocation);
+
+        }
+
+
+        private bool IsRelativeMapTileInstanceAdjacentToConstructionsYard(MapTileInstanceView mapTileInstanceView,
+            TILE_LOCATION tileLocation)
+        {
+            MapTileInstanceView adjacentTile = FindAdjacentMapTileInstanceView(mapTileInstanceView, tileLocation);
+            if (adjacentTile != null && GDIConstructionYardView.ContainsPoint(adjacentTile.SimulationMapTileLocation))
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+
+        // public enum TILE_LOCATION
+        // {
+        //     WEST,
+        //     NORTH_WEST,
+        //     NORTH,
+        //     NORTH_EAST,
+        //     EAST,
+        //     SOUTH_EAST,
+        //     SOUTH,
+        //     SOUTH_WEST
+        // }
+
+
+
+        private bool IsMapTileInstanceAdjacentToConstructionYard(MapTileInstanceView mapTileInstanceView)
+        {
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.WEST))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.NORTH_WEST))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.NORTH))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.NORTH_EAST))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.EAST))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.SOUTH_EAST))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.SOUTH))
+            {
+                return true;
+            }
+
+            if (IsRelativeMapTileInstanceAdjacentToConstructionsYard(mapTileInstanceView, TILE_LOCATION.SOUTH_WEST))
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+
+        private MapTileInstanceView FindAdjacentMapTileInstanceView(MapTileInstanceView mapTileInstanceView, TILE_LOCATION tileLocation)
+        {
+        
+            MapTileLocation adjacentMapTileLocation =
+                mapTileInstanceView.SimulationMapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
+
+
+            // MapTileInstanceView foundMapTileInstanceView =
+            //     this.FindMapTileInstanceViewAllowNull(adjacentMapTileLocation.XInWorldMapTileCoordinates, adjacentMapTileLocation.YInWorldMapTileCoordinates);
+            MapTileInstanceView foundMapTileInstanceView =
+                this.FindMapTileInstanceViewAllowNull(
+                    adjacentMapTileLocation.WorldCoordinatesAsPoint.X,
+                    adjacentMapTileLocation.WorldCoordinatesAsPoint.Y);
+
+            return foundMapTileInstanceView;
+        }
+
 
         public bool IsValidMoveDestination(int xInWorldCoordinates, int yInWorldCoordinates)
         {
@@ -1742,13 +1879,17 @@ namespace mike_and_conquer_monogame.gameview
             //     }
             // }
             //
-            // if (GDIConstructionYard != null)
-            // {
-            //     if (GDIConstructionYard.ContainsPoint(pointInWorldCoordinates))
-            //     {
-            //         isValidMoveDestination = false;
-            //     }
-            // }
+            if (gdiConstructionYardView != null)
+            {
+                SimulationMapTileLocation simulatMapTileLocation = SimulationMapTileLocation.CreateFromWorldCoordinates(
+                    xInWorldCoordinates,
+                    yInWorldCoordinates);
+
+                if (gdiConstructionYardView.ContainsPoint(simulatMapTileLocation))
+                {
+                    isValidMoveDestination = false;
+                }
+            }
 
             return isValidMoveDestination;
         }

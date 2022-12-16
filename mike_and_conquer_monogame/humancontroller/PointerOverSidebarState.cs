@@ -68,6 +68,12 @@ namespace mike_and_conquer_monogame.humancontroller
             GDIConstructionYardView view = GameWorldView.instance.GDIConstructionYardView;
             if (view != null)
             {
+
+                if (view.IsBarracksReadyToPlace)
+                {
+                    return new PlacingBuildingState();
+                }
+
                 if (!view.IsBuildingBarracks)
                 {
                     OrderBeginBuldingBarracks();

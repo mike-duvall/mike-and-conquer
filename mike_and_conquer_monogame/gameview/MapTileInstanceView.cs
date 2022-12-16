@@ -65,6 +65,10 @@ namespace mike_and_conquer_monogame.gameview
             Visible
         }
 
+        public SimulationMapTileLocation SimulationMapTileLocation
+        {
+            get { return mapTileLocation; }
+        }
 
         private SimulationMapTileLocation mapTileLocation;
 

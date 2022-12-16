@@ -21,6 +21,9 @@
 #begin temperat.pal
 /copy:temperat.pal
 
+#begin trans.icn
+/copy:trans.icn
+
 
 #begin tunits.mrf
 /copy:tunits.mrf
