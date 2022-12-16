@@ -18,11 +18,15 @@ namespace mike_and_conquer_monogame.humancontroller
             if (!MouseInputUtil.IsOverSidebar(newMouseState))
             {
 
-                GameWorldView.instance.Notify_PlacingBarracksWithMouseOverMap(newMouseState.Position);
+                if (!newMouseState.Equals(oldMouseState))
+                {
+                    GameWorldView.instance.Notify_PlacingBarracksWithMouseOverMap(newMouseState.Position);
+                }
+
 
                 // if (MouseInputUtil.LeftMouseButtonUnclicked(newMouseState, oldMouseState))
                 // {
-                //     if(GameWorldView.instance.barracksBarracksPlacementIndicator.ValidBuildingLocation())
+                //     if(GameWorldView.instance.barracksPlacementIndicator.ValidBuildingLocation())
                 //     {
                 //         GDIConstructionYard gdiConstructionYard = GameWorld.instance.GDIConstructionYard;
                 //         Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
