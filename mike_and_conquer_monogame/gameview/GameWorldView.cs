@@ -214,9 +214,6 @@ namespace mike_and_conquer_monogame.gameview
         private BarracksPlacementIndicatorView barracksPlacementIndicatorView;
 
 
-        // TODO Revisit, make this private?
-        public BarracksPlacementIndicator barracksPlacementIndicator;
-
 
         public GameWorldView()
         {
@@ -797,7 +794,8 @@ namespace mike_and_conquer_monogame.gameview
             gdiConstructionYardView = null;
              // gdiBarracksView = null;
             barracksSidebarIconView = null;
-             // minigunnerSidebarIconView = null;
+            barracksPlacementIndicatorView = null;
+            // minigunnerSidebarIconView = null;
         }
 
 
@@ -1425,16 +1423,12 @@ namespace mike_and_conquer_monogame.gameview
         {
             if (barracksPlacementIndicatorView == null)
             {
-                // barracksPlacementIndicator = new BarracksPlacementIndicator(
-                //     MapTileLocation.CreateFromWorldCoordinatesInXnaVector2(GameWorld.instance.GDIConstructionYard.MapTileLocation.WorldCoordinatesAsXnaVector2));
 
                 MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(
                     GDIConstructionYardView.XInWorldCoordinates,
                     GDIConstructionYardView.YInWorldCoordinates);
-                barracksPlacementIndicator = new BarracksPlacementIndicator(mapTileLocation);
-
         
-                barracksPlacementIndicatorView = new BarracksPlacementIndicatorView(barracksPlacementIndicator);
+                barracksPlacementIndicatorView = new BarracksPlacementIndicatorView(mapTileLocation);
             }
         
         }
@@ -1446,14 +1440,13 @@ namespace mike_and_conquer_monogame.gameview
         
             // barracksPlacementIndicator.UpdateLocationInWorldCoordinates(mouseLocationWordCoordinates);
 
-            UpdateBarracksPlacementIndicatorCommand command = new UpdateBarracksPlacementIndicatorCommand(barracksPlacementIndicator, mouseLocationWordCoordinates);
+            UpdateBarracksPlacementIndicatorCommand command = new UpdateBarracksPlacementIndicatorCommand(barracksPlacementIndicatorView, mouseLocationWordCoordinates);
             MikeAndConquerGame.instance.PostCommand(command);
         }
 
         public void Notify_DonePlacingBarracks()
         {
             barracksPlacementIndicatorView = null;
-            barracksPlacementIndicator = null;
         }
         
         // public void AddProjectile120mmView(Projectile120mm projectile120Mm)
