@@ -118,6 +118,7 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddGDIConstructionYardViewWhenGDIConstructionYardCreated(this));
+            simulationStateListenerList.Add(new AddGDIBarracksViewWhenGDIBarracksPlaced(this));
 
 
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
@@ -494,11 +495,11 @@ namespace mike_and_conquer_monogame.main
             
             
             
-            // raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIBarracksView.SHP_FILE_NAME);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     GDIBarracksView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(GDIBarracksView.SHP_FILE_NAME),
-            //     GDIBarracksView.SHP_FILE_COLOR_MAPPER);
+            raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIBarracksView.SHP_FILE_NAME);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                GDIBarracksView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(GDIBarracksView.SHP_FILE_NAME),
+                GDIBarracksView.SHP_FILE_COLOR_MAPPER);
             
             raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIConstructionYardView.SHP_FILE_NAME);
             spriteSheet.LoadUnitFramesFromSpriteFrames(
@@ -642,6 +643,11 @@ namespace mike_and_conquer_monogame.main
         public void AddGDIConstructionYardView(int id, int x, int y)
         {
             gameWorldView.AddGDIConstructionYardView(id, x, y);
+        }
+
+        public void AddGDIBarracksView(int id, int x, int y)
+        {
+            gameWorldView.AddGDIBarracksView(id, x, y);
         }
 
         public void NotifyBarracksStartedBuilding()

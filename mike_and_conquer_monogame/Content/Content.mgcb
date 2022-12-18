@@ -133,6 +133,10 @@
 #begin p08.tem
 /copy:p08.tem
 
+#begin pyle.shp
+/copy:pyle.shp
+
+
 
 #begin s09.tem
 /copy:s09.tem

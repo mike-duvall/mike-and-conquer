@@ -148,6 +148,22 @@ namespace mike_and_conquer_monogame.gameview
             }
         }
 
+        public bool ValidBuildingLocation()
+        {
+            bool isValidBuildingLocation = true;
+
+            foreach (BuildingPlacementIndicatorTile tile in buildingBuildingPlacementIndicatorTiles)
+            {
+                if (!tile.CanPlaceBuilding)
+                {
+                    isValidBuildingLocation = false;
+                }
+            }
+
+            return isValidBuildingLocation;
+        }
+
+
 
     }
 }

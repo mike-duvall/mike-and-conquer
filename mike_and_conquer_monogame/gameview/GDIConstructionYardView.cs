@@ -1,6 +1,4 @@
 ﻿
-
-
 using UnitSprite = mike_and_conquer_monogame.gamesprite.UnitSprite;
 using ShpFileColorMapper = mike_and_conquer_monogame.gamesprite.ShpFileColorMapper;
 using GdiShpFileColorMapper = mike_and_conquer_monogame.gamesprite.GdiShpFileColorMapper;
@@ -63,17 +61,17 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-
-            Vector2 worldCoordinatesAsVector2 = new Vector2(
-                XInWorldCoordinates,
-                YInWorldCoordinates);
-
-
-            unitSprite.Draw(gameTime, spriteBatch, worldCoordinatesAsVector2,
-                SpriteSortLayers.BUILDING_DEPTH);
-        }
+        // internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        // {
+        //
+        //     Vector2 worldCoordinatesAsVector2 = new Vector2(
+        //         XInWorldCoordinates,
+        //         YInWorldCoordinates);
+        //
+        //
+        //     unitSprite.Draw(gameTime, spriteBatch, worldCoordinatesAsVector2,
+        //         SpriteSortLayers.BUILDING_DEPTH);
+        // }
 
         internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
         {

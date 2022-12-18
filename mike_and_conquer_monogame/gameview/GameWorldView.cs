@@ -32,6 +32,7 @@ using Viewport = Microsoft.Xna.Framework.Graphics.Viewport;
 using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
 // using MinigunnerSidebarIconView = mike_and_conquer.gameview.sidebar.MinigunnerSidebarIconView;
 
+
 using RenderTarget2D = Microsoft.Xna.Framework.Graphics.RenderTarget2D;
 
 using ShadowMapper = mike_and_conquer_monogame.gamesprite.ShadowMapper;
@@ -41,7 +42,7 @@ using ImmutablePalette = mike_and_conquer_monogame.openra.ImmutablePalette;
 
 using Matrix = Microsoft.Xna.Framework.Matrix;
 
-using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+// using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 using TILE_LOCATION = mike_and_conquer_simulation.gameworld.MapTileLocation.TILE_LOCATION;
 
 using MonogameUtil = mike_and_conquer_monogame.util.MonogameUtil;
@@ -178,6 +179,8 @@ namespace mike_and_conquer_monogame.gameview
 
         private GDIConstructionYardView gdiConstructionYardView = null;
 
+        private GDIBarracksView gdiBarracksView = null;
+
         // public List<MinigunnerView> NodMinigunnerViewList
         // {
         //     get { return nodMinigunnerViewList; }
@@ -212,6 +215,11 @@ namespace mike_and_conquer_monogame.gameview
         public static GameWorldView instance;
 
         private BarracksPlacementIndicatorView barracksPlacementIndicatorView;
+
+        public BarracksPlacementIndicatorView BarracksPlacementIndicatorView
+        {
+            get { return barracksPlacementIndicatorView; }
+        }
 
 
 
@@ -500,11 +508,11 @@ namespace mike_and_conquer_monogame.gameview
                 nullEffect,
                 renderTargetCamera.TransformMatrix);
 
-            // if (GameWorldView.instance.GDIBarracksView != null)
-            // {
-            //     GameWorldView.instance.GDIBarracksView.DrawShadowOnly(gameTime, spriteBatch);
-            // }
-            //
+            if (gdiBarracksView != null)
+            {
+                gdiBarracksView.DrawShadowOnly(gameTime, spriteBatch);
+            }
+            
             if (gdiConstructionYardView != null)
             {
                 gdiConstructionYardView.DrawShadowOnly(gameTime, spriteBatch);
@@ -684,10 +692,10 @@ namespace mike_and_conquer_monogame.gameview
             
             
             
-            // if (GameWorldView.instance.GDIBarracksView != null)
-            // {
-            //     GameWorldView.instance.GDIBarracksView.DrawNoShadow(gameTime, spriteBatch);
-            // }
+            if (gdiBarracksView != null)
+            {
+                gdiBarracksView.DrawNoShadow(gameTime, spriteBatch);
+            }
             
             if (gdiConstructionYardView != null)
             {
@@ -792,7 +800,7 @@ namespace mike_and_conquer_monogame.gameview
             // nodTurretViewList.Clear();
             // projectile120MmViewList.Clear();
             gdiConstructionYardView = null;
-             // gdiBarracksView = null;
+            gdiBarracksView = null;
             barracksSidebarIconView = null;
             barracksPlacementIndicatorView = null;
             // minigunnerSidebarIconView = null;
@@ -1424,7 +1432,7 @@ namespace mike_and_conquer_monogame.gameview
             if (barracksPlacementIndicatorView == null)
             {
 
-                MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(
+                SimulationMapTileLocation mapTileLocation = SimulationMapTileLocation.CreateFromWorldCoordinates(
                     GDIConstructionYardView.XInWorldCoordinates,
                     GDIConstructionYardView.YInWorldCoordinates);
         
@@ -1447,6 +1455,7 @@ namespace mike_and_conquer_monogame.gameview
         public void Notify_DonePlacingBarracks()
         {
             barracksPlacementIndicatorView = null;
+
         }
         
         // public void AddProjectile120mmView(Projectile120mm projectile120Mm)
@@ -1516,8 +1525,16 @@ namespace mike_and_conquer_monogame.gameview
         {
             gdiConstructionYardView = new GDIConstructionYardView(id, x, y);
             barracksSidebarIconView = new BarracksSidebarIconView(new XnaPoint(32, 24));
+        }
+
+        public void AddGDIBarracksView(int id, int x, int y)
+        {
+            //gdiConstructionYardView = new GDIConstructionYardView(id, x, y);
+            gdiBarracksView = new GDIBarracksView(id, x, y);
+            // barracksSidebarIconView = new BarracksSidebarIconView(new XnaPoint(32, 24));
 
         }
+
 
         public void NotifyBarracksStartedBuilding()
         {
@@ -1667,9 +1684,9 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-        public MapTileInstanceView FindAdjacentMapTileInstanceViewAllowNull(MapTileLocation mapTileLocation, MapTileLocation.TILE_LOCATION tileLocation)
+        public MapTileInstanceView FindAdjacentMapTileInstanceViewAllowNull(SimulationMapTileLocation mapTileLocation, SimulationMapTileLocation.TILE_LOCATION tileLocation)
         {
-            MapTileLocation adjacentMapTileLocation = mapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
+            SimulationMapTileLocation adjacentMapTileLocation = mapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
 
             return this.FindMapTileInstanceViewAllowNull(
                 adjacentMapTileLocation.WorldCoordinatesAsPoint.X,
@@ -1828,8 +1845,8 @@ namespace mike_and_conquer_monogame.gameview
 
         private MapTileInstanceView FindAdjacentMapTileInstanceView(MapTileInstanceView mapTileInstanceView, TILE_LOCATION tileLocation)
         {
-        
-            MapTileLocation adjacentMapTileLocation =
+
+            SimulationMapTileLocation adjacentMapTileLocation =
                 mapTileInstanceView.SimulationMapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
 
 

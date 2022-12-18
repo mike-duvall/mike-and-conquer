@@ -1,5 +1,6 @@
 ﻿
 
+using mike_and_conquer_simulation.gameworld;
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
@@ -163,13 +164,14 @@ namespace mike_and_conquer_simulation.main
 
 
 
-        // public void CreateBarracksAtPosition(MapTileLocation mapTileLocation)
-        // {
-        //
-        //     MikeAndConquerGame.instance.AddGDIBarracks(mapTileLocation);
-        //     isBarracksReadyToPlace = false;
-        //     isBuildingBarracks = false;
-        // }
+        public GDIBarracks CreateGDIBarracksAtPosition(MapTileLocation mapTileLocation)
+        {
+            isBarracksReadyToPlace = false;
+            isBuildingBarracks = false;
+
+            // return SimulationMain.instance.AddGDIBarracks(mapTileLocation);
+            return GameWorld.instance.AddGDIBarracks(mapTileLocation);
+        }
 
 
     }

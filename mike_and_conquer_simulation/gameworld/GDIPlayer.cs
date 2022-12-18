@@ -38,18 +38,12 @@ namespace mike_and_conquer_simulation.gameworld
             get { return gdiConstructionYard; }
         }
 
-        // private GDIBarracks gdiBarracks;
-        // public GDIBarracks GDIBarracks
-        // {
-        //     get { return gdiBarracks; }
-        // }
-        //
-        // private GDIConstructionYard gdiConstructionYard;
-        // public GDIConstructionYard GDIConstructionYard
-        // {
-        //     get { return gdiConstructionYard; }
-        // }
-
+        private GDIBarracks gdiBarracks;
+        public GDIBarracks GDIBarracks
+        {
+            get { return gdiBarracks; }
+        }
+        
 
 
         // private MCV mcv;
@@ -330,15 +324,30 @@ namespace mike_and_conquer_simulation.gameworld
                 throw new Exception("Did not find MCV when attempting to create ConstructionYard");
             }
 
-
-
-
-
-
-
             return gdiConstructionYard;
 
         }
+
+        public GDIBarracks AddBarracks(MapTileLocation mapTileLocation)
+        {
+            // MapTileLocation mapTileLocation =
+            //     MapTileLocation.CreateFromWorldCoordinates(xInWorldCoordinates, yInWorldCoordinates);
+
+
+            gdiBarracks = new GDIBarracks(mapTileLocation);
+
+            int unidId = -1;
+
+            PublishUnitCreateEvent(
+                GDIBarracksPlacedEventData.EventType,
+                unidId,
+                gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.X,
+                gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.Y);
+
+            return gdiBarracks;
+
+        }
+
 
         private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {
