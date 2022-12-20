@@ -30,7 +30,8 @@ using Color = Microsoft.Xna.Framework.Color;
 
 using Viewport = Microsoft.Xna.Framework.Graphics.Viewport;
 using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
-// using MinigunnerSidebarIconView = mike_and_conquer.gameview.sidebar.MinigunnerSidebarIconView;
+using MinigunnerSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.MinigunnerSidebarIconView;
+
 
 
 using RenderTarget2D = Microsoft.Xna.Framework.Graphics.RenderTarget2D;
@@ -65,7 +66,7 @@ namespace mike_and_conquer_monogame.gameview
         internal UnitSelectionBox unitSelectionBox;
 
         private ShadowMapper shadowMapper;
-        // private MinigunnerSidebarIconView minigunnerSidebarIconView;
+        private MinigunnerSidebarIconView minigunnerSidebarIconView;
         private BarracksSidebarIconView barracksSidebarIconView;
         
         
@@ -74,10 +75,10 @@ namespace mike_and_conquer_monogame.gameview
             get { return barracksSidebarIconView; }
         }
         
-        // public MinigunnerSidebarIconView MinigunnerSidebarIconView
-        // {
-        //     get { return minigunnerSidebarIconView; }
-        // }
+        public MinigunnerSidebarIconView MinigunnerSidebarIconView
+        {
+            get { return minigunnerSidebarIconView; }
+        }
 
         public float MapZoom
         {
@@ -180,6 +181,11 @@ namespace mike_and_conquer_monogame.gameview
         private GDIConstructionYardView gdiConstructionYardView = null;
 
         private GDIBarracksView gdiBarracksView = null;
+
+        public GDIBarracksView GDIBarracksView
+        {
+            get { return gdiBarracksView; }
+        }
 
         // public List<MinigunnerView> NodMinigunnerViewList
         // {
@@ -426,11 +432,11 @@ namespace mike_and_conquer_monogame.gameview
             spriteBatch.Draw(sidebarBackgroundRectangle,
                 new Rectangle(0, 0, sidebarViewport.Width / 2, sidebarViewport.Height / 2), Color.White);
         
-            // if (minigunnerSidebarIconView != null)
-            // {
-            //     minigunnerSidebarIconView.Draw(gameTime, spriteBatch);
-            // }
-            //
+            if (minigunnerSidebarIconView != null)
+            {
+                minigunnerSidebarIconView.Draw(gameTime, spriteBatch);
+            }
+            
             if (barracksSidebarIconView != null)
             {
                 barracksSidebarIconView.Draw(gameTime, spriteBatch);
@@ -803,7 +809,7 @@ namespace mike_and_conquer_monogame.gameview
             gdiBarracksView = null;
             barracksSidebarIconView = null;
             barracksPlacementIndicatorView = null;
-            // minigunnerSidebarIconView = null;
+            minigunnerSidebarIconView = null;
         }
 
 
@@ -1207,6 +1213,12 @@ namespace mike_and_conquer_monogame.gameview
             //     minigunnerSidebarIconView.Update(gameTime);
             // }
             //
+
+            if (minigunnerSidebarIconView != null)
+            {
+                minigunnerSidebarIconView.Update(gameTime);
+            }
+
             if (gdiConstructionYardView != null)
             {
                 barracksSidebarIconView.Update(gameTime);
@@ -1529,9 +1541,11 @@ namespace mike_and_conquer_monogame.gameview
 
         public void AddGDIBarracksView(int id, int x, int y)
         {
-            //gdiConstructionYardView = new GDIConstructionYardView(id, x, y);
             gdiBarracksView = new GDIBarracksView(id, x, y);
+            gdiConstructionYardView.IsBarracksReadyToPlace = false;
             // barracksSidebarIconView = new BarracksSidebarIconView(new XnaPoint(32, 24));
+            minigunnerSidebarIconView = new MinigunnerSidebarIconView(new XnaPoint(112, 24));
+
 
         }
 

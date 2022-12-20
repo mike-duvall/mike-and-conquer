@@ -22,6 +22,8 @@ namespace mike_and_conquer_monogame.gameview
         public int YInWorldCoordinates { get; set; }
 
 
+        public bool IsBuildingMinigunner { get; set; }
+        public int PercentMinigunnerBuildComplete { get; set; }
 
         public const string SPRITE_KEY = "Barracks";
 

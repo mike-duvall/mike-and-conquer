@@ -23,6 +23,9 @@ using MemoryStream = System.IO.MemoryStream;
 using Form = System.Windows.Forms.Form;
 using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
 using ReadyOverlay = mike_and_conquer_monogame.gameview.sidebar.ReadyOverlay;
+using MinigunnerSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.MinigunnerSidebarIconView;
+
+
 
 namespace mike_and_conquer_monogame.main
 {
@@ -478,13 +481,13 @@ namespace mike_and_conquer_monogame.main
             //     Projectile120mmView.SPRITE_KEY,
             //     raiSpriteFrameManager.GetSpriteFramesForUnit(Projectile120mmView.SHP_FILE_NAME),
             //     Projectile120mmView.SHP_FILE_COLOR_MAPPER);
-            //
-            //
-            // raiSpriteFrameManager.LoadAllTexturesFromShpFile(MinigunnerSidebarIconView.SHP_FILE_NAME);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     MinigunnerSidebarIconView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(MinigunnerSidebarIconView.SHP_FILE_NAME),
-            //     MinigunnerSidebarIconView.SHP_FILE_COLOR_MAPPER);
+            
+            
+            raiSpriteFrameManager.LoadAllTexturesFromShpFile(MinigunnerSidebarIconView.SHP_FILE_NAME);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                MinigunnerSidebarIconView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(MinigunnerSidebarIconView.SHP_FILE_NAME),
+                MinigunnerSidebarIconView.SHP_FILE_COLOR_MAPPER);
             
             raiSpriteFrameManager.LoadAllTexturesFromShpFile(BarracksSidebarIconView.SHP_FILE_NAME);
             spriteSheet.LoadUnitFramesFromSpriteFrames(

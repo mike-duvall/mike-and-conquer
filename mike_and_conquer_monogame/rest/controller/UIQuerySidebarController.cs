@@ -46,12 +46,12 @@ namespace mike_and_conquer_monogame.rest.controller
                 sidebar.buildBarracksEnabled = true;
             
             }
-            //
-            // if (GameWorldView.instance.MinigunnerSidebarIconView != null)
-            // {
-            //     sidebar.buildMinigunnerEnabled = true;
-            // }
-            //
+
+            if (GameWorldView.instance.MinigunnerSidebarIconView != null)
+            {
+                sidebar.buildMinigunnerEnabled = true;
+            }
+            
             return new OkObjectResult(sidebar);
         }
 
