@@ -361,6 +361,11 @@ namespace mike_and_conquer_simulation.main
             gameWorld.BeginBuildingBarracks();
         }
 
+        internal void BeginBuildingMinigunner()
+        {
+            gameWorld.BeginBuildingMinigunner();
+        }
+
         internal GDIBarracks CreateGDIBarracksViaConstructionYard(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             return gameWorld.CreateGDIBarracksViaConstructionYard(xInWorldCoordinates, yInWorldCoordinates);

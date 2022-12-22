@@ -7,7 +7,8 @@ using System;
 // using Point = Microsoft.Xna.Framework.Point;
 
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
-
+using SimulationStateUpdateEvent = mike_and_conquer_simulation.events.SimulationStateUpdateEvent;
+using StartedBuildingMinigunnerEventData = mike_and_conquer_simulation.events.StartedBuildingMinigunnerEventData;
 namespace mike_and_conquer_simulation.main
 { 
 
@@ -66,9 +67,27 @@ namespace mike_and_conquer_simulation.main
 
         public void StartBuildingMinigunner()
         {
-            isBuildingMinigunner = true;
-            buildMinigunnerPercentComplete = 0.0f;
+
+            if (!isBuildingMinigunner)
+            {
+                isBuildingMinigunner = true;
+                buildMinigunnerPercentComplete = 0.0f;
+                PublishStartBuildingMinigunnerEvent();
+            }
+
         }
+
+        private void PublishStartBuildingMinigunnerEvent()
+        {
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    StartedBuildingMinigunnerEventData.EventType,
+                    null);
+
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
 
 
 

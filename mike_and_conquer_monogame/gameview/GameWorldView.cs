@@ -275,7 +275,6 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-
         private void SetupSidebarViewportAndCamera()
         {
             sidebarViewport = new Viewport();
@@ -287,8 +286,9 @@ namespace mike_and_conquer_monogame.gameview
             sidebarViewport.MaxDepth = 1;
 
             sidebarViewportCamera = new Camera2D(sidebarViewport);
-            sidebarViewportCamera.Zoom = 3.0f;
-            //            sidebarViewportCamera.Zoom = 1.5f;
+            // sidebarViewportCamera.Zoom = 3.0f;
+            // sidebarViewportCamera.Zoom = 1.5f;
+            sidebarViewportCamera.Zoom = 2.0f;
 
             float scaledHalfViewportWidth = CalculateLeftmostScrollX(sidebarViewport, sidebarViewportCamera.Zoom, 0);
             float scaledHalfViewportHeight = CalculateTopmostScrollY(sidebarViewport, sidebarViewportCamera.Zoom, 0);

@@ -577,6 +577,12 @@ namespace mike_and_conquer_simulation.gameworld
         }
 
 
+        public void BeginBuildingMinigunner()
+        {
+            gdiPlayer.GDIBarracks.StartBuildingMinigunner();
+        }
+
+
         public Unit FindUnitWithUnitId(int unitId)
         {
             return gdiPlayer.FindUnitWithUnitId(unitId);

@@ -6,6 +6,8 @@ using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 using SimulationStateUpdateEvent = mike_and_conquer_simulation.events.SimulationStateUpdateEvent;
 using StartedBuildingBarracksEventData = mike_and_conquer_simulation.events.StartedBuildingBarracksEventData;
+
+
 using BuildingBarracksPercentCompletedEventData = mike_and_conquer_simulation.events.BuildingBarracksPercentCompletedEventData;
 using CompletedBuildingBarracksEventData = mike_and_conquer_simulation.events.CompletedBuildingBarracksEventData;
 

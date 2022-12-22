@@ -32,6 +32,7 @@ namespace mike_and_conquer_monogame.rest.controller
             sidebar.buildBarracksEnabled = false;
             sidebar.buildMinigunnerEnabled = false;
             sidebar.barracksIsBuilding = false;
+            sidebar.minigunnerIsBuilding = false;
 
             GDIConstructionYardView gdiConstructionYardView =  GameWorldView.instance.GDIConstructionYardView;
             if (gdiConstructionYardView != null)

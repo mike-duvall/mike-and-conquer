@@ -171,6 +171,12 @@ namespace mike_and_conquer_monogame.main
         {
             AsyncViewCommand command = ConvertRawCommand(rawCommandUi);
             command.Process();
+            if (command.ThrownException != null)
+            {
+                string errorMessage = "Exception thrown processing command '" + command.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
+                logger.LogError(command.ThrownException, errorMessage);
+            }
+
         }
 
 
@@ -864,6 +870,7 @@ namespace mike_and_conquer_monogame.main
         }
 
 
+
         public void LeftClickSidebar(string sidebarIconName)
         {
             Point position = new Point();
@@ -871,6 +878,10 @@ namespace mike_and_conquer_monogame.main
             if (sidebarIconName == "Barracks")
             {
                 position = GameWorldView.instance.BarracksSidebarIconView.GetPosition();
+            }
+            else if (sidebarIconName == "Minigunner")
+            {
+                position = GameWorldView.instance.MinigunnerSidebarIconView.GetPosition();
             }
             else
             {
