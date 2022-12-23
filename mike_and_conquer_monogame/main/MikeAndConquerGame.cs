@@ -134,6 +134,9 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
 
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardStartsBuildingBarracks(this));
+            simulationStateListenerList.Add(new UpdateBarracksViewWhenBarracksStartsBuildingMinigunner(this));
+
+
             simulationStateListenerList.Add(new UpdateBarracksPercentBuildCompleted(this));
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardCompletesBuildingBarracks (this));
 
@@ -662,6 +665,11 @@ namespace mike_and_conquer_monogame.main
         public void NotifyBarracksStartedBuilding()
         {
             gameWorldView.NotifyBarracksStartedBuilding();
+        }
+
+        public void NotifyMinigunnerStartedBuilding()
+        {
+            gameWorldView.NotifyMinigunnerStartedBuilding();
         }
 
         public void NotifyBarracksCompletedBuilding()

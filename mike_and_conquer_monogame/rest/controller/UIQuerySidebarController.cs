@@ -52,6 +52,13 @@ namespace mike_and_conquer_monogame.rest.controller
             {
                 sidebar.buildMinigunnerEnabled = true;
             }
+
+            GDIBarracksView gdiBarracksView = GameWorldView.instance.GDIBarracksView;
+
+            if (gdiBarracksView != null)
+            {
+                sidebar.minigunnerIsBuilding = gdiBarracksView.IsBuildingMinigunner;
+            }
             
             return new OkObjectResult(sidebar);
         }

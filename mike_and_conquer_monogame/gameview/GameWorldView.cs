@@ -1555,6 +1555,11 @@ namespace mike_and_conquer_monogame.gameview
             gdiConstructionYardView.IsBuildingBarracks = true;
         }
 
+        public void NotifyMinigunnerStartedBuilding()
+        {
+            gdiBarracksView.IsBuildingMinigunner = true;
+        }
+
 
         public void NotifyBarracksCompletedBuilding()
         {
