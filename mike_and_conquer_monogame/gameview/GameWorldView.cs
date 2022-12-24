@@ -1572,6 +1572,10 @@ namespace mike_and_conquer_monogame.gameview
             gdiConstructionYardView.PercentBarracksBuildComplete = percentCompleted;
         }
 
+        public void UpdateMinigunnerPercentCompleted(int percentCompleted)
+        {
+            gdiBarracksView.PercentMinigunnerBuildComplete = percentCompleted;
+        }
 
 
         public void AddJeepView(int id, int x, int y)

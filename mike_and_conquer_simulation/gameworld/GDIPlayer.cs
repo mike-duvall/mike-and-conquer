@@ -125,6 +125,7 @@ namespace mike_and_conquer_simulation.gameworld
 
             // UpdateGDIMinigunners();
             UpdateConstructionYard();
+            UpdateBarracks();
             UpdateUnits();
 
         }
@@ -162,15 +163,15 @@ namespace mike_and_conquer_simulation.gameworld
 
 
 
-        // private void UpdateBarracks(GameTime gameTime)
-        // {
-        //     if (gdiBarracks != null)
-        //     {
-        //         gdiBarracks.Update(gameTime);
-        //     }
-        // }
-        //
-        //
+        private void UpdateBarracks()
+        {
+            if (gdiBarracks != null)
+            {
+                gdiBarracks.Update();
+            }
+        }
+        
+        
         private void UpdateConstructionYard()
         {
             if (gdiConstructionYard != null)

@@ -1,14 +1,15 @@
 ﻿
-using System;
-// using mike_and_conquer.gameworld;
-// using mike_and_conquer.main;
-// using Vector2 = Microsoft.Xna.Framework.Vector2;
-// using GameTime = Microsoft.Xna.Framework.GameTime;
-// using Point = Microsoft.Xna.Framework.Point;
 
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 using SimulationStateUpdateEvent = mike_and_conquer_simulation.events.SimulationStateUpdateEvent;
 using StartedBuildingMinigunnerEventData = mike_and_conquer_simulation.events.StartedBuildingMinigunnerEventData;
+using BuildingMinigunnerPercentCompletedEventData = mike_and_conquer_simulation.events.BuildingMinigunnerPercentCompletedEventData;
+
+using CompletedBuildingMinigunnerEventData = mike_and_conquer_simulation.events.CompletedBuildingMinigunnerEventData;
+
+using JsonConvert = Newtonsoft.Json.JsonConvert;
+
+
 namespace mike_and_conquer_simulation.main
 { 
 
@@ -23,7 +24,7 @@ namespace mike_and_conquer_simulation.main
             get { return mapTileLocation; }
         }
 
-        private Boolean isBuildingMinigunner;
+        private bool isBuildingMinigunner;
 
         private float buildMinigunnerPercentComplete;
 
@@ -31,7 +32,7 @@ namespace mike_and_conquer_simulation.main
         private float baseBuildSpeed = 1.25f;
 
 
-        public Boolean IsBuildingMinigunner
+        public bool IsBuildingMinigunner
         {
             get { return isBuildingMinigunner; }
         }
@@ -108,6 +109,63 @@ namespace mike_and_conquer_simulation.main
         //
         //     }
         // }
+
+
+        public void Update()
+        {
+            // scaledBuildSpeed = baseBuildSpeed / GameOptions.instance.GameSpeedDelayDivisor;
+
+            if (isBuildingMinigunner)
+            {
+                // double buildIncrement = gameTime.ElapsedGameTime.TotalMilliseconds * scaledBuildSpeed;
+                double buildIncrement = 0.4;
+
+                buildMinigunnerPercentComplete += (float)buildIncrement;
+
+
+                if (buildMinigunnerPercentComplete >= 100.0f)
+                {
+                    isBuildingMinigunner = false;
+                    PublishCompletedBuildingMinigunnerEvent();
+                }
+                else
+                {
+                    PublishBuildingMinigunnerPercentCompleteEvent();
+                }
+            }
+        }
+
+
+        private void PublishCompletedBuildingMinigunnerEvent()
+        {
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    CompletedBuildingMinigunnerEventData.EventType,
+                    null);
+
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
+
+        private void PublishBuildingMinigunnerPercentCompleteEvent()
+        {
+
+            BuildingMinigunnerPercentCompletedEventData eventData =
+                new BuildingMinigunnerPercentCompletedEventData(this.PercentMinigunnerBuildComplete);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    BuildingMinigunnerPercentCompletedEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+
+        }
+
 
         // private void CreateMinigunnerFromBarracks()
         // {
