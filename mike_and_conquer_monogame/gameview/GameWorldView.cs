@@ -43,7 +43,6 @@ using ImmutablePalette = mike_and_conquer_monogame.openra.ImmutablePalette;
 
 using Matrix = Microsoft.Xna.Framework.Matrix;
 
-// using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 using TILE_LOCATION = mike_and_conquer_simulation.gameworld.MapTileLocation.TILE_LOCATION;
 
 using MonogameUtil = mike_and_conquer_monogame.util.MonogameUtil;
@@ -1458,8 +1457,6 @@ namespace mike_and_conquer_monogame.gameview
             XnaPoint mouseLocationWordCoordinates =
                 ConvertScreenLocationToWorldLocation(mouseLocationInScreenCoordinates);
         
-            // barracksPlacementIndicator.UpdateLocationInWorldCoordinates(mouseLocationWordCoordinates);
-
             UpdateBarracksPlacementIndicatorCommand command = new UpdateBarracksPlacementIndicatorCommand(barracksPlacementIndicatorView, mouseLocationWordCoordinates);
             MikeAndConquerGame.instance.PostCommand(command);
         }
@@ -1512,8 +1509,6 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-        //        private List<UnitView> unitViewList;
-
         public void AddMinigunnerView(int id, int x, int y)
         {
             GdiMinigunnerView view = new GdiMinigunnerView(id, x, y);
@@ -1543,10 +1538,7 @@ namespace mike_and_conquer_monogame.gameview
         {
             gdiBarracksView = new GDIBarracksView(id, x, y);
             gdiConstructionYardView.IsBarracksReadyToPlace = false;
-            // barracksSidebarIconView = new BarracksSidebarIconView(new XnaPoint(32, 24));
             minigunnerSidebarIconView = new MinigunnerSidebarIconView(new XnaPoint(112, 24));
-
-
         }
 
 
@@ -1693,7 +1685,7 @@ namespace mike_and_conquer_monogame.gameview
 
         public MapTileInstanceView FindMapTileInstanceViewAllowNull(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            // TODO:  If MapTileInstanceViewList was a two dimensional array, we could just directly comput the instance
+            // TODO:  If MapTileInstanceViewList was a two dimensional array, we could just directly compute the instance
             // instead of scanning all views and asking if they contain the point
             foreach (MapTileInstanceView mapTileInstanceView in this.MapTileInstanceViewList)
             {
@@ -1760,9 +1752,6 @@ namespace mike_and_conquer_monogame.gameview
 
         public bool IsPointAdjacentToConstructionYardAndClearForBuilding(XnaPoint pointInWordlCoordinates)
         {
-            // MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(pointInWordlCoordinates.X, pointInWordlCoordinates.Y);
-            // MapTileInstance mapTileInstance = this.FindMapTileInstanceAllowNull(mapTileLocation);
-
             MapTileInstanceView mapTileInstanceView =  this.FindMapTileInstanceViewAllowNull(pointInWordlCoordinates.X, pointInWordlCoordinates.Y);
             if (mapTileInstanceView == null)
             {
@@ -1773,14 +1762,6 @@ namespace mike_and_conquer_monogame.gameview
                    IsMapTileInstanceViewClearForBuilding(mapTileInstanceView);
 
         }
-
-
-        // private bool IsMapTileInstanceClearForBuilding(MapTileInstance mapTileInstance)
-        // {
-        //     return !mapTileInstance.IsBlockingTerrain &&
-        //            !GDIConstructionYard.ContainsPoint(mapTileInstance.MapTileLocation.WorldCoordinatesAsPoint);
-        //
-        // }
 
         private bool IsMapTileInstanceViewClearForBuilding(MapTileInstanceView mapTileInstanceView)
         {
@@ -1802,20 +1783,6 @@ namespace mike_and_conquer_monogame.gameview
             return false;
 
         }
-
-
-        // public enum TILE_LOCATION
-        // {
-        //     WEST,
-        //     NORTH_WEST,
-        //     NORTH,
-        //     NORTH_EAST,
-        //     EAST,
-        //     SOUTH_EAST,
-        //     SOUTH,
-        //     SOUTH_WEST
-        // }
-
 
 
         private bool IsMapTileInstanceAdjacentToConstructionYard(MapTileInstanceView mapTileInstanceView)
@@ -1872,9 +1839,6 @@ namespace mike_and_conquer_monogame.gameview
             SimulationMapTileLocation adjacentMapTileLocation =
                 mapTileInstanceView.SimulationMapTileLocation.CreateAdjacentMapTileLocation(tileLocation);
 
-
-            // MapTileInstanceView foundMapTileInstanceView =
-            //     this.FindMapTileInstanceViewAllowNull(adjacentMapTileLocation.XInWorldMapTileCoordinates, adjacentMapTileLocation.YInWorldMapTileCoordinates);
             MapTileInstanceView foundMapTileInstanceView =
                 this.FindMapTileInstanceViewAllowNull(
                     adjacentMapTileLocation.WorldCoordinatesAsPoint.X,
@@ -1887,11 +1851,6 @@ namespace mike_and_conquer_monogame.gameview
         public bool IsValidMoveDestination(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             bool isValidMoveDestination = true;
-
-            // MapTileInstance clickedMapTileInstance =
-            //     FindMapTileInstanceAllowNull(
-            //         MapTileLocation.CreateFromWorldCoordinates(pointInWorldCoordinates.X, pointInWorldCoordinates.Y));
-
 
             MapTileInstanceView clickedMapTileInstanceView =
                 FindMapTileInstanceViewAllowNull(xInWorldCoordinates, yInWorldCoordinates);
