@@ -9,6 +9,7 @@ using CompletedBuildingMinigunnerEventData = mike_and_conquer_simulation.events.
 
 using JsonConvert = Newtonsoft.Json.JsonConvert;
 
+using Point = System.Drawing.Point;
 
 namespace mike_and_conquer_simulation.main
 { 
@@ -127,12 +128,30 @@ namespace mike_and_conquer_simulation.main
                 {
                     isBuildingMinigunner = false;
                     PublishCompletedBuildingMinigunnerEvent();
+                    CreateMinigunnerFromBarracks();
                 }
                 else
                 {
                     PublishBuildingMinigunnerPercentCompleteEvent();
                 }
             }
+        }
+
+
+        private void CreateMinigunnerFromBarracks()
+        {
+            Point gdiMinigunnderPosition = mapTileLocation.WorldCoordinatesAsPoint;
+            // Minigunner builtMinigunner = SimulationMain.instance.AddGdiMinigunner(gdiMinigunnderPosition);
+            Minigunner builtMinigunner = SimulationMain.instance.CreateMinigunner(
+                gdiMinigunnderPosition.X,
+                gdiMinigunnderPosition.Y);
+
+            Point destinationInWC = new Point(gdiMinigunnderPosition.X, gdiMinigunnderPosition.Y + 40);
+            // builtMinigunner.OrderToMoveToDestination(destinationInWC);
+            builtMinigunner.OrderMoveToDestination(
+                destinationInWC.X,
+                destinationInWC.Y);
+
         }
 
 
