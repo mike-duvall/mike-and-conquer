@@ -29,31 +29,12 @@ namespace mike_and_conquer_monogame.humancontroller
                 }
 
 
-                // if (MouseInputUtil.LeftMouseButtonUnclicked(newMouseState, oldMouseState))
-                // {
-                //     if(GameWorldView.instance.barracksPlacementIndicator.ValidBuildingLocation())
-                //     {
-                //         GDIConstructionYard gdiConstructionYard = GameWorld.instance.GDIConstructionYard;
-                //         Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
-                //         MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
-                //         gdiConstructionYard.CreateBarracksAtPosition(mapTileLocation);
-                //         GameWorldView.instance.Notify_DonePlacingBarracks();
-                //         return new PointerOverMapState();
-                //     }
-                //
-                // }
                 if (MouseInputUtil.LeftMouseButtonUnclicked(newMouseState, oldMouseState))
                 {
                     if(GameWorldView.instance.BarracksPlacementIndicatorView.ValidBuildingLocation())
                     {
-                        // GDIConstructionYard gdiConstructionYard = GameWorld.instance.GDIConstructionYard;
                         Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
                         SimulationMapTileLocation mapTileLocation = SimulationMapTileLocation.CreateFromWorldCoordinates(mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
-                        // gdiConstructionYard.CreateBarracksAtPosition(mapTileLocation);
-                        // GameWorldView.instance.Notify_DonePlacingBarracks();
-                        // return new PointerOverMapState();
-
-
                         SendPlaceBarracksCommand(mapTileLocation);
 
                         // TODO: Should this part wait on events that barracks was placed?
@@ -73,10 +54,6 @@ namespace mike_and_conquer_monogame.humancontroller
 
         public void SendPlaceBarracksCommand(SimulationMapTileLocation simulationMapTileLocation)
         {
-            // OrderUnitToMoveCommand command = new OrderUnitToMoveCommand();
-            // command.UnitId = unitId;
-            // command.DestinationXInWorldCoordinates = centerOfSquare.X;
-            // command.DestinationYInWorldCoordinates = centerOfSquare.Y;
             PlaceBarracksCommand command = new PlaceBarracksCommand();
 
             command.XInWorldCoordinates = simulationMapTileLocation.WorldCoordinatesAsPoint.X;
