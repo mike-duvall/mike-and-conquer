@@ -1,10 +1,7 @@
 ﻿
-
 using ShpFileColorMapper = mike_and_conquer_monogame.gamesprite.ShpFileColorMapper;
 using GdiShpFileColorMapper = mike_and_conquer_monogame.gamesprite.GdiShpFileColorMapper;
 using Point = Microsoft.Xna.Framework.Point;
-using GameTime = Microsoft.Xna.Framework.GameTime;
-using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
 
 namespace mike_and_conquer_monogame.gameview.sidebar
@@ -36,18 +33,6 @@ namespace mike_and_conquer_monogame.gameview.sidebar
             GDIBarracksView barracks = GameWorldView.instance.GDIBarracksView;
             return barracks.PercentMinigunnerBuildComplete;
         }
-
-
-        // public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        // {
-        //     base.Draw(gameTime, spriteBatch);
-        //     if (GameWorldView.instance.GDIConstructionYardView.IsBarracksReadyToPlace)
-        //     {
-        //         readyOverlay.Draw(gameTime, spriteBatch);
-        //     }
-        //
-        // }
-
 
 
     }
