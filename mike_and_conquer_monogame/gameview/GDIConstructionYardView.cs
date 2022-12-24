@@ -1,16 +1,20 @@
 ﻿
-
 using UnitSprite = mike_and_conquer_monogame.gamesprite.UnitSprite;
 using ShpFileColorMapper = mike_and_conquer_monogame.gamesprite.ShpFileColorMapper;
 using GdiShpFileColorMapper = mike_and_conquer_monogame.gamesprite.GdiShpFileColorMapper;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+
+using SystemDrawingPoint = System.Drawing.Point;
+using XnaPoint = Microsoft.Xna.Framework.Point;
+
 
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
-
+using SimulationMapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
 
 namespace mike_and_conquer_monogame.gameview
 {
@@ -57,18 +61,6 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-
-            Vector2 worldCoordinatesAsVector2 = new Vector2(
-                XInWorldCoordinates,
-                YInWorldCoordinates);
-
-
-            unitSprite.Draw(gameTime, spriteBatch, worldCoordinatesAsVector2,
-                SpriteSortLayers.BUILDING_DEPTH);
-        }
-
         internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Vector2 worldCoordinatesAsVector2 = new Vector2(
@@ -88,25 +80,24 @@ namespace mike_and_conquer_monogame.gameview
             unitSprite.DrawShadowOnly(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
         }
 
-        // internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
-        // {
-        //     if (myMCV.health <= 0)
-        //     {
-        //         return;
-        //     }
-        //
-        //     mcvSelectionBox.position = new Vector2(myMCV.positionInWorldCoordinates.X, myMCV.positionInWorldCoordinates.Y);
-        //
-        //     unitSprite.DrawNoShadow(gameTime, spriteBatch, myMCV.positionInWorldCoordinates, SpriteSortLayers.UNIT_DEPTH);
-        //
-        //     if (myMCV.selected)
-        //     {
-        //         mcvSelectionBox.Draw(gameTime, spriteBatch);
-        //     }
-        //
-        // }
 
+        public bool ContainsPoint(SimulationMapTileLocation simulationMapTileLocation)
+        {
+            int width = 72;
+            int height = 48;
 
+            SystemDrawingPoint locationAsPoint = simulationMapTileLocation.WorldCoordinatesAsPoint;
+
+            int leftX = this.XInWorldCoordinates - (width / 2);
+            int topY = this.YInWorldCoordinates - (height / 2);
+
+            XnaPoint xnaPoint = new XnaPoint();
+            xnaPoint.X = locationAsPoint.X;
+            xnaPoint.Y = locationAsPoint.Y;
+
+            Rectangle boundRectangle = new Rectangle(leftX, topY, width, height);
+            return boundRectangle.Contains(xnaPoint);
+        }
 
     }
 }

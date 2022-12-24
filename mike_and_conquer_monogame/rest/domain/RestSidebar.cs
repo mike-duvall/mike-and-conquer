@@ -8,5 +8,7 @@ namespace mike_and_conquer_monogame.rest.domain
         public bool barracksIsBuilding { get; set; }
         public bool barracksReadyToPlace { get; set; }
 
+        public bool minigunnerIsBuilding { get; set; }
+
     }
 }

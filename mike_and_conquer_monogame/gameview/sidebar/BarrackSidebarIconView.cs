@@ -1,10 +1,5 @@
 ﻿
 
-// using Microsoft.Xna.Framework;
-// using mike_and_conquer.gameobjects;
-// using mike_and_conquer.gamesprite;
-// using mike_and_conquer.main;
-
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using ShpFileColorMapper = mike_and_conquer_monogame.gamesprite.ShpFileColorMapper;
 using GdiShpFileColorMapper = mike_and_conquer_monogame.gamesprite.GdiShpFileColorMapper;

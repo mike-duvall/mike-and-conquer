@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security.Permissions;
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.pathfinding;
 // using mike_and_conquer.gameevent;
@@ -552,6 +553,18 @@ namespace mike_and_conquer_simulation.gameworld
             return gdiPlayer.CreateConstructionYardFromMCV();
         }
 
+        public GDIBarracks CreateGDIBarracksViaConstructionYard(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(xInWorldCoordinates, yInWorldCoordinates);
+            return gdiPlayer.GDIConstructionYard.CreateGDIBarracksAtPosition(mapTileLocation);
+        }
+
+
+        public GDIBarracks AddGDIBarracks(MapTileLocation mapTileLocation)
+        {
+            return gdiPlayer.AddBarracks(mapTileLocation);
+        }
+
 
         public void RemoveUnit(int unitId)
         {
@@ -561,6 +574,12 @@ namespace mike_and_conquer_simulation.gameworld
         public void BeginBuildingBarracks()
         {
             gdiPlayer.GDIConstructionYard.StartBuildingBarracks();
+        }
+
+
+        public void BeginBuildingMinigunner()
+        {
+            gdiPlayer.GDIBarracks.StartBuildingMinigunner();
         }
 
 

@@ -7,6 +7,10 @@ using GameWorldView = mike_and_conquer_monogame.gameview.GameWorldView;
 
 using GDIConstructionYardView = mike_and_conquer_monogame.gameview.GDIConstructionYardView;
 using BeginBuildingBarracksCommand = mike_and_conquer_simulation.commands.BeginBuildingBarracksCommand;
+using BeginBuildingMinigunnerCommand = mike_and_conquer_simulation.commands.BeginBuildingMinigunnerCommand;
+
+
+
 using SimulationMain = mike_and_conquer_simulation.main.SimulationMain;
 
 
@@ -30,10 +34,10 @@ namespace mike_and_conquer_monogame.humancontroller
                     {
                         return HandleClickOnBuildBarracks();
                     }
-                    // else if (sidebarWorldLocation.X > 80 && sidebarWorldLocation.X < 144 && sidebarWorldLocation.Y > 0 && sidebarWorldLocation.Y < 48)
-                    // {
-                    //     HandleClickOnBuildMinigunner();
-                    // }
+                    else if (sidebarWorldLocation.X > 80 && sidebarWorldLocation.X < 144 && sidebarWorldLocation.Y > 0 && sidebarWorldLocation.Y < 48)
+                    {
+                        HandleClickOnBuildMinigunner();
+                    }
 
                 }
 
@@ -68,6 +72,12 @@ namespace mike_and_conquer_monogame.humancontroller
             GDIConstructionYardView view = GameWorldView.instance.GDIConstructionYardView;
             if (view != null)
             {
+
+                if (view.IsBarracksReadyToPlace)
+                {
+                    return new PlacingBuildingState();
+                }
+
                 if (!view.IsBuildingBarracks)
                 {
                     OrderBeginBuldingBarracks();
@@ -84,10 +94,12 @@ namespace mike_and_conquer_monogame.humancontroller
         }
 
 
-        // private void HandleClickOnBuildMinigunner()
-        // {
-        //     GameWorld.instance.GDIBarracks.StartBuildingMinigunner();
-        // }
+        private void HandleClickOnBuildMinigunner()
+        {
+            // GameWorld.instance.GDIBarracks.StartBuildingMinigunner();
+            BeginBuildingMinigunnerCommand command = new BeginBuildingMinigunnerCommand();
+            SimulationMain.instance.PostCommand(command);
+        }
 
 
     }

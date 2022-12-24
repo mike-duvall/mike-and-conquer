@@ -23,6 +23,9 @@ using MemoryStream = System.IO.MemoryStream;
 using Form = System.Windows.Forms.Form;
 using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
 using ReadyOverlay = mike_and_conquer_monogame.gameview.sidebar.ReadyOverlay;
+using MinigunnerSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.MinigunnerSidebarIconView;
+
+
 
 namespace mike_and_conquer_monogame.main
 {
@@ -118,6 +121,7 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddGDIConstructionYardViewWhenGDIConstructionYardCreated(this));
+            simulationStateListenerList.Add(new AddGDIBarracksViewWhenGDIBarracksPlaced(this));
 
 
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
@@ -130,10 +134,14 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add( new RemoveUnitViewWhenUnitDeletedEventHandler(this));
 
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardStartsBuildingBarracks(this));
+            simulationStateListenerList.Add(new UpdateBarracksViewWhenBarracksStartsBuildingMinigunner(this));
+
+
             simulationStateListenerList.Add(new UpdateBarracksPercentBuildCompleted(this));
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardCompletesBuildingBarracks (this));
+            simulationStateListenerList.Add(new UpdateMinigunnerPercentBuildCompleted(this));
 
-
+            
 
             IsMouseVisible = true;
             gameWorldView = new GameWorldView();
@@ -167,6 +175,12 @@ namespace mike_and_conquer_monogame.main
         {
             AsyncViewCommand command = ConvertRawCommand(rawCommandUi);
             command.Process();
+            if (command.ThrownException != null)
+            {
+                string errorMessage = "Exception thrown processing command '" + command.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
+                logger.LogError(command.ThrownException, errorMessage);
+            }
+
         }
 
 
@@ -304,9 +318,42 @@ namespace mike_and_conquer_monogame.main
 
         private void LoadBarracksPlacementTexture()
         {
-            // LoadTmpFile(BarracksPlacementIndicatorView.FILE_NAME);
-            // MapBlackMapTileFramePixelsToToTransparent(BarracksPlacementIndicatorView.FILE_NAME);
+            LoadTmpFile(BarracksPlacementIndicatorView.FILE_NAME);
+            MapBlackMapTileFramePixelsToToTransparent(BarracksPlacementIndicatorView.FILE_NAME);
         }
+
+        private void MapBlackMapTileFramePixelsToToTransparent(string tmpFileName)
+        {
+            List<MapTileFrame> mapTileFrameList = spriteSheet.GetMapTileFrameForTmpFile(tmpFileName);
+            foreach (MapTileFrame mapTileFrame in mapTileFrameList)
+            {
+                Texture2D theTexture = mapTileFrame.Texture;
+                int numPixels = theTexture.Height * theTexture.Width;
+                Color[] originalTexturePixelData = new Color[numPixels];
+                Color[] changedTexturePixelData = new Color[numPixels];
+                theTexture.GetData(originalTexturePixelData);
+
+                int i = 0;
+                foreach (Color color in originalTexturePixelData)
+                {
+                    if (color.R == 0)
+                    {
+                        Color newColor = new Color(0, 0, 0, 0);
+                        changedTexturePixelData[i] = newColor;
+                    }
+                    else
+                    {
+                        changedTexturePixelData[i] = color;
+                    }
+
+                    i++;
+                }
+                theTexture.SetData(changedTexturePixelData);
+
+            }
+
+        }
+
 
 
         public const string CLEAR1_SHP = "clear1.tem";
@@ -444,13 +491,13 @@ namespace mike_and_conquer_monogame.main
             //     Projectile120mmView.SPRITE_KEY,
             //     raiSpriteFrameManager.GetSpriteFramesForUnit(Projectile120mmView.SHP_FILE_NAME),
             //     Projectile120mmView.SHP_FILE_COLOR_MAPPER);
-            //
-            //
-            // raiSpriteFrameManager.LoadAllTexturesFromShpFile(MinigunnerSidebarIconView.SHP_FILE_NAME);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     MinigunnerSidebarIconView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(MinigunnerSidebarIconView.SHP_FILE_NAME),
-            //     MinigunnerSidebarIconView.SHP_FILE_COLOR_MAPPER);
+            
+            
+            raiSpriteFrameManager.LoadAllTexturesFromShpFile(MinigunnerSidebarIconView.SHP_FILE_NAME);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                MinigunnerSidebarIconView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(MinigunnerSidebarIconView.SHP_FILE_NAME),
+                MinigunnerSidebarIconView.SHP_FILE_COLOR_MAPPER);
             
             raiSpriteFrameManager.LoadAllTexturesFromShpFile(BarracksSidebarIconView.SHP_FILE_NAME);
             spriteSheet.LoadUnitFramesFromSpriteFrames(
@@ -461,11 +508,11 @@ namespace mike_and_conquer_monogame.main
             
             
             
-            // raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIBarracksView.SHP_FILE_NAME);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     GDIBarracksView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(GDIBarracksView.SHP_FILE_NAME),
-            //     GDIBarracksView.SHP_FILE_COLOR_MAPPER);
+            raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIBarracksView.SHP_FILE_NAME);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                GDIBarracksView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(GDIBarracksView.SHP_FILE_NAME),
+                GDIBarracksView.SHP_FILE_COLOR_MAPPER);
             
             raiSpriteFrameManager.LoadAllTexturesFromShpFile(GDIConstructionYardView.SHP_FILE_NAME);
             spriteSheet.LoadUnitFramesFromSpriteFrames(
@@ -611,9 +658,19 @@ namespace mike_and_conquer_monogame.main
             gameWorldView.AddGDIConstructionYardView(id, x, y);
         }
 
+        public void AddGDIBarracksView(int id, int x, int y)
+        {
+            gameWorldView.AddGDIBarracksView(id, x, y);
+        }
+
         public void NotifyBarracksStartedBuilding()
         {
             gameWorldView.NotifyBarracksStartedBuilding();
+        }
+
+        public void NotifyMinigunnerStartedBuilding()
+        {
+            gameWorldView.NotifyMinigunnerStartedBuilding();
         }
 
         public void NotifyBarracksCompletedBuilding()
@@ -624,6 +681,12 @@ namespace mike_and_conquer_monogame.main
         public void UpdateBarracksPercentCompleted(int percentCompleted)
         {
             gameWorldView.UpdateBarracksPercentCompleted(percentCompleted);
+        }
+
+
+        public void UpdateMinigunnerPercentCompleted(int percentCompleted)
+        {
+            gameWorldView.UpdateMinigunnerPercentCompleted(percentCompleted);
         }
 
 
@@ -822,6 +885,7 @@ namespace mike_and_conquer_monogame.main
         }
 
 
+
         public void LeftClickSidebar(string sidebarIconName)
         {
             Point position = new Point();
@@ -829,6 +893,10 @@ namespace mike_and_conquer_monogame.main
             if (sidebarIconName == "Barracks")
             {
                 position = GameWorldView.instance.BarracksSidebarIconView.GetPosition();
+            }
+            else if (sidebarIconName == "Minigunner")
+            {
+                position = GameWorldView.instance.MinigunnerSidebarIconView.GetPosition();
             }
             else
             {
