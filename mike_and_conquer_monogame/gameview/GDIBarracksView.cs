@@ -13,10 +13,7 @@ namespace mike_and_conquer_monogame.gameview
     public class GDIBarracksView
     {
 
-        // TODO:  Consider something other than UnitSprite in future
         private UnitSprite unitSprite;
-
-        // private GDIBarracks myBarracks;
 
         public int XInWorldCoordinates { get; set; }
         public int YInWorldCoordinates { get; set; }
@@ -27,8 +24,6 @@ namespace mike_and_conquer_monogame.gameview
 
         public const string SPRITE_KEY = "Barracks";
 
-        // TODO:  SHP_FILE_NAME and ShpFileColorMapper don't really belong in this view
-        // Views should be agnostic about where the sprite data was loaded from
         public const string SHP_FILE_NAME = "pyle.shp";
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
@@ -45,7 +40,6 @@ namespace mike_and_conquer_monogame.gameview
             // Center of barracks is the center of the upper left tile
             this.unitSprite.middleOfSpriteInSpriteCoordinates.X = 12;
             this.unitSprite.middleOfSpriteInSpriteCoordinates.Y = 12;
-            // this.myBarracks = barracks;
             SetupAnimations();
         }
 
@@ -58,15 +52,9 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-//        internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-//        {
-//            unitSprite.Draw(gameTime, spriteBatch, myBarracks.positionInWorldCoordinates,
-//                SpriteSortLayers.BUILDING_DEPTH);
-//        }
 
         internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // unitSprite.DrawNoShadow(gameTime, spriteBatch, myBarracks.MapTileLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
             Vector2 worldCoordinatesAsVector2 = new Vector2(
                 XInWorldCoordinates,
                 YInWorldCoordinates);
@@ -77,7 +65,6 @@ namespace mike_and_conquer_monogame.gameview
 
         internal void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // unitSprite.DrawShadowOnly(gameTime, spriteBatch, myBarracks.MapTileLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
             Vector2 worldCoordinatesAsVector2 = new Vector2(
                 XInWorldCoordinates,
                 YInWorldCoordinates);
