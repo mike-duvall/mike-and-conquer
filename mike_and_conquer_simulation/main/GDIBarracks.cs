@@ -93,25 +93,6 @@ namespace mike_and_conquer_simulation.main
 
 
 
-        // public void Update()
-        // {
-        //     scaledBuildSpeed = baseBuildSpeed / GameOptions.instance.GameSpeedDelayDivisor;
-        //
-        //     if (isBuildingMinigunner)
-        //     {
-        //         double buildIncrement = gameTime.ElapsedGameTime.TotalMilliseconds * scaledBuildSpeed;
-        //
-        //         buildMinigunnerPercentComplete += (float)buildIncrement;
-        //         if (buildMinigunnerPercentComplete >= 100.0f)
-        //         {
-        //             CreateMinigunnerFromBarracks();
-        //             isBuildingMinigunner = false;
-        //         }
-        //
-        //     }
-        // }
-
-
         public void Update()
         {
             // scaledBuildSpeed = baseBuildSpeed / GameOptions.instance.GameSpeedDelayDivisor;
@@ -141,13 +122,11 @@ namespace mike_and_conquer_simulation.main
         private void CreateMinigunnerFromBarracks()
         {
             Point gdiMinigunnderPosition = mapTileLocation.WorldCoordinatesAsPoint;
-            // Minigunner builtMinigunner = SimulationMain.instance.AddGdiMinigunner(gdiMinigunnderPosition);
             Minigunner builtMinigunner = SimulationMain.instance.CreateMinigunner(
                 gdiMinigunnderPosition.X,
                 gdiMinigunnderPosition.Y);
 
             Point destinationInWC = new Point(gdiMinigunnderPosition.X, gdiMinigunnderPosition.Y + 40);
-            // builtMinigunner.OrderToMoveToDestination(destinationInWC);
             builtMinigunner.OrderMoveToDestination(
                 destinationInWC.X,
                 destinationInWC.Y);
@@ -185,16 +164,6 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-
-        // private void CreateMinigunnerFromBarracks()
-        // {
-        //     Point gdiMinigunnderPosition = mapTileLocation.WorldCoordinatesAsPoint;
-        //     Minigunner builtMinigunner = MikeAndConquerGame.instance.AddGdiMinigunner(gdiMinigunnderPosition);
-        //
-        //     Point destinationInWC = new Point(gdiMinigunnderPosition.X, gdiMinigunnderPosition.Y + 40);
-        //     builtMinigunner.OrderToMoveToDestination(destinationInWC);
-        //
-        // }
     }
 
 
