@@ -14,8 +14,6 @@ namespace mike_and_conquer_simulation.commands
 
         protected override void ProcessImpl()
         {
-            // SimulationMain.instance.OrderUnitToMove(UnitId, DestinationXInWorldCoordinates,
-            //     DestinationYInWorldCoordinates);
             SimulationMain.instance.CreateGDIBarracksViaConstructionYard(XInWorldCoordinates, YInWorldCoordinates);
 
             result = true;
