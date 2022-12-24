@@ -61,18 +61,6 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        // internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        // {
-        //
-        //     Vector2 worldCoordinatesAsVector2 = new Vector2(
-        //         XInWorldCoordinates,
-        //         YInWorldCoordinates);
-        //
-        //
-        //     unitSprite.Draw(gameTime, spriteBatch, worldCoordinatesAsVector2,
-        //         SpriteSortLayers.BUILDING_DEPTH);
-        // }
-
         internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Vector2 worldCoordinatesAsVector2 = new Vector2(
@@ -92,43 +80,14 @@ namespace mike_and_conquer_monogame.gameview
             unitSprite.DrawShadowOnly(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
         }
 
-        // internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch)
-        // {
-        //     if (myMCV.health <= 0)
-        //     {
-        //         return;
-        //     }
-        //
-        //     mcvSelectionBox.position = new Vector2(myMCV.positionInWorldCoordinates.X, myMCV.positionInWorldCoordinates.Y);
-        //
-        //     unitSprite.DrawNoShadow(gameTime, spriteBatch, myMCV.positionInWorldCoordinates, SpriteSortLayers.UNIT_DEPTH);
-        //
-        //     if (myMCV.selected)
-        //     {
-        //         mcvSelectionBox.Draw(gameTime, spriteBatch);
-        //     }
-        //
-        // }
-
-
-        // public bool ContainsPoint(SimulationMapTileLocation worldCoordinatesAsPoint)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
-
 
         public bool ContainsPoint(SimulationMapTileLocation simulationMapTileLocation)
         {
             int width = 72;
             int height = 48;
 
-            // int leftX = (int)mapTileLocation.WorldCoordinatesAsVector2.X - (width / 2);
-            // int topY = (int)mapTileLocation.WorldCoordinatesAsVector2.Y - (height / 2);
-
             SystemDrawingPoint locationAsPoint = simulationMapTileLocation.WorldCoordinatesAsPoint;
 
-            // int leftX = locationAsPoint.X - (width / 2);
-            // int topY = locationAsPoint.Y - (height / 2);
             int leftX = this.XInWorldCoordinates - (width / 2);
             int topY = this.YInWorldCoordinates - (height / 2);
 
@@ -136,14 +95,9 @@ namespace mike_and_conquer_monogame.gameview
             xnaPoint.X = locationAsPoint.X;
             xnaPoint.Y = locationAsPoint.Y;
 
-
             Rectangle boundRectangle = new Rectangle(leftX, topY, width, height);
             return boundRectangle.Contains(xnaPoint);
-
-
         }
-
-
 
     }
 }
