@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using mike_and_conquer_monogame.commands;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.events;
 using Newtonsoft.Json;
 
+using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace mike_and_conquer_monogame.eventhandler
 {
@@ -56,13 +59,41 @@ namespace mike_and_conquer_monogame.eventhandler
 
         }
 
-
-        public void HandleEvent(string eventName, CommandAndEventDataTypes commandAndEventDataTypes)
+        public void RegisterEventHandler(Type eventDataType, Type commandType)
         {
+
+            CommandAndEventDataTypes commandAndEventDataTypes = new CommandAndEventDataTypes();
+            commandAndEventDataTypes.eventDataType = eventDataType;
+            commandAndEventDataTypes.commandType = commandType;
+
+            var flags = BindingFlags.Static | BindingFlags.Public;
+            var fields = eventDataType.GetFields(flags).Where(f => f.IsLiteral);
+
+            string eventName = null;
+            foreach (var field in fields)
+            {
+                if (field.Name.Equals("EventType"))
+                {
+                    eventName = (string)field.GetValue(null);
+                }
+            }
+
+            if (eventName == null)
+            {
+                throw new Exception("Could not find EventType field");
+            }
+
             eventTypeToCommandMap.Add(eventName, commandAndEventDataTypes);
             int x = 3;
         }
 
-        
+
+        // public void RegisterEventHandler(string eventName, CommandAndEventDataTypes commandAndEventDataTypes)
+        // {
+        //     eventTypeToCommandMap.Add(eventName, commandAndEventDataTypes);
+        //     int x = 3;
+        // }
+
+
     }
 }
