@@ -125,7 +125,13 @@ namespace mike_and_conquer_monogame.main
 
 
             MasterEventHandler masterEventHandler = new MasterEventHandler(this);
-            masterEventHandler.HandleEvent(GDIBarracksPlacedEventData.EventType, typeof(AddGDIBarracksViewCommand2));
+            // masterEventHandler.HandleEvent(typeof(GDIBarracksPlacedEventData), typeof(AddGDIBarracksViewCommand3));
+
+            CommandAndEventDataTypes commandAndEventDataTypes = new CommandAndEventDataTypes();
+            commandAndEventDataTypes.eventDataType = typeof(GDIBarracksPlacedEventData);
+            commandAndEventDataTypes.commandType = typeof(AddGDIBarracksViewCommand3);
+
+            masterEventHandler.HandleEvent(GDIBarracksPlacedEventData.EventType, commandAndEventDataTypes);
             simulationStateListenerList.Add(masterEventHandler);
 
 
