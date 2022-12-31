@@ -114,15 +114,17 @@ namespace mike_and_conquer_monogame.main
             _graphics.SynchronizeWithVerticalRetrace = false;
 
             simulationStateListenerList = new List<SimulationStateListener>();
-            
-            simulationStateListenerList.Add(new InitializeUIWhenScenarioInitializedEventHandler(this));
-            
-            simulationStateListenerList.Add(new AddMinigunnerViewWhenMinigunnerCreatedEventHandler(this));
+
+            MasterEventHandler masterEventHandler = new MasterEventHandler(this);
+            masterEventHandler.RegisterEventHandler(typeof(ScenarioInitializedEventData), typeof(InitializeUiCommand));
+            masterEventHandler.RegisterEventHandler(typeof(GDIBarracksPlacedEventData), typeof(AddGDIBarracksViewCommand));
+            masterEventHandler.RegisterEventHandler(typeof(GDIConstructionYardCreatedEventData), typeof(AddGDIConstructionYardViewCommand));
+            masterEventHandler.RegisterEventHandler(typeof(MinigunnerCreateEventData), typeof(AddMinigunnerViewCommand));
+            simulationStateListenerList.Add(masterEventHandler);
+
+
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
             simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
-            simulationStateListenerList.Add(new AddGDIConstructionYardViewWhenGDIConstructionYardCreated(this));
-            simulationStateListenerList.Add(new AddGDIBarracksViewWhenGDIBarracksPlaced(this));
-
 
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
             

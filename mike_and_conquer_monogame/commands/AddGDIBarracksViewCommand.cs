@@ -1,4 +1,7 @@
-﻿using mike_and_conquer_monogame.main;
+﻿
+using mike_and_conquer_monogame.main;
+using GDIBarracksPlacedEventData = mike_and_conquer_simulation.events.GDIBarracksPlacedEventData;
+
 
 
 namespace mike_and_conquer_monogame.commands
@@ -11,11 +14,13 @@ namespace mike_and_conquer_monogame.commands
         private int x;
         private int y;
 
-        public AddGDIBarracksViewCommand(int unitId, int x, int y)
+        public AddGDIBarracksViewCommand(GDIBarracksPlacedEventData eventData)
         {
-            this.unitId = unitId;
-            this.x = x;
-            this.y = y;
+
+
+            this.unitId = -1;
+            this.x = eventData.X;
+            this.y = eventData.Y;
         }
 
         protected override void ProcessImpl()

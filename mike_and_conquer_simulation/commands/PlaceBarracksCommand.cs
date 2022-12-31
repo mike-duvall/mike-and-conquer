@@ -1,4 +1,5 @@
-﻿using mike_and_conquer_simulation.main;
+﻿using Microsoft.Extensions.Logging;
+using mike_and_conquer_simulation.main;
 
 namespace mike_and_conquer_simulation.commands
 {
@@ -14,6 +15,7 @@ namespace mike_and_conquer_simulation.commands
 
         protected override void ProcessImpl()
         {
+            SimulationMain.logger.LogWarning("Running PlaceBarracksCommand");
             SimulationMain.instance.CreateGDIBarracksViaConstructionYard(XInWorldCoordinates, YInWorldCoordinates);
 
             result = true;

@@ -1,5 +1,6 @@
 ﻿using mike_and_conquer_monogame.main;
 
+using MinigunnerCreateEventData = mike_and_conquer_simulation.events.MinigunnerCreateEventData;
 
 namespace mike_and_conquer_monogame.commands
 {
@@ -7,21 +8,18 @@ namespace mike_and_conquer_monogame.commands
     {
 
 
-        private int unitId;
-        private int x;
-        private int y;
 
-        public AddMinigunnerViewCommand(int unitId, int x, int y)
+        private MinigunnerCreateEventData eventData;
+
+        public AddMinigunnerViewCommand(MinigunnerCreateEventData eventData)
         {
-            this.unitId = unitId;
-            this.x = x;
-            this.y = y;
+            this.eventData = eventData;
         }
 
         protected override void ProcessImpl()
         {
             MikeAndConquerGame.instance.AddMinigunnerView(
-                unitId, x, y);
+                eventData.UnitId, eventData.X, eventData.Y);
 
         }
     }
