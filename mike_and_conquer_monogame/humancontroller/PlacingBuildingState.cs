@@ -1,6 +1,8 @@
 ﻿
 
 
+using Microsoft.Extensions.Logging;
+using mike_and_conquer_monogame.main;
 using MouseState = Microsoft.Xna.Framework.Input.MouseState;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -33,6 +35,7 @@ namespace mike_and_conquer_monogame.humancontroller
                 {
                     if(GameWorldView.instance.BarracksPlacementIndicatorView.ValidBuildingLocation())
                     {
+                        MikeAndConquerGame.instance.logger.LogWarning("Sending Place Barracks Command");
                         Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
                         SimulationMapTileLocation mapTileLocation = SimulationMapTileLocation.CreateFromWorldCoordinates(mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
                         SendPlaceBarracksCommand(mapTileLocation);
