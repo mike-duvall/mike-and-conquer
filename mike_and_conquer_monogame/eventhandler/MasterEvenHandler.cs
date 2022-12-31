@@ -7,7 +7,6 @@ using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.events;
 using Newtonsoft.Json;
 
-using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace mike_and_conquer_monogame.eventhandler
 {
@@ -25,24 +24,9 @@ namespace mike_and_conquer_monogame.eventhandler
         public override void Update(SimulationStateUpdateEvent anEvent)
         {
 
-            // if (eventTypeToCommandMap.ContainsKey(anEvent.EventType))
-            // {
-            //     Type command = eventTypeToCommandMap[anEvent.EventType];
-            //
-            //     Object[] parameters = new Object[1];
-            //     parameters[0] = anEvent.EventData;
-            //
-            //     AsyncViewCommand commandInstance = (AsyncViewCommand)Activator.CreateInstance(command,parameters);
-            //     mikeAndConquerGame.PostCommand(commandInstance);
-            //
-            // }
-
             if (eventTypeToCommandMap.ContainsKey(anEvent.EventType))
             {
                 CommandAndEventDataTypes commandAndEventDataTypes = eventTypeToCommandMap[anEvent.EventType];
-
-                // GDIBarracksPlacedEventData eventData =
-                //     JsonConvert.DeserializeObject<GDIBarracksPlacedEventData>(stringEventData);
 
                 Type eventDataType = commandAndEventDataTypes.eventDataType;
 
@@ -86,13 +70,6 @@ namespace mike_and_conquer_monogame.eventhandler
             eventTypeToCommandMap.Add(eventName, commandAndEventDataTypes);
             int x = 3;
         }
-
-
-        // public void RegisterEventHandler(string eventName, CommandAndEventDataTypes commandAndEventDataTypes)
-        // {
-        //     eventTypeToCommandMap.Add(eventName, commandAndEventDataTypes);
-        //     int x = 3;
-        // }
 
 
     }

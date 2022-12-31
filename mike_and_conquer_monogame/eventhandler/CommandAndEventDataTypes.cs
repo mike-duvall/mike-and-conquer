@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace mike_and_conquer_monogame.commands
+namespace mike_and_conquer_monogame.eventhandler
 {
     internal class CommandAndEventDataTypes
     {
