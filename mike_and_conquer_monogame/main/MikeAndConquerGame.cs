@@ -117,7 +117,7 @@ namespace mike_and_conquer_monogame.main
 
             MasterEventHandler masterEventHandler = new MasterEventHandler(this);
             masterEventHandler.RegisterEventHandler(typeof(ScenarioInitializedEventData), typeof(InitializeUiCommand));
-            masterEventHandler.RegisterEventHandler(typeof(GDIBarracksPlacedEventData), typeof(AddGDIBarracksViewCommand3));
+            masterEventHandler.RegisterEventHandler(typeof(GDIBarracksPlacedEventData), typeof(AddGDIBarracksViewCommand));
             masterEventHandler.RegisterEventHandler(typeof(GDIConstructionYardCreatedEventData), typeof(AddGDIConstructionYardViewCommand));
             masterEventHandler.RegisterEventHandler(typeof(MinigunnerCreateEventData), typeof(AddMinigunnerViewCommand));
 
