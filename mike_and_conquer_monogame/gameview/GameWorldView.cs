@@ -1719,7 +1719,22 @@ namespace mike_and_conquer_monogame.gameview
                     {
                         return true;
                     }
+                }
+            }
 
+            return false;
+        }
+
+        public bool IsAMinigunnerSelected()
+        {
+            foreach (UnitView unitView in unitViewList)
+            {
+                if (unitView.Selected == true)
+                {
+                    if (unitView.GetType().Name.Equals(typeof(GdiMinigunnerView).Name))
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -1934,7 +1949,7 @@ namespace mike_and_conquer_monogame.gameview
         //     // return false;
         //     return gdiPlayer.IsAMinigunnerSelected();
         // }
-        //
+        
         // public bool IsAnMCVSelected()
         // {
         //     // if (mcv != null)

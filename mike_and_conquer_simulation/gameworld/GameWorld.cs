@@ -2,21 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Security.Permissions;
+
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.pathfinding;
-// using mike_and_conquer.gameevent;
-// using mike_and_conquer.gameworld.humancontroller;
-// using mike_and_conquer.main;
-// using mike_and_conquer.pathfinding;
-// using AsyncGameEvent = mike_and_conquer.gameevent.AsyncGameEvent;
-// using CreateGDIMinigunnerGameEvent = mike_and_conquer.gameevent.CreateGDIMinigunnerGameEvent;
-// using GetGDIMinigunnerByIdGameEvent = mike_and_conquer.gameevent.GetGDIMinigunnerByIdGameEvent;
-// using CreateNodMinigunnerGameEvent = mike_and_conquer.gameevent.CreateNodMinigunnerGameEvent;
-// using GetNodMinigunnerByIdGameEvent = mike_and_conquer.gameevent.GetNodMinigunnerByIdGameEvent;
-// using ResetGameGameEvent = mike_and_conquer.gameevent.ResetGameGameEvent;
-// using GetCurrentGameStateGameEvent = mike_and_conquer.gameevent.GetCurrentGameStateGameEvent;
-// using CreateSandbagGameEvent = mike_and_conquer.gameevent.CreateSandbagGameEvent;
 
 
 using Exception = System.Exception;
@@ -537,6 +525,89 @@ namespace mike_and_conquer_simulation.gameworld
 
             return gdiPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
+
+        public Minigunner CreateMinigunnerAtRandomLocation()
+        {
+            Point validRandomMinigunnerPosition = CreateRandomValidMinigunnerPosition();
+
+            return gdiPlayer.CreateMinigunner(
+                validRandomMinigunnerPosition.X,
+                validRandomMinigunnerPosition.Y);
+        }
+
+
+        Point CreateRandomValidMinigunnerPosition()
+        {
+            int numTries = 20;
+            for (int i = 0; i < numTries; i++)
+            {
+                Point randomPoint = CreateRandomPosition();
+                bool isValidMinigunnerPosition = IsValidMinigunnerPosition(randomPoint);
+                if (isValidMinigunnerPosition)
+                {
+                    return randomPoint;
+                }
+            }
+
+            throw new Exception("Unable to create valid random point after " + numTries + " tries");
+
+        }
+
+        private bool IsValidMinigunnerPosition(Point positionInWorldCoordinates)
+        {
+            MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(positionInWorldCoordinates.X, positionInWorldCoordinates.Y);
+
+            MapTileInstance mapTileInstance = this.gameMap.MapTileInstanceArray[mapTileLocation.XInWorldMapTileCoordinates,
+                mapTileLocation.YInWorldMapTileCoordinates];
+
+            return !mapTileInstance.IsBlockingTerrain;
+        }
+
+
+
+        Point CreateRandomPosition()
+        {
+            Random rand = new Random();
+
+            int minX = 10;
+            int minY = 10;
+            
+            
+            // Capping max so it will fit on screen
+            int maxX = 600;
+            int maxY = 400;
+
+            int randomX = rand.Next(minX, maxX);
+            int randomY = rand.Next(minY, maxY);
+
+            Point point = new Point(randomX, randomY);
+            return point;
+        }
+
+        // Point createRandomMinigunnerPosition()
+        // {
+        //     Random rand = new Random()
+        //
+        //     int minX = 10
+        //     int minY = 10
+        //
+        //
+        //     // Capping max so it will fit on screen
+        //     int maxX = 600
+        //     int maxY = 400
+        //
+        //     int randomX = rand.nextInt(maxX) + minX
+        //     int randomY = rand.nextInt(maxY) + minY
+        //
+        //     Point point = new Point()
+        //     point.x = randomX
+        //     point.y = randomY
+        //     return point
+        //
+        // }
+
+
+
 
         public Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
         {

@@ -281,30 +281,15 @@ namespace mike_and_conquer_simulation.main
 
         internal Minigunner CreateMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-
             return gameWorld.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
-
-            // Minigunner minigunner = new Minigunner();
-            // minigunner.GameWorldLocation.X = x;
-            // minigunner.GameWorldLocation.Y = y;
-            // unitList.Add(minigunner);
-            //
-            // SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-            // simulationStateUpdateEvent.EventType = MinigunnerCreateEventData.EventType;
-            // MinigunnerCreateEventData eventData = new MinigunnerCreateEventData();
-            // eventData.UnitId = minigunner.UnitId;
-            // eventData.X = x;
-            // eventData.Y = y;
-            //
-            // simulationStateUpdateEvent.EventData = JsonConvert.SerializeObject(eventData);
-            //
-            // foreach (SimulationStateListener listener in listeners)
-            // {
-            //     listener.Update(simulationStateUpdateEvent);
-            // }
-            //
-            // return minigunner;
         }
+
+
+        internal Minigunner CreateMinigunnerAtRandomLocation()
+        {
+            return gameWorld.CreateMinigunnerAtRandomLocation();
+        }
+
 
         internal Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
         {
@@ -468,6 +453,22 @@ namespace mike_and_conquer_simulation.main
                 return createUnit;
 
             }
+            if (rawCommand.CommandType.Equals(CreateMinigunnerAtRandomLocationCommand.CommandName)) 
+            {
+
+                // CreateMinigunnerCommandBody commandBody =
+                //     JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(rawCommand.CommandData);
+
+                CreateMinigunnerAtRandomLocationCommand command = new CreateMinigunnerAtRandomLocationCommand();
+                return command;
+                // createUnit.X = commandBody.StartLocationXInWorldCoordinates;
+                // createUnit.Y = commandBody.StartLocationYInWorldCoordinates;
+                //
+                // return createUnit;
+
+            }
+
+
             else if (rawCommand.CommandType.Equals(CreateJeepCommand.CommandName))
             {
 
