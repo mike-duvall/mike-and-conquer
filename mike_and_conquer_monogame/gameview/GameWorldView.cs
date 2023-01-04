@@ -1509,10 +1509,26 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-        public void AddMinigunnerView(int id, int x, int y)
+        public void AddMinigunnerView(int id, string player,int x, int y)
         {
-            GdiMinigunnerView view = new GdiMinigunnerView(id, x, y);
-            unitViewList.Add(view);
+            UnitView unitView = null;
+            if ("GDI".Equals(player))
+            {
+                unitView = new GdiMinigunnerView(id, x, y);
+            }
+            else if ("Nod".Equals(player))
+            {
+                unitView = new NodMinigunnerView(id, x, y);
+            }
+
+
+            if (unitView == null)
+            {
+                throw new Exception("Unable to create UnitView because of unknown player type.  player=" + player);
+
+
+            }
+            unitViewList.Add(unitView);
         }
 
 
@@ -1920,21 +1936,25 @@ namespace mike_and_conquer_monogame.gameview
         //     return nodPlayer.IsPointOverMinigunner(pointInWorldCoordinates);
         // }
 
-        // public bool IsPointOverMCV(Point pointInWorldCoordinates)
-        // {
-        //
-        //     // if (this.mcv != null)
-        //     // {
-        //     //     if (mcv.ContainsPoint(pointInWorldCoordinates.X, pointInWorldCoordinates.Y))
-        //     //     {
-        //     //         return true;
-        //     //     }
-        //     // }
-        //     //
-        //     // return false;
-        //
-        //     return gdiPlayer.IsPointOverMCV(pointInWorldCoordinates);
-        // }
+        public bool IsPointOverEnemy(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+
+            foreach (UnitView unitView in this.UnitViewList)
+            {
+                if (unitView is NodMinigunnerView)
+                {
+                    if (unitView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+
+        }
+
+
 
 
         // public bool IsAMinigunnerSelected()
@@ -1949,7 +1969,7 @@ namespace mike_and_conquer_monogame.gameview
         //     // return false;
         //     return gdiPlayer.IsAMinigunnerSelected();
         // }
-        
+
         // public bool IsAnMCVSelected()
         // {
         //     // if (mcv != null)

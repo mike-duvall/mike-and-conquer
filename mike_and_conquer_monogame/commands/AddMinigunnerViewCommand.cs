@@ -19,7 +19,7 @@ namespace mike_and_conquer_monogame.commands
         protected override void ProcessImpl()
         {
             MikeAndConquerGame.instance.AddMinigunnerView(
-                eventData.UnitId, eventData.X, eventData.Y);
+                eventData.UnitId, eventData.Player ,eventData.X, eventData.Y);
 
         }
     }

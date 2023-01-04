@@ -456,10 +456,10 @@ namespace mike_and_conquer_monogame.main
                 GdiMinigunnerView.SPRITE_KEY,
                 raiSpriteFrameManager.GetSpriteFramesForUnit(GdiMinigunnerView.SHP_FILE_NAME),
                 GdiMinigunnerView.SHP_FILE_COLOR_MAPPER);
-            // spriteSheet.LoadUnitFramesFromSpriteFrames(
-            //     NodMinigunnerView.SPRITE_KEY,
-            //     raiSpriteFrameManager.GetSpriteFramesForUnit(NodMinigunnerView.SHP_FILE_NAME),
-            //     NodMinigunnerView.SHP_FILE_COLOR_MAPPER);
+            spriteSheet.LoadUnitFramesFromSpriteFrames(
+                NodMinigunnerView.SPRITE_KEY,
+                raiSpriteFrameManager.GetSpriteFramesForUnit(NodMinigunnerView.SHP_FILE_NAME),
+                NodMinigunnerView.SHP_FILE_COLOR_MAPPER);
             
             
             raiSpriteFrameManager.LoadAllTexturesFromShpFile(MCVView.SHP_FILE_NAME);
@@ -635,9 +635,9 @@ namespace mike_and_conquer_monogame.main
 
 
 
-        public void AddMinigunnerView(int id, int x, int y)
+        public void AddMinigunnerView(int id, string player, int x, int y)
         {
-            gameWorldView.AddMinigunnerView(id, x, y);
+            gameWorldView.AddMinigunnerView(id, player, x, y);
         }
 
         public void RemoveUnitView(int unitId)

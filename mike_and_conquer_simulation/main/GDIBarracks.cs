@@ -122,7 +122,7 @@ namespace mike_and_conquer_simulation.main
         private void CreateMinigunnerFromBarracks()
         {
             Point gdiMinigunnderPosition = mapTileLocation.WorldCoordinatesAsPoint;
-            Minigunner builtMinigunner = SimulationMain.instance.CreateMinigunner(
+            Minigunner builtMinigunner = SimulationMain.instance.CreateGDIMinigunner(
                 gdiMinigunnderPosition.X,
                 gdiMinigunnderPosition.Y);
 

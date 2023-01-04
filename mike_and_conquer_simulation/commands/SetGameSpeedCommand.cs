@@ -12,7 +12,7 @@ namespace mike_and_conquer_simulation.commands
 
         protected override void ProcessImpl()
         {
-//            result = SimulationMain.instance.CreateMinigunner(X, Y);
+//            result = SimulationMain.instance.CreateGDIMinigunner(X, Y);
             // SimulationMain.instance.OrderUnitToMove(UnitId, DestinationXInWorldCoordinates,
             //     DestinationYInWorldCoordinates);
 

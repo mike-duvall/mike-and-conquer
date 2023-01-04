@@ -29,7 +29,8 @@ namespace mike_and_conquer_simulation.gameworld
 
 
         private GDIPlayer gdiPlayer;
-        // private NodPlayer nodPlayer;
+        private NodPlayer nodPlayer;
+
         //
         // public List<Sandbag> sandbagList;
         // public List<NodTurret> nodTurretList;
@@ -247,6 +248,10 @@ namespace mike_and_conquer_simulation.gameworld
             if (gdiPlayer != null)
             {
                 gdiPlayer.Update();
+            }
+            if (nodPlayer != null)
+            {
+                nodPlayer.Update();
             }
 
         }
@@ -526,11 +531,20 @@ namespace mike_and_conquer_simulation.gameworld
             return gdiPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
 
-        public Minigunner CreateMinigunnerAtRandomLocation()
+        public Minigunner CreateGDIMinigunnerAtRandomLocation()
         {
             Point validRandomMinigunnerPosition = CreateRandomValidMinigunnerPosition();
 
             return gdiPlayer.CreateMinigunner(
+                validRandomMinigunnerPosition.X,
+                validRandomMinigunnerPosition.Y);
+        }
+
+        public Minigunner CreateNodMinigunnerAtRandomLocation()
+        {
+            Point validRandomMinigunnerPosition = CreateRandomValidMinigunnerPosition();
+
+            return nodPlayer.CreateMinigunner(
                 validRandomMinigunnerPosition.X,
                 validRandomMinigunnerPosition.Y);
         }
@@ -1146,6 +1160,7 @@ namespace mike_and_conquer_simulation.gameworld
             terrainItemList.Clear();
 
             gdiPlayer = new GDIPlayer(playerController);
+            nodPlayer = new NodPlayer(null);
             InitializeDefaultMap();
         }
 

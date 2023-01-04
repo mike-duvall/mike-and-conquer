@@ -37,11 +37,6 @@ namespace mike_and_conquer_monogame.humancontroller
             {
                 UpdateMousePointerWhenMinigunnerSelected(mouseWorldLocationPoint);
             }
-            // else if (GameWorld.instance.IsAnMCVSelected())
-            // {
-            //     UpdateMousePointerWhenMCVSelected(mouseWorldLocationPoint);
-            // }
-
             if (GameWorldView.instance.IsMCVSelected())
             {
                 UpdateMousePointerWhenMCVSelected(mouseWorldLocationPoint);
@@ -313,6 +308,12 @@ namespace mike_and_conquer_monogame.humancontroller
             //     GameWorldView.instance.gameCursor.SetToAttackEnemyLocationCursor();
             // }
             // else
+
+            if (GameWorldView.instance.IsPointOverEnemy(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
+            {
+                GameWorldView.instance.gameCursor.SetToAttackEnemyLocationCursor();
+            }
+            else
             if (GameWorldView.instance.IsValidMoveDestination(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
             {
                 GameWorldView.instance.gameCursor.SetToMoveToLocationCursor();

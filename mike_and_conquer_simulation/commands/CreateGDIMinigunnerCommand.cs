@@ -2,10 +2,10 @@
 
 namespace mike_and_conquer_simulation.commands
 {
-    internal class CreateMinigunnerCommand : AsyncSimulationCommand
+    internal class CreateGDIMinigunnerCommand : AsyncSimulationCommand
     {
 
-        public const string CommandName = "CreateMinigunner";
+        public const string CommandName = "CreateGDIMinigunner";
 
 
         public int X { get; set; }
@@ -14,7 +14,7 @@ namespace mike_and_conquer_simulation.commands
 
         protected override void ProcessImpl()
         {
-            result = SimulationMain.instance.CreateMinigunner(X, Y);
+            result = SimulationMain.instance.CreateGDIMinigunner(X, Y);
         }
 
         public Minigunner GetMinigunner()

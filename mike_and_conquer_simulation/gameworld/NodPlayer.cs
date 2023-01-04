@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace mike_and_conquer_simulation.gameworld
 {
-    class GDIPlayer
+    class NodPlayer
     {
 
 
@@ -31,18 +31,18 @@ namespace mike_and_conquer_simulation.gameworld
         }
 
 
-        private GDIConstructionYard gdiConstructionYard;
+        // private GDIConstructionYard gdiConstructionYard;
 
-        public GDIConstructionYard GDIConstructionYard
-        {
-            get { return gdiConstructionYard; }
-        }
-
-        private GDIBarracks gdiBarracks;
-        public GDIBarracks GDIBarracks
-        {
-            get { return gdiBarracks; }
-        }
+        // public GDIConstructionYard GDIConstructionYard
+        // {
+        //     get { return gdiConstructionYard; }
+        // }
+        //
+        // private GDIBarracks gdiBarracks;
+        // public GDIBarracks GDIBarracks
+        // {
+        //     get { return gdiBarracks; }
+        // }
         
 
 
@@ -53,7 +53,7 @@ namespace mike_and_conquer_simulation.gameworld
         //     set { mcv = value; }
         // }
 
-        public GDIPlayer(PlayerController playerController)
+        public NodPlayer(PlayerController playerController)
         {
             // gdiMinigunnerList = new List<Minigunner>();
             unitList = new List<Unit>();
@@ -124,8 +124,8 @@ namespace mike_and_conquer_simulation.gameworld
             }
 
             // UpdateGDIMinigunners();
-            UpdateConstructionYard();
-            UpdateBarracks();
+            // UpdateConstructionYard();
+            // UpdateBarracks();
             UpdateUnits();
 
         }
@@ -163,22 +163,22 @@ namespace mike_and_conquer_simulation.gameworld
 
 
 
-        private void UpdateBarracks()
-        {
-            if (gdiBarracks != null)
-            {
-                gdiBarracks.Update();
-            }
-        }
-        
-        
-        private void UpdateConstructionYard()
-        {
-            if (gdiConstructionYard != null)
-            {
-                gdiConstructionYard.Update();
-            }
-        }
+        // private void UpdateBarracks()
+        // {
+        //     if (gdiBarracks != null)
+        //     {
+        //         gdiBarracks.Update();
+        //     }
+        // }
+        //
+        //
+        // private void UpdateConstructionYard()
+        // {
+        //     if (gdiConstructionYard != null)
+        //     {
+        //         gdiConstructionYard.Update();
+        //     }
+        // }
 
 
         // public void AddMinigunner(Minigunner newMinigunner)
@@ -263,98 +263,98 @@ namespace mike_and_conquer_simulation.gameworld
             return minigunner;
         }
 
-        public Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
-        {
-            Jeep jeep = new Jeep();
-            jeep.GameWorldLocation.X = xInWorldCoordinates;
-            jeep.GameWorldLocation.Y = yInWorldCoordinates;
-            unitList.Add(jeep);
-
-            PublishUnitCreateEvent(JeepCreateEventData.EventType, jeep.UnitId, xInWorldCoordinates, yInWorldCoordinates);
-            return jeep;
-        }
-
-        public MCV CreateMCV(int xInWorldCoordinates, int yInWorldCoordinates)
-        {
-            MCV mcv = new MCV();
-            mcv.GameWorldLocation.X = xInWorldCoordinates;
-            mcv.GameWorldLocation.Y = yInWorldCoordinates;
-            unitList.Add(mcv);
-
-            PublishUnitCreateEvent(MCVCreateEventData.EventType, mcv.UnitId, xInWorldCoordinates, yInWorldCoordinates);
-            return mcv;
-
-        }
-
-
-        public GDIConstructionYard CreateConstructionYardFromMCV()
-        {
-            MCV mcv = null;
-
-            foreach (Unit unit in unitList)
-            {
-                if (unit is MCV)
-                {
-                    mcv = (MCV)unit;
-                }
-            }
-
-            if (mcv != null)
-            {
-
-                RemoveUnit(mcv.UnitId);
-
-                MapTileLocation gdiConstrtuctionsYardMapTileLocation =
-                    MapTileLocation.CreateFromWorldCoordinates((int) mcv.GameWorldLocation.X, (int) mcv.GameWorldLocation.Y);
-                gdiConstructionYard = new GDIConstructionYard(gdiConstrtuctionsYardMapTileLocation);
-
-
-
-                int unidId = -1;
-
-
-                PublishUnitCreateEvent(
-                    GDIConstructionYardCreatedEventData.EventType,
-                    unidId,
-                    gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.X,
-                    gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.Y);
-
-            }
-            else
-            {
-                throw new Exception("Did not find MCV when attempting to create ConstructionYard");
-            }
-
-            return gdiConstructionYard;
-
-        }
-
-        public GDIBarracks AddBarracks(MapTileLocation mapTileLocation)
-        {
-            // MapTileLocation mapTileLocation =
-            //     MapTileLocation.CreateFromWorldCoordinates(xInWorldCoordinates, yInWorldCoordinates);
-
-
-            gdiBarracks = new GDIBarracks(mapTileLocation);
-
-            int unidId = -1;
-
-            PublishUnitCreateEvent(
-                GDIBarracksPlacedEventData.EventType,
-                unidId,
-                gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.X,
-                gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.Y);
-
-            return gdiBarracks;
-
-        }
+        // public Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
+        // {
+        //     Jeep jeep = new Jeep();
+        //     jeep.GameWorldLocation.X = xInWorldCoordinates;
+        //     jeep.GameWorldLocation.Y = yInWorldCoordinates;
+        //     unitList.Add(jeep);
+        //
+        //     PublishUnitCreateEvent(JeepCreateEventData.EventType, jeep.UnitId, xInWorldCoordinates, yInWorldCoordinates);
+        //     return jeep;
+        // }
+        //
+        // public MCV CreateMCV(int xInWorldCoordinates, int yInWorldCoordinates)
+        // {
+        //     MCV mcv = new MCV();
+        //     mcv.GameWorldLocation.X = xInWorldCoordinates;
+        //     mcv.GameWorldLocation.Y = yInWorldCoordinates;
+        //     unitList.Add(mcv);
+        //
+        //     PublishUnitCreateEvent(MCVCreateEventData.EventType, mcv.UnitId, xInWorldCoordinates, yInWorldCoordinates);
+        //     return mcv;
+        //
+        // }
+        //
+        //
+        // public GDIConstructionYard CreateConstructionYardFromMCV()
+        // {
+        //     MCV mcv = null;
+        //
+        //     foreach (Unit unit in unitList)
+        //     {
+        //         if (unit is MCV)
+        //         {
+        //             mcv = (MCV)unit;
+        //         }
+        //     }
+        //
+        //     if (mcv != null)
+        //     {
+        //
+        //         RemoveUnit(mcv.UnitId);
+        //
+        //         MapTileLocation gdiConstrtuctionsYardMapTileLocation =
+        //             MapTileLocation.CreateFromWorldCoordinates((int) mcv.GameWorldLocation.X, (int) mcv.GameWorldLocation.Y);
+        //         gdiConstructionYard = new GDIConstructionYard(gdiConstrtuctionsYardMapTileLocation);
+        //
+        //
+        //
+        //         int unidId = -1;
+        //
+        //
+        //         PublishUnitCreateEvent(
+        //             GDIConstructionYardCreatedEventData.EventType,
+        //             unidId,
+        //             gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.X,
+        //             gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.Y);
+        //
+        //     }
+        //     else
+        //     {
+        //         throw new Exception("Did not find MCV when attempting to create ConstructionYard");
+        //     }
+        //
+        //     return gdiConstructionYard;
+        //
+        // }
+        //
+        // public GDIBarracks AddBarracks(MapTileLocation mapTileLocation)
+        // {
+        //     // MapTileLocation mapTileLocation =
+        //     //     MapTileLocation.CreateFromWorldCoordinates(xInWorldCoordinates, yInWorldCoordinates);
+        //
+        //
+        //     gdiBarracks = new GDIBarracks(mapTileLocation);
+        //
+        //     int unidId = -1;
+        //
+        //     PublishUnitCreateEvent(
+        //         GDIBarracksPlacedEventData.EventType,
+        //         unidId,
+        //         gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.X,
+        //         gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.Y);
+        //
+        //     return gdiBarracks;
+        //
+        // }
 
 
         private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {
             UnitCreateEventData eventData = new UnitCreateEventData(
                 unitId,
-                "GDI",
+                "Nod",
                 xInWorldCoordinates,
                 yInWorldCoordinates);
 
