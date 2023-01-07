@@ -1,6 +1,7 @@
 ﻿
 
 
+using System;
 using Microsoft.Extensions.Logging;
 using mike_and_conquer_monogame.main;
 using MouseState = Microsoft.Xna.Framework.Input.MouseState;
@@ -35,7 +36,8 @@ namespace mike_and_conquer_monogame.humancontroller
                 {
                     if(GameWorldView.instance.BarracksPlacementIndicatorView.ValidBuildingLocation())
                     {
-                        MikeAndConquerGame.instance.logger.LogWarning("Sending Place Barracks Command");
+                        MikeAndConquerGame.instance.logger.LogWarning("{DT}: Sending Place Barracks Command", DateTime.Now.ToLongTimeString());
+                        
                         Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
                         SimulationMapTileLocation mapTileLocation = SimulationMapTileLocation.CreateFromWorldCoordinates(mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
                         SendPlaceBarracksCommand(mapTileLocation);
@@ -43,7 +45,11 @@ namespace mike_and_conquer_monogame.humancontroller
                         // TODO: Should this part wait on events that barracks was placed?
                         GameWorldView.instance.Notify_DonePlacingBarracks();
                         return new PointerOverMapState();
-
+                    }
+                    else
+                    {
+                        MikeAndConquerGame.instance.logger.LogWarning(
+                            "{DT}: Did not send Place Barracks Command because ValidBuildingLocation() returned false", DateTime.Now.ToLongTimeString());
                     }
 
                 }

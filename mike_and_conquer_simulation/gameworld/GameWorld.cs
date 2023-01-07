@@ -963,7 +963,9 @@ namespace mike_and_conquer_simulation.gameworld
             int x = mapTileLocation.XInWorldMapTileCoordinates;
             int y = mapTileLocation.YInWorldMapTileCoordinates;
 
-            if (x >= numColumns || y >= numRows)
+
+
+            if (x< 0 || x >= numColumns || y < 0 ||y >= numRows)
             {
                 return null;
             }

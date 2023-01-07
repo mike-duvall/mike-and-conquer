@@ -72,7 +72,7 @@ namespace mike_and_conquer_monogame.main
         {
 
             logger = MainProgram.loggerFactory.CreateLogger<MikeAndConquerGame>();
-            logger.LogInformation("Game1() ctor");
+            logger.LogWarning("{DT}: Game1() ctor", DateTime.Now.ToLongTimeString());
 
             _graphics = new GraphicsDeviceManager(this);
 
