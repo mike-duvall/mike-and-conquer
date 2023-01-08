@@ -598,30 +598,6 @@ namespace mike_and_conquer_simulation.gameworld
             return point;
         }
 
-        // Point createRandomMinigunnerPosition()
-        // {
-        //     Random rand = new Random()
-        //
-        //     int minX = 10
-        //     int minY = 10
-        //
-        //
-        //     // Capping max so it will fit on screen
-        //     int maxX = 600
-        //     int maxY = 400
-        //
-        //     int randomX = rand.nextInt(maxX) + minX
-        //     int randomY = rand.nextInt(maxY) + minY
-        //
-        //     Point point = new Point()
-        //     point.x = randomX
-        //     point.y = randomY
-        //     return point
-        //
-        // }
-
-
-
 
         public Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
         {

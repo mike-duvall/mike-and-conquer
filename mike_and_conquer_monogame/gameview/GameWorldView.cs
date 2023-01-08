@@ -1921,21 +1921,6 @@ namespace mike_and_conquer_monogame.gameview
             return isValidMoveDestination;
         }
 
-        // public bool IsPointOverEnemy(Point pointInWorldCoordinates)
-        // {
-        //     // foreach (Minigunner nextNodMinigunner in nodMinigunnerList)
-        //     // {
-        //     //     if (nextNodMinigunner.ContainsPoint(pointInWorldCoordinates.X, pointInWorldCoordinates.Y))
-        //     //     {
-        //     //         return true;
-        //     //     }
-        //     // }
-        //     //
-        //     // return false;
-        //     //
-        //     return nodPlayer.IsPointOverMinigunner(pointInWorldCoordinates);
-        // }
-
         public bool IsPointOverEnemy(int xInWorldCoordinates, int yInWorldCoordinates)
         {
 
@@ -1951,10 +1936,7 @@ namespace mike_and_conquer_monogame.gameview
             }
 
             return false;
-
         }
-
-
 
 
         // public bool IsAMinigunnerSelected()

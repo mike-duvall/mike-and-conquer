@@ -8,6 +8,6 @@
 
         public int UnitId { get; set; }
 
-        public const string CommandName = "CreateGDIMinigunner";
+        // public const string CommandName = "CreateGDIMinigunner";
     }
 }

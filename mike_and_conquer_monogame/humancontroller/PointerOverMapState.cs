@@ -285,29 +285,9 @@ namespace mike_and_conquer_monogame.humancontroller
         // }
         //
         //
-        // private static void UpdateMousePointerWhenMinigunnerSelected(Point mousePositionAsPointInWorldCoordinates)
-        // {
-        //     if (GameWorld.instance.IsPointOverEnemy(mousePositionAsPointInWorldCoordinates))
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToAttackEnemyLocationCursor();
-        //     }
-        //     else if (GameWorld.instance.IsValidMoveDestination(mousePositionAsPointInWorldCoordinates))
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToMoveToLocationCursor();
-        //     }
-        //     else
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToMovementNotAllowedCursor();
-        //     }
-        // }
 
         private static void UpdateMousePointerWhenMinigunnerSelected(Point mousePositionAsPointInWorldCoordinates)
         {
-            // if (GameWorldView.instance.IsPointOverEnemy(mousePositionAsPointInWorldCoordinates))
-            // {
-            //     GameWorldView.instance.gameCursor.SetToAttackEnemyLocationCursor();
-            // }
-            // else
 
             if (GameWorldView.instance.IsPointOverEnemy(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
             {
