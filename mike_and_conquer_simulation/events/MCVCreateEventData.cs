@@ -4,7 +4,7 @@
     {
         public const string EventType = "MCVCreated";
 
-        public MCVCreateEventData(int unitId, int x, int y) : base(unitId, x, y)
+        public MCVCreateEventData(int unitId, string player, int x, int y) : base(unitId,player, x, y)
         {
         }
     }

@@ -4,6 +4,6 @@
     {
         public string GameSpeed { get; set; }
 
-        public const string CommandName = "CreateMinigunner";
+        public const string CommandName = "CreateGDIMinigunner";
     }
 }

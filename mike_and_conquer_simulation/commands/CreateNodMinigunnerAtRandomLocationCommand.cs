@@ -2,19 +2,15 @@
 
 namespace mike_and_conquer_simulation.commands
 {
-    internal class CreateMinigunnerCommand : AsyncSimulationCommand
+    internal class CreateNodMinigunnerAtRandomLocationCommand : AsyncSimulationCommand
     {
 
-        public const string CommandName = "CreateMinigunner";
-
-
-        public int X { get; set; }
-        public int Y { get; set; }
+        public const string CommandName = "CreateNodMinigunnerAtRandomLocation";
 
 
         protected override void ProcessImpl()
         {
-            result = SimulationMain.instance.CreateMinigunner(X, Y);
+            result = SimulationMain.instance.CreateNodMinigunnerAtRandomLocation();
         }
 
         public Minigunner GetMinigunner()

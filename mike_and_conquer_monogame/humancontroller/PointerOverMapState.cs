@@ -33,15 +33,10 @@ namespace mike_and_conquer_monogame.humancontroller
 
             Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
 
-            // if (GameWorld.instance.IsAMinigunnerSelected())
-            // {
-            //     UpdateMousePointerWhenMinigunnerSelected(mouseWorldLocationPoint);
-            // }
-            // else if (GameWorld.instance.IsAnMCVSelected())
-            // {
-            //     UpdateMousePointerWhenMCVSelected(mouseWorldLocationPoint);
-            // }
-
+            if (GameWorldView.instance.IsAMinigunnerSelected())
+            {
+                UpdateMousePointerWhenMinigunnerSelected(mouseWorldLocationPoint);
+            }
             if (GameWorldView.instance.IsMCVSelected())
             {
                 UpdateMousePointerWhenMCVSelected(mouseWorldLocationPoint);
@@ -290,21 +285,25 @@ namespace mike_and_conquer_monogame.humancontroller
         // }
         //
         //
-        // private static void UpdateMousePointerWhenMinigunnerSelected(Point mousePositionAsPointInWorldCoordinates)
-        // {
-        //     if (GameWorld.instance.IsPointOverEnemy(mousePositionAsPointInWorldCoordinates))
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToAttackEnemyLocationCursor();
-        //     }
-        //     else if (GameWorld.instance.IsValidMoveDestination(mousePositionAsPointInWorldCoordinates))
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToMoveToLocationCursor();
-        //     }
-        //     else
-        //     {
-        //         GameWorldView.instance.gameCursor.SetToMovementNotAllowedCursor();
-        //     }
-        // }
+
+        private static void UpdateMousePointerWhenMinigunnerSelected(Point mousePositionAsPointInWorldCoordinates)
+        {
+
+            if (GameWorldView.instance.IsPointOverEnemy(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
+            {
+                GameWorldView.instance.gameCursor.SetToAttackEnemyLocationCursor();
+            }
+            else
+            if (GameWorldView.instance.IsValidMoveDestination(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
+            {
+                GameWorldView.instance.gameCursor.SetToMoveToLocationCursor();
+            }
+            else
+            {
+                GameWorldView.instance.gameCursor.SetToMovementNotAllowedCursor();
+            }
+        }
+
 
 
 

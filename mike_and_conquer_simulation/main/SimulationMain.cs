@@ -279,32 +279,23 @@ namespace mike_and_conquer_simulation.main
             return list;
         }
 
-        internal Minigunner CreateMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
+        internal Minigunner CreateGDIMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-
             return gameWorld.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
-
-            // Minigunner minigunner = new Minigunner();
-            // minigunner.GameWorldLocation.X = x;
-            // minigunner.GameWorldLocation.Y = y;
-            // unitList.Add(minigunner);
-            //
-            // SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-            // simulationStateUpdateEvent.EventType = MinigunnerCreateEventData.EventType;
-            // MinigunnerCreateEventData eventData = new MinigunnerCreateEventData();
-            // eventData.UnitId = minigunner.UnitId;
-            // eventData.X = x;
-            // eventData.Y = y;
-            //
-            // simulationStateUpdateEvent.EventData = JsonConvert.SerializeObject(eventData);
-            //
-            // foreach (SimulationStateListener listener in listeners)
-            // {
-            //     listener.Update(simulationStateUpdateEvent);
-            // }
-            //
-            // return minigunner;
         }
+
+
+        internal Minigunner CreateGDIMinigunnerAtRandomLocation()
+        {
+            return gameWorld.CreateGDIMinigunnerAtRandomLocation();
+        }
+
+        internal Minigunner CreateNodMinigunnerAtRandomLocation()
+        {
+            return gameWorld.CreateNodMinigunnerAtRandomLocation();
+        }
+
+
 
         internal Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
         {
@@ -455,19 +446,31 @@ namespace mike_and_conquer_simulation.main
 
         AsyncSimulationCommand ConvertRawCommand(RawCommand rawCommand)
         {
-            if (rawCommand.CommandType.Equals(CreateMinigunnerCommand.CommandName))
+            if (rawCommand.CommandType.Equals(CreateGDIMinigunnerCommand.CommandName))
             {
 
                 CreateMinigunnerCommandBody commandBody =
                     JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(rawCommand.CommandData);
 
-                CreateMinigunnerCommand createUnit = new CreateMinigunnerCommand();
-                createUnit.X = commandBody.StartLocationXInWorldCoordinates;
-                createUnit.Y = commandBody.StartLocationYInWorldCoordinates;
+                CreateGDIMinigunnerCommand createGdiUnit = new CreateGDIMinigunnerCommand();
+                createGdiUnit.X = commandBody.StartLocationXInWorldCoordinates;
+                createGdiUnit.Y = commandBody.StartLocationYInWorldCoordinates;
 
-                return createUnit;
+                return createGdiUnit;
 
             }
+            if (rawCommand.CommandType.Equals(CreateGDIMinigunnerAtRandomLocationCommand.CommandName)) 
+            {
+                CreateGDIMinigunnerAtRandomLocationCommand command = new CreateGDIMinigunnerAtRandomLocationCommand();
+                return command;
+            }
+            if (rawCommand.CommandType.Equals(CreateNodMinigunnerAtRandomLocationCommand.CommandName))
+            {
+                CreateNodMinigunnerAtRandomLocationCommand command = new CreateNodMinigunnerAtRandomLocationCommand();
+                return command;
+            }
+
+
             else if (rawCommand.CommandType.Equals(CreateJeepCommand.CommandName))
             {
 

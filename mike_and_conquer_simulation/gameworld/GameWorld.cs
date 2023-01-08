@@ -2,21 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Security.Permissions;
+
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.pathfinding;
-// using mike_and_conquer.gameevent;
-// using mike_and_conquer.gameworld.humancontroller;
-// using mike_and_conquer.main;
-// using mike_and_conquer.pathfinding;
-// using AsyncGameEvent = mike_and_conquer.gameevent.AsyncGameEvent;
-// using CreateGDIMinigunnerGameEvent = mike_and_conquer.gameevent.CreateGDIMinigunnerGameEvent;
-// using GetGDIMinigunnerByIdGameEvent = mike_and_conquer.gameevent.GetGDIMinigunnerByIdGameEvent;
-// using CreateNodMinigunnerGameEvent = mike_and_conquer.gameevent.CreateNodMinigunnerGameEvent;
-// using GetNodMinigunnerByIdGameEvent = mike_and_conquer.gameevent.GetNodMinigunnerByIdGameEvent;
-// using ResetGameGameEvent = mike_and_conquer.gameevent.ResetGameGameEvent;
-// using GetCurrentGameStateGameEvent = mike_and_conquer.gameevent.GetCurrentGameStateGameEvent;
-// using CreateSandbagGameEvent = mike_and_conquer.gameevent.CreateSandbagGameEvent;
 
 
 using Exception = System.Exception;
@@ -41,7 +29,8 @@ namespace mike_and_conquer_simulation.gameworld
 
 
         private GDIPlayer gdiPlayer;
-        // private NodPlayer nodPlayer;
+        private NodPlayer nodPlayer;
+
         //
         // public List<Sandbag> sandbagList;
         // public List<NodTurret> nodTurretList;
@@ -259,6 +248,10 @@ namespace mike_and_conquer_simulation.gameworld
             if (gdiPlayer != null)
             {
                 gdiPlayer.Update();
+            }
+            if (nodPlayer != null)
+            {
+                nodPlayer.Update();
             }
 
         }
@@ -537,6 +530,74 @@ namespace mike_and_conquer_simulation.gameworld
 
             return gdiPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
+
+        public Minigunner CreateGDIMinigunnerAtRandomLocation()
+        {
+            Point validRandomMinigunnerPosition = CreateRandomValidMinigunnerPosition();
+
+            return gdiPlayer.CreateMinigunner(
+                validRandomMinigunnerPosition.X,
+                validRandomMinigunnerPosition.Y);
+        }
+
+        public Minigunner CreateNodMinigunnerAtRandomLocation()
+        {
+            Point validRandomMinigunnerPosition = CreateRandomValidMinigunnerPosition();
+
+            return nodPlayer.CreateMinigunner(
+                validRandomMinigunnerPosition.X,
+                validRandomMinigunnerPosition.Y);
+        }
+
+
+        Point CreateRandomValidMinigunnerPosition()
+        {
+            int numTries = 20;
+            for (int i = 0; i < numTries; i++)
+            {
+                Point randomPoint = CreateRandomPosition();
+                bool isValidMinigunnerPosition = IsValidMinigunnerPosition(randomPoint);
+                if (isValidMinigunnerPosition)
+                {
+                    return randomPoint;
+                }
+            }
+
+            throw new Exception("Unable to create valid random point after " + numTries + " tries");
+
+        }
+
+        private bool IsValidMinigunnerPosition(Point positionInWorldCoordinates)
+        {
+            MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(positionInWorldCoordinates.X, positionInWorldCoordinates.Y);
+
+            MapTileInstance mapTileInstance = this.gameMap.MapTileInstanceArray[mapTileLocation.XInWorldMapTileCoordinates,
+                mapTileLocation.YInWorldMapTileCoordinates];
+
+            return !mapTileInstance.IsBlockingTerrain;
+        }
+
+
+
+        Point CreateRandomPosition()
+        {
+            Random rand = new Random();
+
+            int minX = 10;
+            int minY = 10;
+            
+            
+            // Capping max so it will fit on screen
+            int maxX = 600;
+            int maxY = 400;
+
+            int randomX = rand.Next(minX, maxX);
+            int randomY = rand.Next(minY, maxY);
+
+            Point point = new Point(randomX, randomY);
+            return point;
+        }
+
 
         public Jeep CreateJeep(int xInWorldCoordinates, int yInWorldCoordinates)
         {
@@ -878,7 +939,9 @@ namespace mike_and_conquer_simulation.gameworld
             int x = mapTileLocation.XInWorldMapTileCoordinates;
             int y = mapTileLocation.YInWorldMapTileCoordinates;
 
-            if (x >= numColumns || y >= numRows)
+
+
+            if (x< 0 || x >= numColumns || y < 0 ||y >= numRows)
             {
                 return null;
             }
@@ -1075,6 +1138,7 @@ namespace mike_and_conquer_simulation.gameworld
             terrainItemList.Clear();
 
             gdiPlayer = new GDIPlayer(playerController);
+            nodPlayer = new NodPlayer(null);
             InitializeDefaultMap();
         }
 
