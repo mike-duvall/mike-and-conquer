@@ -27,12 +27,21 @@ namespace mike_and_conquer_simulation.main
             get { return gameWorldLocation; }
         }
 
+        private int health;
+
         public int UnitId { get; set; }
+
+        public int Health
+        {
+            get { return health; }
+        }
 
         public abstract void Update();
 
         public abstract void OrderMoveToDestination(int destinationXInWorldCoordinates,
             int destinationYInWorldCoordinates);
+
+        public abstract void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit);
 
         protected void PublishUnitArrivedAtDestinationEvent()
         {
@@ -146,6 +155,10 @@ namespace mike_and_conquer_simulation.main
 
 
 
+        public void ReduceHealth(int amount)
+        {
+            health = health - amount;
+        }
 
 
     }

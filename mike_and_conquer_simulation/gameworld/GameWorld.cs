@@ -138,6 +138,7 @@ namespace mike_and_conquer_simulation.gameworld
             InitializeNavigationGraph();
         }
 
+
         // public void InitializeTestMap(int[,] obstacleArray)
         // {
         //     gameMap = new GameMap(obstacleArray);
@@ -525,9 +526,8 @@ namespace mike_and_conquer_simulation.gameworld
 
 
 
-        public Minigunner CreateMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
+        public Minigunner CreateGDIMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-
             return gdiPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
 
@@ -539,6 +539,13 @@ namespace mike_and_conquer_simulation.gameworld
                 validRandomMinigunnerPosition.X,
                 validRandomMinigunnerPosition.Y);
         }
+
+
+        public Minigunner CreateNodMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            return nodPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
+        }
+
 
         public Minigunner CreateNodMinigunnerAtRandomLocation()
         {
@@ -644,10 +651,16 @@ namespace mike_and_conquer_simulation.gameworld
         }
 
 
-        public Unit FindUnitWithUnitId(int unitId)
+        public Unit FindGDIUnitWithUnitId(int unitId)
         {
             return gdiPlayer.FindUnitWithUnitId(unitId);
         }
+
+        public Unit FindNodUnitWithUnitId(int unitId)
+        {
+            return nodPlayer.FindUnitWithUnitId(unitId);
+        }
+
 
         public void SetGDIPlayerController(PlayerController playerController)
         {

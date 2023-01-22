@@ -112,6 +112,11 @@ namespace mike_and_conquer_simulation.main
 
         }
 
+        public override void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void SetPath(List<Point> listOfPoints)
         {
             this.path = listOfPoints;

@@ -29,6 +29,7 @@ namespace mike_and_conquer_simulation.main
         private int destinationX;
         private int destinationY;
 
+        private Unit currentAttackTarget;
 
         // private MapTileInstance currentMapTileInstance;
 
@@ -161,6 +162,53 @@ namespace mike_and_conquer_simulation.main
         }
 
 
+        public override void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit)
+        {
+            int destinationXInWorldCoordinates = (int) targetUnit.GameWorldLocation.X;
+            int destinationYInWorldCoordinates = (int)targetUnit.GameWorldLocation.Y;
+
+            MapTileInstance currentMapTileInstanceLocation =
+                GameWorld.instance.FindMapTileInstance(
+                    MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y));
+
+            //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
+            int startColumn = (int)this.GameWorldLocation.X / GameWorld.MAP_TILE_WIDTH;
+            int startRow = (int)this.GameWorldLocation.Y / GameWorld.MAP_TILE_HEIGHT;
+            Point startPoint = new Point(startColumn, startRow);
+
+
+            AStar aStar = new AStar();
+
+            Point destinationSquare = new Point();
+            destinationSquare.X = destinationXInWorldCoordinates / GameWorld.MAP_TILE_WIDTH;
+            destinationSquare.Y = destinationYInWorldCoordinates / GameWorld.MAP_TILE_HEIGHT;
+
+            Path foundPath = aStar.FindPath(GameWorld.instance.navigationGraph, startPoint, destinationSquare);
+
+
+            this.currentCommand = Command.ATTACK_TARGET;
+            this.state = State.ATTACKING;
+            currentAttackTarget = targetUnit;
+
+
+            List<Point> plannedPathAsPoints = new List<Point>();
+            List<Node> plannedPathAsNodes = foundPath.nodeList;
+            foreach (Node node in plannedPathAsNodes)
+            {
+                Point point = GameWorld.instance.ConvertMapSquareIndexToWorldCoordinate(node.id);
+                plannedPathAsPoints.Add(point);
+            }
+
+            this.SetPath(plannedPathAsPoints);
+            SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
+
+
+            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
+
+        }
+
+
 
         private void SetPath(List<Point> listOfPoints)
         {
@@ -226,10 +274,10 @@ namespace mike_and_conquer_simulation.main
             {
                 HandleCommandFollowPath();
             }
-            // else if (this.currentCommand == Command.ATTACK_TARGET)
-            // {
-            //     HandleCommandAttackTarget(gameTime);
-            // }
+            else if (this.currentCommand == Command.ATTACK_TARGET)
+            {
+                HandleCommandAttackTarget();
+            }
 
 
         }
@@ -262,6 +310,56 @@ namespace mike_and_conquer_simulation.main
             }
 
         }
+
+        private void HandleCommandAttackTarget()
+        {
+            if (currentAttackTarget.Health <= 0)
+            {
+                this.currentCommand = Command.NONE;
+            }
+
+            if (IsInAttackRange())
+            {
+                this.state = State.ATTACKING;
+                currentAttackTarget.ReduceHealth(10);
+
+            }
+            else
+            {
+                if (path.Count > 0)
+                {
+                    MoveTowardsCurrentDestinationInPath();
+                }
+
+            }
+        }
+
+
+        private double Distance(double dX0, double dY0, double dX1, double dY1)
+        {
+            return Math.Sqrt((dX1 - dX0) * (dX1 - dX0) + (dY1 - dY0) * (dY1 - dY0));
+        }
+
+
+        private int CalculateDistanceToTarget()
+        {
+            return (int)Distance(GameWorldLocation.X, GameWorldLocation.Y, currentAttackTarget.GameWorldLocation.X, currentAttackTarget.GameWorldLocation.Y);
+        }
+
+        private bool IsInAttackRange()
+        {
+            int distanceToTarget = CalculateDistanceToTarget();
+
+            if (distanceToTarget < 35)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
 
         private void MoveTowardsCurrentDestinationInPath()

@@ -281,8 +281,14 @@ namespace mike_and_conquer_simulation.main
 
         internal Minigunner CreateGDIMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            return gameWorld.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
+            return gameWorld.CreateGDIMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
+
+        internal Minigunner CreateNodMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
+        {
+            return gameWorld.CreateNodMinigunner(xInWorldCoordinates, yInWorldCoordinates);
+        }
+
 
 
         internal Minigunner CreateGDIMinigunnerAtRandomLocation()
@@ -365,25 +371,26 @@ namespace mike_and_conquer_simulation.main
 
         public void OrderUnitToMove(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
-            Unit foundUnit = FindUnitWithUnitId(unitId);
+            Unit foundUnit = FindGDIUnitWithUnitId(unitId);
             foundUnit.OrderMoveToDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates);
         }
 
-        private Unit FindUnitWithUnitId(int unitId)
+        public void OrderUnitToAttack(int attackerUnitId, int targetUnitId)
         {
-            // Unit foundUnit = null;
-            //
-            // foreach (Unit unit in unitList)
-            // {
-            //     if (unit.UnitId == unitId)
-            //     {
-            //         foundUnit = unit;
-            //     }
-            // }
-            //
-            // return foundUnit;
+            Unit attackingUnit = FindGDIUnitWithUnitId(attackerUnitId);
+            Unit targetUnit = FindNodUnitWithUnitId(targetUnitId);
+            attackingUnit.OrderToMoveToAndAttackEnemyUnit(targetUnit);
 
-            return gameWorld.FindUnitWithUnitId(unitId);
+        }
+
+        private Unit FindGDIUnitWithUnitId(int unitId)
+        {
+            return gameWorld.FindGDIUnitWithUnitId(unitId);
+        }
+
+        private Unit FindNodUnitWithUnitId(int unitId)
+        {
+            return gameWorld.FindNodUnitWithUnitId(unitId);
         }
 
 
@@ -459,6 +466,21 @@ namespace mike_and_conquer_simulation.main
                 return createGdiUnit;
 
             }
+            if (rawCommand.CommandType.Equals(CreateNodMinigunnerCommand.CommandName))
+            {
+
+                CreateMinigunnerCommandBody commandBody =
+                    JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(rawCommand.CommandData);
+
+                CreateNodMinigunnerCommand command = new CreateNodMinigunnerCommand();
+                command.X = commandBody.StartLocationXInWorldCoordinates;
+                command.Y = commandBody.StartLocationYInWorldCoordinates;
+
+                return command;
+
+            }
+
+
             if (rawCommand.CommandType.Equals(CreateGDIMinigunnerAtRandomLocationCommand.CommandName)) 
             {
                 CreateGDIMinigunnerAtRandomLocationCommand command = new CreateGDIMinigunnerAtRandomLocationCommand();
@@ -505,6 +527,19 @@ namespace mike_and_conquer_simulation.main
 
             }
 
+            else if (rawCommand.CommandType.Equals(OrderUnitToAttackCommand.CommandName))
+            {
+
+                OrderUnitAttackCommandBody commandBody =
+                    JsonConvert.DeserializeObject<OrderUnitAttackCommandBody>(rawCommand.CommandData);
+
+                OrderUnitToAttackCommand aCommand = new OrderUnitToAttackCommand();
+                aCommand.AttackerUnitId = commandBody.AttackerUnitId;
+                aCommand.TargetUnitId = commandBody.TargetUnitId;
+
+                return aCommand;
+
+            }
             else if (rawCommand.CommandType.Equals(OrderUnitToMoveCommand.CommandName))
             {
 
@@ -519,6 +554,8 @@ namespace mike_and_conquer_simulation.main
                 return anEvent;
 
             }
+
+
             else if (rawCommand.CommandType.Equals(SetGameSpeedCommand.CommandName))
             {
                 SetSimulationOptionsCommandBody commandBody =

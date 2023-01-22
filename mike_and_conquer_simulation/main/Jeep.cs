@@ -114,6 +114,11 @@ namespace mike_and_conquer_simulation.main
 
         }
 
+        public override void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private List<PathStep> ConvertWorldCoordinatePointsToMapTilePathSteps(List<Point> listOfPoints)
         {
             List<PathStep> listOfPathSteps = new List<PathStep>();
