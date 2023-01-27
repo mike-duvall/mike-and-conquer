@@ -38,7 +38,7 @@ namespace mike_and_conquer_monogame.humancontroller
 
             Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
 
-            if (GameWorldView.instance.IsAMinigunnerSelected())
+            if (GameWorldView.instance.IsAGDIMinigunnerSelected())
             {
                 UpdateMousePointerWhenMinigunnerSelected(mouseWorldLocationPoint);
             }
@@ -125,7 +125,7 @@ namespace mike_and_conquer_monogame.humancontroller
             //     GameWorld.instance.MCV.selected = false;
             // }
 
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 unitView.Selected = false;
             }
@@ -226,7 +226,7 @@ namespace mike_and_conquer_monogame.humancontroller
 
             bool unitOrderedToMove = false;
 
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 if (unitView.Selected == true)
                 {
@@ -321,26 +321,17 @@ namespace mike_and_conquer_monogame.humancontroller
             //         }
             //     }
             // }
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.NodUnitViewList)
             {
                 if (unitView.ContainsPoint(mouseX, mouseY))
                 {
                     handled = true;
 
-                    if (unitView is NodMinigunnerView)
+                    List<UnitView> currentlySelectedUnitViews = GetCurrentlySelectedGDIUnitViews();
+                    foreach (UnitView selectedUnitView in currentlySelectedUnitViews)
                     {
-                        List<UnitView> currentlySelectedUnitViews = GetCurrentlySelectedUnitViews();
-                        foreach (UnitView selectedUnitView in currentlySelectedUnitViews)
-                        {
-                            if (selectedUnitView is GdiMinigunnerView)
-                            {
-                                OrderToAttackTarget(selectedUnitView, unitView);
-                            }
-                        }
-
+                        OrderToAttackTarget(selectedUnitView, unitView);
                     }
-
-                    unitView.Selected = true;
                     // MikeAndConquerGame.instance.SoundManager.PlayUnitAwaitingOrders();
                 }
             }
@@ -350,11 +341,11 @@ namespace mike_and_conquer_monogame.humancontroller
         }
 
 
-        List<UnitView> GetCurrentlySelectedUnitViews()
+        List<UnitView> GetCurrentlySelectedGDIUnitViews()
         {
             List<UnitView> currentlySelectedUnitViews = new List<UnitView>();
 
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 if (unitView.Selected)
                 {

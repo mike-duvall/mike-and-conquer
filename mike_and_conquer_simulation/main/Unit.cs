@@ -27,7 +27,7 @@ namespace mike_and_conquer_simulation.main
             get { return gameWorldLocation; }
         }
 
-        private int health;
+        protected int health;
 
         public int UnitId { get; set; }
 
@@ -96,11 +96,28 @@ namespace mike_and_conquer_simulation.main
                     UnitMoveOrderEventData.EventType,
                     serializedEventData);
 
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
 
+        }
+
+        public void PublishAttackCommandBeganEvent(int attackerUnitId, int targetUnitId)
+        {
+
+            AttackCommandBeganEventData eventData = new AttackCommandBeganEventData(
+                attackerUnitId,
+                targetUnitId);
+
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    AttackCommandBeganEventData.EventType,
+                    serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
 
         }
+
 
         protected void UpdateNearbyMapTileVisibility(int xOffset, int yOffset, MapTileInstance.MapTileVisibility mapTileVisibility)
         {
@@ -155,9 +172,10 @@ namespace mike_and_conquer_simulation.main
 
 
 
-        public void ReduceHealth(int amount)
+        public bool ApplyDamage(int amount)
         {
             health = health - amount;
+            return health > 0;
         }
 
 

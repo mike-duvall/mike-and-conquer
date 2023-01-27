@@ -647,12 +647,12 @@ namespace mike_and_conquer_monogame.main
 
         public void AddJeepView(int id, int x, int y)
         {
-            gameWorldView.AddJeepView(id, x, y);
+            gameWorldView.AddGDIJeepView(id, x, y);
         }
 
         public void AddMCVView(int id, int x, int y)
         {
-            gameWorldView.AddMCVView(id, x, y);
+            gameWorldView.AddGDIMCVView(id, x, y);
         }
 
         public void AddGDIConstructionYardView(int id, int x, int y)
@@ -715,7 +715,7 @@ namespace mike_and_conquer_monogame.main
 
         public void UpdateUnitViewPosition(int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            foreach (UnitView unitView in gameWorldView.UnitViewList)
+            foreach (UnitView unitView in gameWorldView.GDIUnitViewList)
             {
                 if (unitView.UnitId == unitId)
                 {
@@ -723,6 +723,16 @@ namespace mike_and_conquer_monogame.main
                     unitView.YInWorldCoordinates = yInWorldCoordinates;
                 }
             }
+
+            foreach (UnitView unitView in gameWorldView.NodUnitViewList)
+            {
+                if (unitView.UnitId == unitId)
+                {
+                    unitView.XInWorldCoordinates = xInWorldCoordinates;
+                    unitView.YInWorldCoordinates = yInWorldCoordinates;
+                }
+            }
+
 
         }
 

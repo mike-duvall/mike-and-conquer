@@ -42,6 +42,7 @@ namespace mike_and_conquer_simulation.main
             float speedFromCncInLeptons = 12;  // 12 leptons, for MCV, MPH_MEDIUM_SLOW = 12
             // float speedFromCncInLeptons = 30;  // 30 leptons, for Jeep, MPH_MEDIUM_FAST = 30
 
+            health = 50;
 
             float pixelsPerSquare = 24;
             float leptonsPerSquare = 256;
@@ -164,33 +165,36 @@ namespace mike_and_conquer_simulation.main
 
         public override void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit)
         {
+
+
             int destinationXInWorldCoordinates = (int) targetUnit.GameWorldLocation.X;
             int destinationYInWorldCoordinates = (int)targetUnit.GameWorldLocation.Y;
+
 
             MapTileInstance currentMapTileInstanceLocation =
                 GameWorld.instance.FindMapTileInstance(
                     MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y));
-
+            
             //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
             int startColumn = (int)this.GameWorldLocation.X / GameWorld.MAP_TILE_WIDTH;
             int startRow = (int)this.GameWorldLocation.Y / GameWorld.MAP_TILE_HEIGHT;
             Point startPoint = new Point(startColumn, startRow);
-
-
+            
+            
             AStar aStar = new AStar();
-
+            
             Point destinationSquare = new Point();
             destinationSquare.X = destinationXInWorldCoordinates / GameWorld.MAP_TILE_WIDTH;
             destinationSquare.Y = destinationYInWorldCoordinates / GameWorld.MAP_TILE_HEIGHT;
-
+            
             Path foundPath = aStar.FindPath(GameWorld.instance.navigationGraph, startPoint, destinationSquare);
-
-
+            
+            
             this.currentCommand = Command.ATTACK_TARGET;
             this.state = State.ATTACKING;
             currentAttackTarget = targetUnit;
-
-
+            
+            
             List<Point> plannedPathAsPoints = new List<Point>();
             List<Node> plannedPathAsNodes = foundPath.nodeList;
             foreach (Node node in plannedPathAsNodes)
@@ -198,15 +202,18 @@ namespace mike_and_conquer_simulation.main
                 Point point = GameWorld.instance.ConvertMapSquareIndexToWorldCoordinate(node.id);
                 plannedPathAsPoints.Add(point);
             }
-
+            
             this.SetPath(plannedPathAsPoints);
             SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
 
 
-            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            // PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
             PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
+            PublishAttackCommandBeganEvent(this.UnitId, targetUnit.UnitId);
+
 
         }
+
 
 
 
@@ -321,7 +328,11 @@ namespace mike_and_conquer_simulation.main
             if (IsInAttackRange())
             {
                 this.state = State.ATTACKING;
-                currentAttackTarget.ReduceHealth(10);
+                bool destroyed = currentAttackTarget.ApplyDamage(10);
+                if (destroyed)
+                {
+                    GameWorld.instance.UnitKilled(currentAttackTarget.UnitId);
+                }
 
             }
             else
@@ -329,6 +340,7 @@ namespace mike_and_conquer_simulation.main
                 if (path.Count > 0)
                 {
                     MoveTowardsCurrentDestinationInPath();
+
                 }
 
             }

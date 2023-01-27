@@ -1281,5 +1281,13 @@ namespace mike_and_conquer_simulation.gameworld
         //         }
         //     }
         // }
+        public void UnitKilled(int unitId)
+        {
+            Unit foundUnit = FindNodUnitWithUnitId(unitId);
+            if (foundUnit != null)
+            {
+                nodPlayer.RemoveUnit(unitId);
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework.Input;
 using mike_and_conquer_monogame.commands;
@@ -151,7 +152,9 @@ namespace mike_and_conquer_monogame.gameview
 
         private KeyboardState oldKeyboardState;
 
-        private List<UnitView> unitViewList;
+        private List<UnitView> gdiUnitViewList;
+        private List<UnitView> nodUnitViewList;
+
         //
         // private GDIBarracksView gdiBarracksView;
         //
@@ -172,10 +175,17 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        public List<UnitView> UnitViewList
+        public List<UnitView> GDIUnitViewList
         {
-            get { return unitViewList; }
+            get { return gdiUnitViewList; }
         }
+
+        public List<UnitView> NodUnitViewList
+        {
+            get { return nodUnitViewList; }
+        }
+
+
 
         private GDIConstructionYardView gdiConstructionYardView = null;
 
@@ -232,7 +242,9 @@ namespace mike_and_conquer_monogame.gameview
         {
             mapTileInstanceViewList = new List<MapTileInstanceView>();
 
-            unitViewList = new List<UnitView>();
+            gdiUnitViewList = new List<UnitView>();
+            nodUnitViewList = new List<UnitView>();
+
             // nodMinigunnerViewList = new List<MinigunnerView>();
             //
             // sandbagViewList = new List<SandbagView>();
@@ -262,15 +274,13 @@ namespace mike_and_conquer_monogame.gameview
         public UnitView GetUnitViewById(int unitId)
         {
 
-            foreach (UnitView unitView in this.unitViewList)
+            UnitView foundUnitView= null;
+            foundUnitView = FindGDIUnitViewById(unitId);
+            if (foundUnitView == null)
             {
-                if (unitView.UnitId == unitId)
-                {
-                    return unitView;
-                }
+                foundUnitView = FindNodUnitViewById(unitId);
             }
-
-            return null;
+            return foundUnitView;
 
         }
 
@@ -535,10 +545,16 @@ namespace mike_and_conquer_monogame.gameview
             // }
             //
             //
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 unitView.DrawShadowOnly(gameTime, spriteBatch);
             }
+
+            foreach (UnitView unitView in GameWorldView.instance.NodUnitViewList)
+            {
+                unitView.DrawShadowOnly(gameTime, spriteBatch);
+            }
+
 
 
             foreach (TerrainView nextTerrainView in GameWorldView.instance.terrainViewList)
@@ -725,7 +741,12 @@ namespace mike_and_conquer_monogame.gameview
             //
 
 
-            foreach (UnitView unitView in this.UnitViewList)
+            foreach (UnitView unitView in this.GDIUnitViewList)
+            {
+                unitView.DrawNoShadow(gameTime, spriteBatch);
+            }
+
+            foreach (UnitView unitView in this.NodUnitViewList)
             {
                 unitView.DrawNoShadow(gameTime, spriteBatch);
             }
@@ -797,10 +818,10 @@ namespace mike_and_conquer_monogame.gameview
 
         public void HandleReset()
         {
-            unitViewList.Clear();
+            gdiUnitViewList.Clear();
+            nodUnitViewList.Clear();
             mapTileInstanceViewList.Clear();
             terrainViewList.Clear();
-            // nodMinigunnerViewList.Clear();
             // sandbagViewList.Clear();
             // nodTurretViewList.Clear();
             // projectile120MmViewList.Clear();
@@ -1228,11 +1249,17 @@ namespace mike_and_conquer_monogame.gameview
             //     nodTurretView.Update(gameTime);
             // }
             
-            foreach (UnitView unitView in unitViewList)
+            foreach (UnitView unitView in gdiUnitViewList)
             {
                 unitView.Update(gameTime);
             }
-            
+
+            foreach (UnitView unitView in nodUnitViewList)
+            {
+                unitView.Update(gameTime);
+            }
+
+
             // if (mcvView != null)
             // {
             //     mcvView.Update(gameTime);
@@ -1515,32 +1542,51 @@ namespace mike_and_conquer_monogame.gameview
             if ("GDI".Equals(player))
             {
                 unitView = new GdiMinigunnerView(id, x, y);
+                gdiUnitViewList.Add(unitView);
             }
             else if ("Nod".Equals(player))
             {
                 unitView = new NodMinigunnerView(id, x, y);
+                nodUnitViewList.Add(unitView);
             }
-
 
             if (unitView == null)
             {
                 throw new Exception("Unable to create UnitView because of unknown player type.  player=" + player);
-
-
             }
-            unitViewList.Add(unitView);
+
         }
 
 
         public void RemoveUnitView(int unitId)
         {
-            UnitView unitView = FindUnitViewById(unitId);
-            unitViewList.Remove(unitView);
+            UnitView unitView = FindGDIUnitViewById(unitId);
+            if (unitView != null)
+            {
+                gdiUnitViewList.Remove(unitView);
+            }
+            else
+            {
+                unitView = FindNodUnitViewById(unitId);
+                if (unitView != null)
+                {
+                    nodUnitViewList.Remove(unitView);
+                }
+            }
+
+            if (unitView == null)
+            {
+                throw new Exception("Could not find UnitView with id:" + unitId + ", when attempting to remove it");
+            }
+
+                
+
+            
         }
-        public void AddMCVView(int id, int x, int y)
+        public void AddGDIMCVView(int id, int x, int y)
         {
             MCVView view = new MCVView(id, x, y);
-            unitViewList.Add(view);
+            gdiUnitViewList.Add(view);
         }
 
 
@@ -1586,9 +1632,9 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        public void AddJeepView(int id, int x, int y)
+        public void AddGDIJeepView(int id, int x, int y)
         {
-            unitViewList.Add(new JeepView(id, x, y));
+            gdiUnitViewList.Add(new JeepView(id, x, y));
         }
 
 
@@ -1631,10 +1677,10 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        private UnitView FindUnitViewById(int unitId)
+        private UnitView FindGDIUnitViewById(int unitId)
         {
             UnitView foundUnitView = null;
-            foreach (UnitView unitView in unitViewList)
+            foreach (UnitView unitView in gdiUnitViewList)
             {
                 if (unitView.UnitId == unitId)
                 {
@@ -1647,22 +1693,43 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
+        private UnitView FindNodUnitViewById(int unitId)
+        {
+            UnitView foundUnitView = null;
+            foreach (UnitView unitView in nodUnitViewList)
+            {
+                if (unitView.UnitId == unitId)
+                {
+                    foundUnitView = unitView;
+                    break;
+                }
+            }
+
+            return foundUnitView;
+
+        }
+
+
+
+
+
         public void CreatePlannedPathView(int unitId, List<PathStep> pathStepList)
         {
-            UnitView unitView = FindUnitViewById(unitId);
+            UnitView unitView = GetUnitViewById(unitId);
             unitView.CreatePlannedPathView(pathStepList);
         }
 
         public void RemovePlannedStepView(int unitId, PathStep pathStep)
         {
-            UnitView unitView = FindUnitViewById(unitId);
+            UnitView unitView = GetUnitViewById(unitId);
             unitView.RemovePlannedPathStepView(pathStep);
         }
 
 
-        public bool IsAUnitViewSelected()
+
+        public bool IsAGDIUnitViewSelected()
         {
-            foreach (UnitView unitView in unitViewList)
+            foreach (UnitView unitView in gdiUnitViewList)
             {
                 if (unitView.Selected)
                 {
@@ -1727,7 +1794,7 @@ namespace mike_and_conquer_monogame.gameview
 
         public bool IsMCVSelected()
         {
-            foreach (UnitView unitView in unitViewList)
+            foreach (UnitView unitView in gdiUnitViewList)
             {
                 if (unitView.Selected == true)
                 {
@@ -1741,9 +1808,9 @@ namespace mike_and_conquer_monogame.gameview
             return false;
         }
 
-        public bool IsAMinigunnerSelected()
+        public bool IsAGDIMinigunnerSelected()
         {
-            foreach (UnitView unitView in unitViewList)
+            foreach (UnitView unitView in gdiUnitViewList)
             {
                 if (unitView.Selected == true)
                 {
@@ -1762,7 +1829,7 @@ namespace mike_and_conquer_monogame.gameview
         {
 
             MCVView foundMCVView = null;
-            foreach (UnitView unitView in this.UnitViewList)
+            foreach (UnitView unitView in this.GDIUnitViewList)
             {
                 if (unitView is MCVView)
                 {
@@ -1924,15 +1991,13 @@ namespace mike_and_conquer_monogame.gameview
         public bool IsPointOverEnemy(int xInWorldCoordinates, int yInWorldCoordinates)
         {
 
-            foreach (UnitView unitView in this.UnitViewList)
+            foreach (UnitView unitView in this.NodUnitViewList)
             {
-                if (unitView is NodMinigunnerView)
+                if (unitView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates))
                 {
-                    if (unitView.ContainsPoint(xInWorldCoordinates, yInWorldCoordinates))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+
             }
 
             return false;
