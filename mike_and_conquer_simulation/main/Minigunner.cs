@@ -329,6 +329,7 @@ namespace mike_and_conquer_simulation.main
             {
                 this.state = State.ATTACKING;
                 bool destroyed = currentAttackTarget.ApplyDamage(10);
+                PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
                 if (destroyed)
                 {
                     GameWorld.instance.UnitKilled(currentAttackTarget.UnitId);
@@ -340,9 +341,7 @@ namespace mike_and_conquer_simulation.main
                 if (path.Count > 0)
                 {
                     MoveTowardsCurrentDestinationInPath();
-
                 }
-
             }
         }
 

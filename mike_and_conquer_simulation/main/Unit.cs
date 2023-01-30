@@ -118,6 +118,25 @@ namespace mike_and_conquer_simulation.main
 
         }
 
+        public void PublishFiredOnUnitEvent(int attackerUnitId, int targetUnitId)
+        {
+
+            FireOnUnitEventData eventData = new FireOnUnitEventData(
+                attackerUnitId,
+                targetUnitId);
+
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    FireOnUnitEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+
+        }
+
+
 
         protected void UpdateNearbyMapTileVisibility(int xOffset, int yOffset, MapTileInstance.MapTileVisibility mapTileVisibility)
         {
@@ -171,12 +190,29 @@ namespace mike_and_conquer_simulation.main
         }
 
 
+        private void PublishUnitTookDamageEvent()
+        {
+
+            UnitTookDamageEventData eventData = new UnitTookDamageEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitTookDamageEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
 
         public bool ApplyDamage(int amount)
         {
             health = health - amount;
+            PublishUnitTookDamageEvent();
             return health > 0;
         }
+
 
 
     }
