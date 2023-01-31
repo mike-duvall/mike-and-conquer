@@ -1281,7 +1281,7 @@ namespace mike_and_conquer_simulation.gameworld
         //         }
         //     }
         // }
-        public void UnitKilled(int unitId)
+        public void UnitDestroyed(int unitId)
         {
             Unit foundUnit = FindNodUnitWithUnitId(unitId);
             if (foundUnit != null)

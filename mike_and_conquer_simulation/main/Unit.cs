@@ -115,8 +115,23 @@ namespace mike_and_conquer_simulation.main
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-
         }
+
+        public void PublishNoneCommandBeganEvent(int unitId)
+        {
+
+            NoneCommandBeganEventData eventData = new NoneCommandBeganEventData(unitId);
+
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    NoneCommandBeganEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
 
         public void PublishFiredOnUnitEvent(int attackerUnitId, int targetUnitId)
         {
@@ -194,7 +209,6 @@ namespace mike_and_conquer_simulation.main
 
         private void PublishUnitTookDamageEvent()
         {
-
             UnitTookDamageEventData eventData = new UnitTookDamageEventData(this.UnitId);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
@@ -205,6 +219,23 @@ namespace mike_and_conquer_simulation.main
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
+
+        private void PublishUnitDestroyedEvent()
+        {
+            UnitDestroyedEventData eventData = new UnitDestroyedEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitDestroyedEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
+
+        
 
         protected void PublishUnitReloadedWeaponEvent()
         {
@@ -225,9 +256,15 @@ namespace mike_and_conquer_simulation.main
 
         public bool ApplyDamage(int amount)
         {
-            health = health - amount;
+            health -= amount;
             PublishUnitTookDamageEvent();
-            return health <= 0;
+            Boolean destroyed = health <= 0;
+            if (destroyed)
+            {
+                PublishUnitDestroyedEvent();
+            }
+
+            return destroyed;
         }
 
 

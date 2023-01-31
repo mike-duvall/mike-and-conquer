@@ -340,6 +340,7 @@ namespace mike_and_conquer_simulation.main
             if (currentAttackTarget.Health <= 0)
             {
                 this.currentCommand = Command.NONE;
+                PublishNoneCommandBeganEvent(this.UnitId);
             }
 
             if (IsInAttackRange())
@@ -353,7 +354,7 @@ namespace mike_and_conquer_simulation.main
                     PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
                     if (destroyed)
                     {
-                        GameWorld.instance.UnitKilled(currentAttackTarget.UnitId);
+                        GameWorld.instance.UnitDestroyed(currentAttackTarget.UnitId);
                     }
 
                 }
