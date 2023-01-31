@@ -34,6 +34,9 @@ namespace mike_and_conquer_simulation.main
         // private MapTileInstance currentMapTileInstance;
 
 
+        private int reloadTimer;
+        private bool weaponIsLoaded;
+
         public Minigunner()
         {
             state = State.IDLE;
@@ -42,6 +45,8 @@ namespace mike_and_conquer_simulation.main
             float speedFromCncInLeptons = 12;  // 12 leptons, for MCV, MPH_MEDIUM_SLOW = 12
             // float speedFromCncInLeptons = 30;  // 30 leptons, for Jeep, MPH_MEDIUM_FAST = 30
 
+            reloadTimer = 0;
+            weaponIsLoaded = true;
             health = 50;
 
             float pixelsPerSquare = 24;
@@ -273,6 +278,18 @@ namespace mike_and_conquer_simulation.main
         public override void Update()
         {
             UpdateVisibleMapTiles();
+
+            if (!weaponIsLoaded)
+            {
+                reloadTimer--;
+                if (reloadTimer <= 0)
+                {
+                    PublishUnitReloadedWeaponEvent();
+                    weaponIsLoaded = true;
+                }
+            }
+
+
             if (this.currentCommand == Command.NONE)
             {
                 HandleCommandNone();
@@ -328,13 +345,18 @@ namespace mike_and_conquer_simulation.main
             if (IsInAttackRange())
             {
                 this.state = State.ATTACKING;
-                bool destroyed = currentAttackTarget.ApplyDamage(10);
-                PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
-                if (destroyed)
+                if (weaponIsLoaded)
                 {
-                    GameWorld.instance.UnitKilled(currentAttackTarget.UnitId);
-                }
+                    weaponIsLoaded = false;
+                    reloadTimer = 20;
+                    bool destroyed = currentAttackTarget.ApplyDamage(10);
+                    PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
+                    if (destroyed)
+                    {
+                        GameWorld.instance.UnitKilled(currentAttackTarget.UnitId);
+                    }
 
+                }
             }
             else
             {

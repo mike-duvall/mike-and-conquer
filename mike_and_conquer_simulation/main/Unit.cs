@@ -138,6 +138,8 @@ namespace mike_and_conquer_simulation.main
 
 
 
+
+
         protected void UpdateNearbyMapTileVisibility(int xOffset, int yOffset, MapTileInstance.MapTileVisibility mapTileVisibility)
         {
             MapTileInstance mapTileInstance = FindNearbyMapTileByOffset(xOffset, yOffset);
@@ -204,13 +206,28 @@ namespace mike_and_conquer_simulation.main
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
 
+        protected void PublishUnitReloadedWeaponEvent()
+        {
+
+            UnitReloadedWeaponEventData eventData = new UnitReloadedWeaponEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitReloadedWeaponEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
 
 
         public bool ApplyDamage(int amount)
         {
             health = health - amount;
             PublishUnitTookDamageEvent();
-            return health > 0;
+            return health <= 0;
         }
 
 
