@@ -22,6 +22,16 @@ namespace mike_and_conquer_monogame.gameview
 
         protected PlannedPathView plannedPathView;
 
+        // TODO:  Consider if UnitState needs to be a class, with state variables, such as attack target, destination, etc
+        public enum UnitState { STANDING_STILL, MOVING, ATTACKING };
+
+
+        public UnitState CurrentUnitState
+        {
+            get;
+            set;
+        }
+
 
         public UnitSize UnitSize
         {

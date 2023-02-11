@@ -41,7 +41,7 @@ namespace mike_and_conquer_simulation.main
         public abstract void OrderMoveToDestination(int destinationXInWorldCoordinates,
             int destinationYInWorldCoordinates);
 
-        public abstract void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit);
+        public abstract void OrderToAttackEnemyUnit(Unit targetUnit);
 
         protected void PublishUnitArrivedAtDestinationEvent()
         {
@@ -103,7 +103,7 @@ namespace mike_and_conquer_simulation.main
         public void PublishAttackCommandBeganEvent(int attackerUnitId, int targetUnitId)
         {
 
-            AttackCommandBeganEventData eventData = new AttackCommandBeganEventData(
+            BeganMissionAttackEventData eventData = new BeganMissionAttackEventData(
                 attackerUnitId,
                 targetUnitId);
 
@@ -111,7 +111,7 @@ namespace mike_and_conquer_simulation.main
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    AttackCommandBeganEventData.EventType,
+                    BeganMissionAttackEventData.EventType,
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);

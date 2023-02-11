@@ -2,10 +2,10 @@
 
 namespace mike_and_conquer_simulation.events
 {
-    public class AttackCommandBeganEventData
+    public class BeganMissionAttackEventData
     {
 
-        public const string EventType = "AttackCommandBegan";
+        public const string EventType = "BeganMissionAttack";
 
         public int AttackerUnitId { get; }
         public int TargetUnitId { get; }
@@ -14,7 +14,7 @@ namespace mike_and_conquer_simulation.events
 
 
 
-        public AttackCommandBeganEventData(int attackerUnitId, int targetUnitId)
+        public BeganMissionAttackEventData(int attackerUnitId, int targetUnitId)
         {
             this.AttackerUnitId = attackerUnitId;
             this.TargetUnitId = targetUnitId;

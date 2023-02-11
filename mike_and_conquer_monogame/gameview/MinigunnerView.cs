@@ -65,7 +65,7 @@ namespace mike_and_conquer_monogame.gameview
             unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
 
 
-            AnimationSequence shootinUpAnimationSequence = new AnimationSequence(10);
+            AnimationSequence shootinUpAnimationSequence = new AnimationSequence(100);
             shootinUpAnimationSequence.AddFrame(65);
             shootinUpAnimationSequence.AddFrame(66);
             shootinUpAnimationSequence.AddFrame(67);
@@ -95,7 +95,7 @@ namespace mike_and_conquer_monogame.gameview
             // TODO:  move everything but actual drawing to Update() method
             // if (myMinigunner.state == Minigunner.State.IDLE)
             // {
-                unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
+                // unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
             // }
             // else if (myMinigunner.state == Minigunner.State.MOVING)
             // {
@@ -106,6 +106,18 @@ namespace mike_and_conquer_monogame.gameview
             //     unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.SHOOTING_UP);
             // }
 
+            if (CurrentUnitState == UnitState.ATTACKING)
+            {
+                unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.SHOOTING_UP);
+            }
+            else if (CurrentUnitState == UnitState.MOVING)
+            {
+                unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.WALKING_UP);
+            }
+            else
+            {
+                unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
+            }
 
             // unitSprite.DrawNoShadow(gameTime, spriteBatch, myMinigunner.GameWorldLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
             Vector2 worldCoordinatesAsVector2 = new Vector2(

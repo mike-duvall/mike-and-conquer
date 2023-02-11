@@ -379,7 +379,7 @@ namespace mike_and_conquer_simulation.main
         {
             Unit attackingUnit = FindGDIUnitWithUnitId(attackerUnitId);
             Unit targetUnit = FindNodUnitWithUnitId(targetUnitId);
-            attackingUnit.OrderToMoveToAndAttackEnemyUnit(targetUnit);
+            attackingUnit.OrderToAttackEnemyUnit(targetUnit);
 
         }
 

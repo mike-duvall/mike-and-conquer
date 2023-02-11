@@ -112,7 +112,7 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-        public override void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit)
+        public override void OrderToAttackEnemyUnit(Unit targetUnit)
         {
             throw new System.NotImplementedException();
         }

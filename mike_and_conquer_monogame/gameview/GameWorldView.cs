@@ -1609,6 +1609,22 @@ namespace mike_and_conquer_monogame.gameview
             gdiConstructionYardView.IsBuildingBarracks = true;
         }
 
+        public void NotifyUnitAttackBegan(int unitId)
+        {
+            // TODO: Only handles GDI unit attacking
+            UnitView unitView = this.FindGDIUnitViewById(unitId);
+            unitView.CurrentUnitState = UnitView.UnitState.ATTACKING;
+        }
+
+
+        public void NotifyUnitBeganMoving(int unitId)
+        {
+            // TODO: Only handles GDI unit attacking
+            UnitView unitView = this.FindGDIUnitViewById(unitId);
+            unitView.CurrentUnitState = UnitView.UnitState.MOVING;
+        }
+
+
         public void NotifyMinigunnerStartedBuilding()
         {
             gdiBarracksView.IsBuildingMinigunner = true;

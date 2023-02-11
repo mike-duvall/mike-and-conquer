@@ -64,8 +64,8 @@ namespace mike_and_conquer_simulation.main
 
         // public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         // {
-        //     currentCommand = Command.FOLLOW_PATH;
-        //     state = State.MOVING;
+        //     currentCommand = Command.MOVE_TO_DESTINATION;
+        //     currentState = State.MOVING;
         //     this.destinationXInWorldCoordinates = destinationXInWorldCoordinates;
         //     this.destinationYInWorldCoordinates = destinationYInWorldCoordinates;
         //
@@ -114,7 +114,7 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-        public override void OrderToMoveToAndAttackEnemyUnit(Unit targetUnit)
+        public override void OrderToAttackEnemyUnit(Unit targetUnit)
         {
             throw new System.NotImplementedException();
         }
@@ -367,12 +367,12 @@ namespace mike_and_conquer_simulation.main
 
         // public override void Update()
         // {
-        //     if (currentCommand == Command.FOLLOW_PATH)
+        //     if (currentCommand == Command.MOVE_TO_DESTINATION)
         //     {
         //         if (IsAtDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates))
         //         {
         //             currentCommand = Command.NONE;
-        //             state = State.IDLE;
+        //             currentState = State.IDLE;
         //
         //             PublishUnitArrivedAtDestinationEvent();
         //         }
