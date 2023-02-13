@@ -5,17 +5,17 @@ using System;
 
 namespace mike_and_conquer_simulation.events
 {
-    public class UnitStoppedMovingEventData
+    public class UnitBeganIdleEventData
     {
 
-        public const string EventType = "UnitStoppedMoving";
+        public const string EventType = "UnitBeganIdle";
 
 
         public int UnitId { get; }
         public long Timestamp { get; }
 
 
-        public UnitStoppedMovingEventData(int unitId)
+        public UnitBeganIdleEventData(int unitId)
         {
             this.UnitId = unitId;
             this.Timestamp = DateTime.Now.Ticks;

@@ -298,21 +298,25 @@ namespace mike_and_conquer_simulation.main
                 PublishUnitBeganMovingEvent();
             }
 
-            if (newState != State.MOVING && this.currentState == State.MOVING)
-            {
-                PublishUnitStoppedMovingEvent();
-            }
+            // if (newState != State.MOVING && this.currentState == State.MOVING)
+            // {
+            //     PublishUnitStoppedMovingEvent();
+            // }
 
             if (newState == State.FIRING && this.currentState != State.FIRING)
             {
                 PublishUnitBeganFiringEvent();
             }
 
-            if (newState != State.FIRING && this.currentState == State.FIRING)
-            {
-                PublishUnitStoppedFiringEvent();
-            }
+            // if (newState != State.FIRING && this.currentState == State.FIRING)
+            // {
+            //     PublishUnitStoppedFiringEvent();
+            // }
 
+            if (newState == State.IDLE && this.currentState != State.IDLE)
+            {
+                PublishUnitBeganIdleEvent();
+            }
 
 
 
@@ -447,6 +451,7 @@ namespace mike_and_conquer_simulation.main
                 {
                     weaponIsLoaded = false;
                     reloadTimer = 20;
+                    PublishBulletHitTargetEvent(this.UnitId, currentAttackTarget.UnitId);
                     bool destroyed = currentAttackTarget.ApplyDamage(10);
                     PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
                     if (destroyed)
@@ -541,21 +546,21 @@ namespace mike_and_conquer_simulation.main
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
 
-        private void PublishUnitStoppedMovingEvent()
-        {
-            UnitStoppedMovingEventData eventData =
-                new UnitStoppedMovingEventData(this.UnitId);
-
-            string serializedEventData = JsonConvert.SerializeObject(eventData);
-
-
-            SimulationStateUpdateEvent simulationStateUpdateEvent =
-                new SimulationStateUpdateEvent(
-                    UnitStoppedMovingEventData.EventType,
-                    serializedEventData);
-
-            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        }
+        // private void PublishUnitStoppedMovingEvent()
+        // {
+        //     UnitStoppedMovingEventData eventData =
+        //         new UnitStoppedMovingEventData(this.UnitId);
+        //
+        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
+        //
+        //
+        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
+        //         new SimulationStateUpdateEvent(
+        //             UnitStoppedMovingEventData.EventType,
+        //             serializedEventData);
+        //
+        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        // }
 
         private void PublishUnitBeganFiringEvent()
         {
@@ -573,21 +578,39 @@ namespace mike_and_conquer_simulation.main
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
 
-        private void PublishUnitStoppedFiringEvent()
+        private void PublishUnitBeganIdleEvent()
         {
-            UnitStoppedFiringEventData eventData =
-                new UnitStoppedFiringEventData(this.UnitId);
+            UnitBeganIdleEventData eventData =
+                new UnitBeganIdleEventData(this.UnitId);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
 
 
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    UnitStoppedFiringEventData.EventType,
+                    UnitBeganIdleEventData.EventType,
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
+
+
+
+        // private void PublishUnitStoppedFiringEvent()
+        // {
+        //     UnitStoppedFiringEventData eventData =
+        //         new UnitStoppedFiringEventData(this.UnitId);
+        //
+        //     string serializedEventData = JsonConvert.SerializeObject(eventData);
+        //
+        //
+        //     SimulationStateUpdateEvent simulationStateUpdateEvent =
+        //         new SimulationStateUpdateEvent(
+        //             UnitStoppedFiringEventData.EventType,
+        //             serializedEventData);
+        //
+        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        // }
 
 
 

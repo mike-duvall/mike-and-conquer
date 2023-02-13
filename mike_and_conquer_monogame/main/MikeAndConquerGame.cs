@@ -121,10 +121,17 @@ namespace mike_and_conquer_monogame.main
             masterEventHandler.RegisterEventHandler(typeof(GDIConstructionYardCreatedEventData), typeof(AddGDIConstructionYardViewCommand));
             masterEventHandler.RegisterEventHandler(typeof(MinigunnerCreateEventData), typeof(AddMinigunnerViewCommand));
 
-//            masterEventHandler.RegisterEventHandler(typeof(BeganMissionAttackEventData), typeof(StartAttackAnimationCommand));
             masterEventHandler.RegisterEventHandler(
                 typeof(UnitBeganMovingEventData),
                 typeof(UpdateUnitStateBeganMovingCommand));
+
+            masterEventHandler.RegisterEventHandler(
+                typeof(UnitBeganFiringEventData),
+                typeof(UpdateUnitStateBeganFiringCommand));
+
+            masterEventHandler.RegisterEventHandler(
+                typeof(UnitBeganIdleEventData),
+                typeof(UpdateUnitStateBeganIdleCommand));
 
 
             simulationStateListenerList.Add(masterEventHandler);

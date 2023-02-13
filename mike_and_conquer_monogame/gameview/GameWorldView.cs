@@ -1613,7 +1613,7 @@ namespace mike_and_conquer_monogame.gameview
         {
             // TODO: Only handles GDI unit attacking
             UnitView unitView = this.FindGDIUnitViewById(unitId);
-            unitView.CurrentUnitState = UnitView.UnitState.ATTACKING;
+            unitView.CurrentUnitState = UnitView.UnitState.FIRING;
         }
 
 
@@ -1623,6 +1623,28 @@ namespace mike_and_conquer_monogame.gameview
             UnitView unitView = this.FindGDIUnitViewById(unitId);
             unitView.CurrentUnitState = UnitView.UnitState.MOVING;
         }
+
+        public void NotifyUnitBeganFiring(int unitId)
+        {
+            // TODO: Only handles GDI unit attacking
+            UnitView unitView = this.FindGDIUnitViewById(unitId);
+            unitView.CurrentUnitState = UnitView.UnitState.FIRING;
+        }
+
+        public void NotifyUnitBeganIdle(int unitId)
+        {
+            // TODO: Only handles GDI unit attacking
+            UnitView unitView = this.FindGDIUnitViewById(unitId);
+            unitView.CurrentUnitState = UnitView.UnitState.IDLE;
+        }
+
+
+        // public void NotifyUnitStoppedFiring(int unitId)
+        // {
+        //     // TODO: Only handles GDI unit attacking
+        //     UnitView unitView = this.FindGDIUnitViewById(unitId);
+        //     unitView.CurrentUnitState = UnitView.UnitState.FIRING;
+        // }
 
 
         public void NotifyMinigunnerStartedBuilding()

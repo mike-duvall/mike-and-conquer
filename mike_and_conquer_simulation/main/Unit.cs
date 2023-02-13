@@ -135,11 +135,9 @@ namespace mike_and_conquer_simulation.main
 
         public void PublishFiredOnUnitEvent(int attackerUnitId, int targetUnitId)
         {
-
             FireOnUnitEventData eventData = new FireOnUnitEventData(
                 attackerUnitId,
                 targetUnitId);
-
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
@@ -148,10 +146,25 @@ namespace mike_and_conquer_simulation.main
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
 
+        public void PublishBulletHitTargetEvent(int attackerUnitId, int targetUnitId)
+        {
+            BulletHitTargetEventData eventData = new BulletHitTargetEventData(
+                attackerUnitId,
+                targetUnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    BulletHitTargetEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
 
 
+        
 
 
 

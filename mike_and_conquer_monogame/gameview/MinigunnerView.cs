@@ -106,7 +106,7 @@ namespace mike_and_conquer_monogame.gameview
             //     unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.SHOOTING_UP);
             // }
 
-            if (CurrentUnitState == UnitState.ATTACKING)
+            if (CurrentUnitState == UnitState.FIRING)
             {
                 unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.SHOOTING_UP);
             }
@@ -118,6 +118,7 @@ namespace mike_and_conquer_monogame.gameview
             {
                 unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
             }
+
 
             // unitSprite.DrawNoShadow(gameTime, spriteBatch, myMinigunner.GameWorldLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
             Vector2 worldCoordinatesAsVector2 = new Vector2(
