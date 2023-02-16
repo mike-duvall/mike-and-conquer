@@ -220,9 +220,9 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-        private void PublishUnitTookDamageEvent()
+        private void PublishUnitTookDamageEvent(int amountOfDamage, int newHealthAmount)
         {
-            UnitTookDamageEventData eventData = new UnitTookDamageEventData(this.UnitId);
+            UnitTookDamageEventData eventData = new UnitTookDamageEventData(this.UnitId, amountOfDamage, newHealthAmount);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
@@ -267,10 +267,10 @@ namespace mike_and_conquer_simulation.main
 
 
 
-        public bool ApplyDamage(int amount)
+        public bool ApplyDamage(int amountOfDamage)
         {
-            health -= amount;
-            PublishUnitTookDamageEvent();
+            health -= amountOfDamage;
+            PublishUnitTookDamageEvent(amountOfDamage,health);
             Boolean destroyed = health <= 0;
             if (destroyed)
             {
@@ -279,7 +279,6 @@ namespace mike_and_conquer_simulation.main
 
             return destroyed;
         }
-
 
 
     }

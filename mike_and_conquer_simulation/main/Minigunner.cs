@@ -227,8 +227,8 @@ namespace mike_and_conquer_simulation.main
             // SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
             //
             //
-            // PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-            //
+            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            
 
             this.CurrentMission = Mission.MOVE_TO_DESTINATION;
             SetPathToDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates);
