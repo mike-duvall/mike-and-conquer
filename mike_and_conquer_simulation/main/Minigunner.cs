@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.pathfinding;
@@ -103,8 +103,8 @@ namespace mike_and_conquer_simulation.main
         // private void PublishUnitMoveOrderEvent(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         // {
         //     SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-        //     simulationStateUpdateEvent.EventType = UnitMoveOrderEventData.EventType;
-        //     UnitMoveOrderEventData eventData = new UnitMoveOrderEventData(
+        //     simulationStateUpdateEvent.EventType = BeganMissionMoveToDestinationEventData.EventType;
+        //     BeganMissionMoveToDestinationEventData eventData = new BeganMissionMoveToDestinationEventData(
         //         this.UnitId,
         //         destinationXInWorldCoordinates,
         //         destinationYInWorldCoordinates);
@@ -193,46 +193,10 @@ namespace mike_and_conquer_simulation.main
         public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
 
-            //
-            // MapTileInstance currentMapTileInstanceLocation =
-            //     GameWorld.instance.FindMapTileInstance(
-            //         MapTileLocation.CreateFromWorldCoordinates((int) this.GameWorldLocation.X, (int) this.GameWorldLocation.Y));
-            //
-            // //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
-            // int startColumn = (int)this.GameWorldLocation.X / GameWorld.MAP_TILE_WIDTH;
-            // int startRow = (int)this.GameWorldLocation.Y / GameWorld.MAP_TILE_HEIGHT;
-            // Point startPoint = new Point(startColumn, startRow);
-            //
-            //
-            // AStar aStar = new AStar();
-            //
-            // Point destinationSquare = new Point();
-            // destinationSquare.X = destinationXInWorldCoordinates / GameWorld.MAP_TILE_WIDTH;
-            // destinationSquare.Y = destinationYInWorldCoordinates / GameWorld.MAP_TILE_HEIGHT;
-            //
-            // Path foundPath = aStar.FindPath(GameWorld.instance.navigationGraph, startPoint, destinationSquare);
-            //
-            // this.CurrentMission = Mission.MOVE_TO_DESTINATION;
-            // // this.currentState = State.MOVING;
-            //
-            // List<Point> plannedPathAsPoints = new List<Point>();
-            // List<Node> plannedPathAsNodes = foundPath.nodeList;
-            // foreach (Node node in plannedPathAsNodes)
-            // {
-            //     Point point = GameWorld.instance.ConvertMapSquareIndexToWorldCoordinate(node.id);
-            //     plannedPathAsPoints.Add(point);
-            // }
-            //
-            // this.SetPath(plannedPathAsPoints);
-            // SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
-            //
-            //
-            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-            
 
             this.CurrentMission = Mission.MOVE_TO_DESTINATION;
             SetPathToDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-            // PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
+            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
 
         }
 
@@ -244,47 +208,12 @@ namespace mike_and_conquer_simulation.main
             int destinationXInWorldCoordinates = (int) targetUnit.GameWorldLocation.X;
             int destinationYInWorldCoordinates = (int)targetUnit.GameWorldLocation.Y;
 
-            //
-            // MapTileInstance currentMapTileInstanceLocation =
-            //     GameWorld.instance.FindMapTileInstance(
-            //         MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y));
-            //
-            // //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
-            // int startColumn = (int)this.GameWorldLocation.X / GameWorld.MAP_TILE_WIDTH;
-            // int startRow = (int)this.GameWorldLocation.Y / GameWorld.MAP_TILE_HEIGHT;
-            // Point startPoint = new Point(startColumn, startRow);
-            //
-            //
-            // AStar aStar = new AStar();
-            //
-            // Point destinationSquare = new Point();
-            // destinationSquare.X = destinationXInWorldCoordinates / GameWorld.MAP_TILE_WIDTH;
-            // destinationSquare.Y = destinationYInWorldCoordinates / GameWorld.MAP_TILE_HEIGHT;
-            //
-            // Path foundPath = aStar.FindPath(GameWorld.instance.navigationGraph, startPoint, destinationSquare);
-            //
             
             this.CurrentMission = Mission.ATTACK_TARGET;
-            // UpdateState(State.MOVING);
             currentAttackTarget = targetUnit;
             
-            //
-            // List<Point> plannedPathAsPoints = new List<Point>();
-            // List<Node> plannedPathAsNodes = foundPath.nodeList;
-            // foreach (Node node in plannedPathAsNodes)
-            // {
-            //     Point point = GameWorld.instance.ConvertMapSquareIndexToWorldCoordinate(node.id);
-            //     plannedPathAsPoints.Add(point);
-            // }
-            //
-            // this.SetPath(plannedPathAsPoints);
-            // SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
-            //
-            //
-            // PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
             SetPathToDestination(destinationXInWorldCoordinates,destinationYInWorldCoordinates);
-
             PublishAttackCommandBeganEvent(this.UnitId, targetUnit.UnitId);
 
 
@@ -298,27 +227,15 @@ namespace mike_and_conquer_simulation.main
                 PublishUnitBeganMovingEvent();
             }
 
-            // if (newState != State.MOVING && this.currentState == State.MOVING)
-            // {
-            //     PublishUnitStoppedMovingEvent();
-            // }
-
             if (newState == State.FIRING && this.currentState != State.FIRING)
             {
                 PublishUnitBeganFiringEvent();
             }
 
-            // if (newState != State.FIRING && this.currentState == State.FIRING)
-            // {
-            //     PublishUnitStoppedFiringEvent();
-            // }
-
             if (newState == State.IDLE && this.currentState != State.IDLE)
             {
                 PublishBeganMissionIdleEvent();
             }
-
-
 
             this.currentState = newState;
         }

@@ -84,7 +84,7 @@ namespace mike_and_conquer_simulation.main
 
         public void PublishUnitMoveOrderEvent(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
-            UnitMoveOrderEventData eventData = new UnitMoveOrderEventData(
+            BeganMissionMoveToDestinationEventData eventData = new BeganMissionMoveToDestinationEventData(
                 unitId,
                 destinationXInWorldCoordinates,
                 destinationYInWorldCoordinates);
@@ -93,7 +93,7 @@ namespace mike_and_conquer_simulation.main
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    UnitMoveOrderEventData.EventType,
+                    BeganMissionMoveToDestinationEventData.EventType,
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
