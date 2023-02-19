@@ -315,7 +315,7 @@ namespace mike_and_conquer_simulation.main
 
             if (newState == State.IDLE && this.currentState != State.IDLE)
             {
-                PublishUnitBeganIdleEvent();
+                PublishBeganMissionIdleEvent();
             }
 
 
@@ -578,17 +578,17 @@ namespace mike_and_conquer_simulation.main
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
 
-        private void PublishUnitBeganIdleEvent()
+        private void PublishBeganMissionIdleEvent()
         {
-            UnitBeganIdleEventData eventData =
-                new UnitBeganIdleEventData(this.UnitId);
+            BeganMissionIdleEventData eventData =
+                new BeganMissionIdleEventData(this.UnitId);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
 
 
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    UnitBeganIdleEventData.EventType,
+                    BeganMissionIdleEventData.EventType,
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);

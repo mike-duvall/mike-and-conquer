@@ -1631,7 +1631,7 @@ namespace mike_and_conquer_monogame.gameview
             unitView.CurrentUnitState = UnitView.UnitState.FIRING;
         }
 
-        public void NotifyUnitBeganIdle(int unitId)
+        public void NotifyBeganMissionIdle(int unitId)
         {
             // TODO: Only handles GDI unit attacking
             UnitView unitView = this.FindGDIUnitViewById(unitId);
