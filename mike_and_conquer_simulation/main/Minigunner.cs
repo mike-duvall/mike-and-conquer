@@ -361,9 +361,6 @@ namespace mike_and_conquer_simulation.main
             }
 
 
-            Pickup here
-            Checkin latest changes
-            Continue reviewing PR
 
             if (IsInAttackRange())
             {
