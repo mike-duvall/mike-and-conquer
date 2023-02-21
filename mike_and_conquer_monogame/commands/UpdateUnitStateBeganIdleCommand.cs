@@ -7,9 +7,9 @@ namespace mike_and_conquer_monogame.commands
     public class UpdateUnitStateBeganIdleCommand : AsyncViewCommand
     {
 
-        private BeganMissionIdleEventData eventData;
+        private BeganMissionNoneEventData eventData;
 
-        public UpdateUnitStateBeganIdleCommand(BeganMissionIdleEventData eventData)
+        public UpdateUnitStateBeganIdleCommand(BeganMissionNoneEventData eventData)
         {
             this.eventData = eventData;
         }

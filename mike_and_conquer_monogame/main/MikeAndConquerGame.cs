@@ -130,7 +130,7 @@ namespace mike_and_conquer_monogame.main
                 typeof(UpdateUnitStateBeganFiringCommand));
 
             masterEventHandler.RegisterEventHandler(
-                typeof(BeganMissionIdleEventData),
+                typeof(BeganMissionNoneEventData),
                 typeof(UpdateUnitStateBeganIdleCommand));
 
 

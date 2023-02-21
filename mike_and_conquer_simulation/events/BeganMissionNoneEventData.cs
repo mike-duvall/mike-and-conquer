@@ -1,19 +1,21 @@
-﻿using System;
+﻿
+using System;
+
+
 
 namespace mike_and_conquer_simulation.events
 {
-    public class NoneCommandBeganEventData
+    public class BeganMissionNoneEventData
     {
 
-        public const string EventType = "NoneCommandBegan";
+        public const string EventType = "BeganMissionNone";
+
 
         public int UnitId { get; }
         public long Timestamp { get; }
 
 
-
-
-        public NoneCommandBeganEventData(int unitId)
+        public BeganMissionNoneEventData(int unitId)
         {
             this.UnitId = unitId;
             this.Timestamp = DateTime.Now.Ticks;

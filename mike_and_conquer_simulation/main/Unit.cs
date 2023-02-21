@@ -82,7 +82,7 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-        public void PublishUnitMoveOrderEvent(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
+        public void PublishBeganMissionMoveToDestinationEvent(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
             BeganMissionMoveToDestinationEventData eventData = new BeganMissionMoveToDestinationEventData(
                 unitId,
@@ -116,22 +116,6 @@ namespace mike_and_conquer_simulation.main
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
-
-        public void PublishNoneCommandBeganEvent(int unitId)
-        {
-
-            NoneCommandBeganEventData eventData = new NoneCommandBeganEventData(unitId);
-
-
-            string serializedEventData = JsonConvert.SerializeObject(eventData);
-            SimulationStateUpdateEvent simulationStateUpdateEvent =
-                new SimulationStateUpdateEvent(
-                    NoneCommandBeganEventData.EventType,
-                    serializedEventData);
-
-            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        }
-
 
         public void PublishFiredOnUnitEvent(int attackerUnitId, int targetUnitId)
         {

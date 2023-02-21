@@ -100,7 +100,7 @@ namespace mike_and_conquer_simulation.main
         // }
 
 
-        // private void PublishUnitMoveOrderEvent(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
+        // private void PublishBeganMissionMoveToDestinationEvent(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         // {
         //     SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
         //     simulationStateUpdateEvent.EventType = BeganMissionMoveToDestinationEventData.EventType;
@@ -192,11 +192,9 @@ namespace mike_and_conquer_simulation.main
 
         public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
-
-
             this.CurrentMission = Mission.MOVE_TO_DESTINATION;
             SetPathToDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
 
         }
 
@@ -232,10 +230,10 @@ namespace mike_and_conquer_simulation.main
                 PublishUnitBeganFiringEvent();
             }
 
-            if (newState == State.IDLE && this.currentState != State.IDLE)
-            {
-                PublishBeganMissionIdleEvent();
-            }
+            // if (newState == State.IDLE && this.currentState != State.IDLE)
+            // {
+            //     PublishBeganMissionNoneEvent();
+            // }
 
             this.currentState = newState;
         }
@@ -349,6 +347,7 @@ namespace mike_and_conquer_simulation.main
             else
             {
                 this.CurrentMission = Mission.NONE;
+                PublishBeganMissionNoneEvent();
             }
 
         }
@@ -358,8 +357,13 @@ namespace mike_and_conquer_simulation.main
             if (currentAttackTarget.Health <= 0)
             {
                 this.CurrentMission = Mission.NONE;
-                PublishNoneCommandBeganEvent(this.UnitId);
+                PublishBeganMissionNoneEvent();
             }
+
+
+            Pickup here
+            Checkin latest changes
+            Continue reviewing PR
 
             if (IsInAttackRange())
             {
@@ -495,17 +499,17 @@ namespace mike_and_conquer_simulation.main
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
 
-        private void PublishBeganMissionIdleEvent()
+        private void PublishBeganMissionNoneEvent()
         {
-            BeganMissionIdleEventData eventData =
-                new BeganMissionIdleEventData(this.UnitId);
+            BeganMissionNoneEventData eventData =
+                new BeganMissionNoneEventData(this.UnitId);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
 
 
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    BeganMissionIdleEventData.EventType,
+                    BeganMissionNoneEventData.EventType,
                     serializedEventData);
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
