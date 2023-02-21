@@ -16,7 +16,7 @@ namespace mike_and_conquer_monogame.commands
 
         protected override void ProcessImpl()
         {
-            GameWorldView.instance.NotifyUnitBeganMoving(eventData.UnitId);
+            GameWorldView.instance.UpdateUnitStateToMoving(eventData.UnitId);
 
 
         }

@@ -16,7 +16,7 @@ namespace mike_and_conquer_monogame.commands
 
         protected override void ProcessImpl()
         {
-            GameWorldView.instance.NotifyBeganMissionIdle(eventData.UnitId);
+            GameWorldView.instance.UpdateUnitStateToIdle(eventData.UnitId);
 
 
         }
