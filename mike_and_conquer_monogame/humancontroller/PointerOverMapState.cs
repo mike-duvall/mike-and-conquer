@@ -16,9 +16,9 @@ using MapTileInstanceView = mike_and_conquer_monogame.gameview.MapTileInstanceVi
 using OrderUnitToMoveCommand = mike_and_conquer_simulation.commands.OrderUnitToMoveCommand;
 
 using SimulationMain = mike_and_conquer_simulation.main.SimulationMain;
-using mike_and_conquer_monogame.gameview;
+
 using mike_and_conquer_simulation.commands;
-using System.Reflection.Metadata;
+
 
 namespace mike_and_conquer_monogame.humancontroller
 {
@@ -228,7 +228,7 @@ namespace mike_and_conquer_monogame.humancontroller
 
             foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
-                if (unitView.Selected == true)
+                if (unitView.Selected)
                 {
                     // if (GameWorld.instance.IsValidMoveDestination(new Point(mouseX, mouseY)))
                     // {
@@ -273,54 +273,12 @@ namespace mike_and_conquer_monogame.humancontroller
         }
 
 
-
-
-        // internal Boolean CheckForAndHandleLeftClickOnEnemyUnit(Point mouseLocation)
-        // {
-        //     int mouseX = mouseLocation.X;
-        //     int mouseY = mouseLocation.Y;
-        //
-        //     bool handled = false;
-        //     foreach (Minigunner nextNodMinigunner in GameWorld.instance.NodMinigunnerList)
-        //     {
-        //         if (nextNodMinigunner.ContainsPoint(mouseX, mouseY))
-        //         {
-        //             handled = true;
-        //             foreach (Minigunner nextGdiMinigunner in GameWorld.instance.GDIMinigunnerList)
-        //             {
-        //                 if (nextGdiMinigunner.selected)
-        //                 {
-        //                     nextGdiMinigunner.OrderToMoveToAndAttackEnemyUnit(nextNodMinigunner);
-        //                 }
-        //             }
-        //         }
-        //     }
-        //
-        //     return handled;
-        // }
-        //
-        //
-
         internal bool CheckForAndHandleLeftClickOnEnemyUnit(Point mouseLocation)
         {
             int mouseX = mouseLocation.X;
             int mouseY = mouseLocation.Y;
         
             bool handled = false;
-            // foreach (Minigunner nextNodMinigunner in GameWorld.instance.NodMinigunnerList)
-            // {
-            //     if (nextNodMinigunner.ContainsPoint(mouseX, mouseY))
-            //     {
-            //         handled = true;
-            //         foreach (Minigunner nextGdiMinigunner in GameWorld.instance.GDIMinigunnerList)
-            //         {
-            //             if (nextGdiMinigunner.selected)
-            //             {
-            //                 nextGdiMinigunner.OrderToMoveToAndAttackEnemyUnit(nextNodMinigunner);
-            //             }
-            //         }
-            //     }
-            // }
             foreach (UnitView unitView in GameWorldView.instance.NodUnitViewList)
             {
                 if (unitView.ContainsPoint(mouseX, mouseY))
@@ -356,8 +314,6 @@ namespace mike_and_conquer_monogame.humancontroller
             return currentlySelectedUnitViews;
         }
 
-
-
         private static void UpdateMousePointerWhenMinigunnerSelected(Point mousePositionAsPointInWorldCoordinates)
         {
 
@@ -375,9 +331,6 @@ namespace mike_and_conquer_monogame.humancontroller
                 GameWorldView.instance.gameCursor.SetToMovementNotAllowedCursor();
             }
         }
-
-
-
 
         private static void UpdateMousePointerWhenMCVSelected(Point mousePositionAsPointInWorldCoordinates)
         {
