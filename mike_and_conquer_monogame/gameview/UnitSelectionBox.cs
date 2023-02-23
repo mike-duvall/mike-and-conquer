@@ -110,7 +110,7 @@ namespace mike_and_conquer_monogame.gameview
             // Also, check with real game of what other units can't be selected by drag select
             int numUnitsSelected = 0;
             int maxAllowedSelected = 5;
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 Vector2 unitWorldCoordinatesVector2 =
                     new Vector2(unitView.XInWorldCoordinates, unitView.YInWorldCoordinates);

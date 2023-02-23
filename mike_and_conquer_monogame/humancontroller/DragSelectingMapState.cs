@@ -30,7 +30,7 @@ namespace mike_and_conquer_monogame.humancontroller
                 UnitSelectionBox unitSelectionBox = GameWorldView.instance.unitSelectionBox;
                 MikeAndConquerGame.instance.logger.LogWarning("HandleEndDragSelect");
                 unitSelectionBox.HandleEndDragSelect();
-                if (!GameWorldView.instance.IsAUnitViewSelected())
+                if (!GameWorldView.instance.IsAGDIUnitViewSelected())
                 {
                     Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
                     HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);

@@ -75,7 +75,7 @@ namespace mike_and_conquer_monogame.humancontroller
             // }
 
 
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 if (unitView.ContainsPoint(mouseX, mouseY))
                 {

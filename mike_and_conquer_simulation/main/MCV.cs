@@ -107,9 +107,14 @@ namespace mike_and_conquer_simulation.main
             SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
 
 
-            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
             PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
+        }
+
+        public override void OrderToAttackEnemyUnit(Unit targetUnit)
+        {
+            throw new System.NotImplementedException();
         }
 
         private void SetPath(List<Point> listOfPoints)

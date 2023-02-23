@@ -64,12 +64,12 @@ namespace mike_and_conquer_simulation.main
 
         // public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         // {
-        //     currentCommand = Command.FOLLOW_PATH;
-        //     state = State.MOVING;
+        //     currentCommand = Command.MOVE_TO_DESTINATION;
+        //     currentState = State.MOVING;
         //     this.destinationXInWorldCoordinates = destinationXInWorldCoordinates;
         //     this.destinationYInWorldCoordinates = destinationYInWorldCoordinates;
         //
-        //     PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+        //     PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
         // }
 
         public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
@@ -109,9 +109,14 @@ namespace mike_and_conquer_simulation.main
             SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
 
 
-            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
             PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
+        }
+
+        public override void OrderToAttackEnemyUnit(Unit targetUnit)
+        {
+            throw new System.NotImplementedException();
         }
 
         private List<PathStep> ConvertWorldCoordinatePointsToMapTilePathSteps(List<Point> listOfPoints)
@@ -362,12 +367,12 @@ namespace mike_and_conquer_simulation.main
 
         // public override void Update()
         // {
-        //     if (currentCommand == Command.FOLLOW_PATH)
+        //     if (currentCommand == Command.MOVE_TO_DESTINATION)
         //     {
         //         if (IsAtDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates))
         //         {
         //             currentCommand = Command.NONE;
-        //             state = State.IDLE;
+        //             currentState = State.IDLE;
         //
         //             PublishUnitArrivedAtDestinationEvent();
         //         }

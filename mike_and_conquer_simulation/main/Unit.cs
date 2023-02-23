@@ -27,12 +27,21 @@ namespace mike_and_conquer_simulation.main
             get { return gameWorldLocation; }
         }
 
+        protected int health;
+
         public int UnitId { get; set; }
+
+        public int Health
+        {
+            get { return health; }
+        }
 
         public abstract void Update();
 
         public abstract void OrderMoveToDestination(int destinationXInWorldCoordinates,
             int destinationYInWorldCoordinates);
+
+        public abstract void OrderToAttackEnemyUnit(Unit targetUnit);
 
         protected void PublishUnitArrivedAtDestinationEvent()
         {
@@ -73,9 +82,9 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-        public void PublishUnitMoveOrderEvent(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
+        public void PublishBeganMissionMoveToDestinationEvent(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
-            UnitMoveOrderEventData eventData = new UnitMoveOrderEventData(
+            BeganMissionMoveToDestinationEventData eventData = new BeganMissionMoveToDestinationEventData(
                 unitId,
                 destinationXInWorldCoordinates,
                 destinationYInWorldCoordinates);
@@ -84,14 +93,64 @@ namespace mike_and_conquer_simulation.main
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
-                    UnitMoveOrderEventData.EventType,
+                    BeganMissionMoveToDestinationEventData.EventType,
                     serializedEventData);
-
-
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
 
         }
+
+        public void PublishAttackCommandBeganEvent(int attackerUnitId, int targetUnitId)
+        {
+
+            BeganMissionAttackEventData eventData = new BeganMissionAttackEventData(
+                attackerUnitId,
+                targetUnitId);
+
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    BeganMissionAttackEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+        public void PublishFiredOnUnitEvent(int attackerUnitId, int targetUnitId)
+        {
+            FireOnUnitEventData eventData = new FireOnUnitEventData(
+                attackerUnitId,
+                targetUnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    FireOnUnitEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+        public void PublishBulletHitTargetEvent(int attackerUnitId, int targetUnitId)
+        {
+            BulletHitTargetEventData eventData = new BulletHitTargetEventData(
+                attackerUnitId,
+                targetUnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    BulletHitTargetEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
+        
+
+
 
         protected void UpdateNearbyMapTileVisibility(int xOffset, int yOffset, MapTileInstance.MapTileVisibility mapTileVisibility)
         {
@@ -145,7 +204,65 @@ namespace mike_and_conquer_simulation.main
         }
 
 
+        private void PublishUnitTookDamageEvent(int amountOfDamage, int newHealthAmount)
+        {
+            UnitTookDamageEventData eventData = new UnitTookDamageEventData(this.UnitId, amountOfDamage, newHealthAmount);
 
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitTookDamageEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+        private void PublishUnitDestroyedEvent()
+        {
+            UnitDestroyedEventData eventData = new UnitDestroyedEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitDestroyedEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
+
+        
+
+        protected void PublishUnitReloadedWeaponEvent()
+        {
+
+            UnitReloadedWeaponEventData eventData = new UnitReloadedWeaponEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitReloadedWeaponEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
+
+
+        public bool ApplyDamage(int amountOfDamage)
+        {
+            health -= amountOfDamage;
+            PublishUnitTookDamageEvent(amountOfDamage,health);
+            Boolean destroyed = health <= 0;
+            if (destroyed)
+            {
+                PublishUnitDestroyedEvent();
+            }
+
+            return destroyed;
+        }
 
 
     }

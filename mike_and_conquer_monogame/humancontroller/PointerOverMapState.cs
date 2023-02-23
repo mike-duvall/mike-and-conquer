@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
 using Math = System.Math;
@@ -14,6 +16,9 @@ using MapTileInstanceView = mike_and_conquer_monogame.gameview.MapTileInstanceVi
 using OrderUnitToMoveCommand = mike_and_conquer_simulation.commands.OrderUnitToMoveCommand;
 
 using SimulationMain = mike_and_conquer_simulation.main.SimulationMain;
+
+using mike_and_conquer_simulation.commands;
+
 
 namespace mike_and_conquer_monogame.humancontroller
 {
@@ -33,7 +38,7 @@ namespace mike_and_conquer_monogame.humancontroller
 
             Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
 
-            if (GameWorldView.instance.IsAMinigunnerSelected())
+            if (GameWorldView.instance.IsAGDIMinigunnerSelected())
             {
                 UpdateMousePointerWhenMinigunnerSelected(mouseWorldLocationPoint);
             }
@@ -66,11 +71,11 @@ namespace mike_and_conquer_monogame.humancontroller
                 leftMouseDownStartPoint.X = -1;
                 leftMouseDownStartPoint.Y = -1;
                 bool handledEvent = HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);
-                // if (!handledEvent)
-                // {
-                //     handledEvent = CheckForAndHandleLeftClickOnEnemyUnit(mouseWorldLocationPoint);
-                // }
-                //
+                if (!handledEvent)
+                {
+                    handledEvent = CheckForAndHandleLeftClickOnEnemyUnit(mouseWorldLocationPoint);
+                }
+                
                 if (!handledEvent)
                 {
                     handledEvent = CheckForAndHandleLeftClickOnMap(mouseWorldLocationPoint);
@@ -120,7 +125,7 @@ namespace mike_and_conquer_monogame.humancontroller
             //     GameWorld.instance.MCV.selected = false;
             // }
 
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
                 unitView.Selected = false;
             }
@@ -202,6 +207,16 @@ namespace mike_and_conquer_monogame.humancontroller
         }
 
 
+        public void OrderToAttackTarget(UnitView attackerUnitView, UnitView targetUnitView)
+        {
+            OrderUnitToAttackCommand command = new OrderUnitToAttackCommand();
+            command.AttackerUnitId = attackerUnitView.UnitId;
+            command.TargetUnitId = targetUnitView.UnitId;
+
+            SimulationMain.instance.PostCommand(command);
+        }
+
+
 
         private bool CheckForAndHandleLeftClickOnMap(Point mouseLocation)
         {
@@ -211,9 +226,9 @@ namespace mike_and_conquer_monogame.humancontroller
 
             bool unitOrderedToMove = false;
 
-            foreach (UnitView unitView in GameWorldView.instance.UnitViewList)
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
             {
-                if (unitView.Selected == true)
+                if (unitView.Selected)
                 {
                     // if (GameWorld.instance.IsValidMoveDestination(new Point(mouseX, mouseY)))
                     // {
@@ -258,33 +273,46 @@ namespace mike_and_conquer_monogame.humancontroller
         }
 
 
+        internal bool CheckForAndHandleLeftClickOnEnemyUnit(Point mouseLocation)
+        {
+            int mouseX = mouseLocation.X;
+            int mouseY = mouseLocation.Y;
+        
+            bool handled = false;
+            foreach (UnitView unitView in GameWorldView.instance.NodUnitViewList)
+            {
+                if (unitView.ContainsPoint(mouseX, mouseY))
+                {
+                    handled = true;
+
+                    List<UnitView> currentlySelectedUnitViews = GetCurrentlySelectedGDIUnitViews();
+                    foreach (UnitView selectedUnitView in currentlySelectedUnitViews)
+                    {
+                        OrderToAttackTarget(selectedUnitView, unitView);
+                    }
+                    // MikeAndConquerGame.instance.SoundManager.PlayUnitAwaitingOrders();
+                }
+            }
 
 
-        // internal Boolean CheckForAndHandleLeftClickOnEnemyUnit(Point mouseLocation)
-        // {
-        //     int mouseX = mouseLocation.X;
-        //     int mouseY = mouseLocation.Y;
-        //
-        //     bool handled = false;
-        //     foreach (Minigunner nextNodMinigunner in GameWorld.instance.NodMinigunnerList)
-        //     {
-        //         if (nextNodMinigunner.ContainsPoint(mouseX, mouseY))
-        //         {
-        //             handled = true;
-        //             foreach (Minigunner nextGdiMinigunner in GameWorld.instance.GDIMinigunnerList)
-        //             {
-        //                 if (nextGdiMinigunner.selected)
-        //                 {
-        //                     nextGdiMinigunner.OrderToMoveToAndAttackEnemyUnit(nextNodMinigunner);
-        //                 }
-        //             }
-        //         }
-        //     }
-        //
-        //     return handled;
-        // }
-        //
-        //
+            return handled;
+        }
+
+
+        List<UnitView> GetCurrentlySelectedGDIUnitViews()
+        {
+            List<UnitView> currentlySelectedUnitViews = new List<UnitView>();
+
+            foreach (UnitView unitView in GameWorldView.instance.GDIUnitViewList)
+            {
+                if (unitView.Selected)
+                {
+                    currentlySelectedUnitViews.Add(unitView);
+                }
+            }
+
+            return currentlySelectedUnitViews;
+        }
 
         private static void UpdateMousePointerWhenMinigunnerSelected(Point mousePositionAsPointInWorldCoordinates)
         {
@@ -304,9 +332,6 @@ namespace mike_and_conquer_monogame.humancontroller
             }
         }
 
-
-
-
         private static void UpdateMousePointerWhenMCVSelected(Point mousePositionAsPointInWorldCoordinates)
         {
             if (GameWorldView.instance.IsPointOverMCV(mousePositionAsPointInWorldCoordinates.X, mousePositionAsPointInWorldCoordinates.Y))
@@ -323,6 +348,6 @@ namespace mike_and_conquer_monogame.humancontroller
             }
         }
 
-
     }
 }
+

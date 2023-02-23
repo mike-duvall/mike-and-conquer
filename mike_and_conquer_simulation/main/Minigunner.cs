@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.pathfinding;
@@ -15,11 +16,36 @@ namespace mike_and_conquer_simulation.main
     internal class Minigunner : Unit
     {
 
-        public enum State { IDLE, MOVING, ATTACKING, LANDING_AT_MAP_SQUARE };
-        public State state;
+        public enum State { IDLE, MOVING, FIRING, LANDING_AT_MAP_SQUARE };
+        public State currentState;
 
-        public enum Command { NONE, ATTACK_TARGET, FOLLOW_PATH };
-        public Command currentCommand;
+        // private bool isMoving;
+        //
+        // private bool isFiring;
+
+
+        // public enum MovementState
+        // {
+        //     NOT_MOVING,
+        //     FOLLOWING_PATH,
+        //     LANDING_AT_MAP_SQUARE
+        // };
+        //
+        // public enum AttackState
+        // {
+        //     NOT_ATTACKING,
+        //
+        // }
+        //
+        // public enum TargetingState
+        // {
+        //     NO_TARGET,
+        //     
+        // }
+
+
+        public enum Mission { NONE, ATTACK_TARGET, MOVE_TO_DESTINATION };
+        public Mission CurrentMission;
 
         double movementDistanceEpsilon;
         private float movementDelta;
@@ -29,18 +55,27 @@ namespace mike_and_conquer_simulation.main
         private int destinationX;
         private int destinationY;
 
+        private Unit currentAttackTarget;
 
         // private MapTileInstance currentMapTileInstance;
 
 
+        private int reloadTimer;
+        private bool weaponIsLoaded;
+
         public Minigunner()
         {
-            state = State.IDLE;
-            currentCommand = Command.NONE;
+            currentState = State.IDLE;
+            CurrentMission = Mission.NONE;
             this.movementDistanceEpsilon = 0.1f;
             float speedFromCncInLeptons = 12;  // 12 leptons, for MCV, MPH_MEDIUM_SLOW = 12
             // float speedFromCncInLeptons = 30;  // 30 leptons, for Jeep, MPH_MEDIUM_FAST = 30
 
+            reloadTimer = 0;
+            weaponIsLoaded = true;
+            health = 50;
+
+            // isMoving = false;
 
             float pixelsPerSquare = 24;
             float leptonsPerSquare = 256;
@@ -55,30 +90,6 @@ namespace mike_and_conquer_simulation.main
             this.gameWorldLocation = GameWorldLocation.CreateFromWorldCoordinates(0, 0);
             this.UnitId = SimulationMain.globalId++;
         }
-
-        // public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
-        // {
-        //     currentCommand = Command.FOLLOW_PATH;
-        //     state = State.MOVING;
-        //     this.destinationXInWorldCoordinates = destinationXInWorldCoordinates;
-        //     this.destinationYInWorldCoordinates = destinationYInWorldCoordinates;
-        // }
-
-
-        // private void PublishUnitMoveOrderEvent(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
-        // {
-        //     SimulationStateUpdateEvent simulationStateUpdateEvent = new SimulationStateUpdateEvent();
-        //     simulationStateUpdateEvent.EventType = UnitMoveOrderEventData.EventType;
-        //     UnitMoveOrderEventData eventData = new UnitMoveOrderEventData(
-        //         this.UnitId,
-        //         destinationXInWorldCoordinates,
-        //         destinationYInWorldCoordinates);
-        //
-        //     simulationStateUpdateEvent.EventData = JsonConvert.SerializeObject(eventData);
-        //
-        //     SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        //
-        // }
 
         private void PublishUnitMovementPlanCreatedEvent(List<Point> plannedPathAsPoints)
         {
@@ -115,34 +126,29 @@ namespace mike_and_conquer_simulation.main
             }
 
             return listOfPathSteps;
-
         }
 
-        public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
+        private void SetPathToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
-
-
             MapTileInstance currentMapTileInstanceLocation =
                 GameWorld.instance.FindMapTileInstance(
-                    MapTileLocation.CreateFromWorldCoordinates((int) this.GameWorldLocation.X, (int) this.GameWorldLocation.Y));
+                    MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y));
 
             //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
             int startColumn = (int)this.GameWorldLocation.X / GameWorld.MAP_TILE_WIDTH;
             int startRow = (int)this.GameWorldLocation.Y / GameWorld.MAP_TILE_HEIGHT;
             Point startPoint = new Point(startColumn, startRow);
-            
+
 
             AStar aStar = new AStar();
-            
+
             Point destinationSquare = new Point();
             destinationSquare.X = destinationXInWorldCoordinates / GameWorld.MAP_TILE_WIDTH;
             destinationSquare.Y = destinationYInWorldCoordinates / GameWorld.MAP_TILE_HEIGHT;
-            
+
             Path foundPath = aStar.FindPath(GameWorld.instance.navigationGraph, startPoint, destinationSquare);
-            
-            this.currentCommand = Command.FOLLOW_PATH;
-            this.state = State.MOVING;
-            
+
+
             List<Point> plannedPathAsPoints = new List<Point>();
             List<Node> plannedPathAsNodes = foundPath.nodeList;
             foreach (Node node in plannedPathAsNodes)
@@ -150,16 +156,54 @@ namespace mike_and_conquer_simulation.main
                 Point point = GameWorld.instance.ConvertMapSquareIndexToWorldCoordinate(node.id);
                 plannedPathAsPoints.Add(point);
             }
-            
+
             this.SetPath(plannedPathAsPoints);
             SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
 
-
-            PublishUnitMoveOrderEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
             PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
         }
 
+        public override void OrderMoveToDestination(int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
+        {
+            this.CurrentMission = Mission.MOVE_TO_DESTINATION;
+            SetPathToDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+            PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+        }
+
+
+        public override void OrderToAttackEnemyUnit(Unit targetUnit)
+        {
+            int destinationXInWorldCoordinates = (int) targetUnit.GameWorldLocation.X;
+            int destinationYInWorldCoordinates = (int)targetUnit.GameWorldLocation.Y;
+
+            this.CurrentMission = Mission.ATTACK_TARGET;
+            currentAttackTarget = targetUnit;
+            
+            SetPathToDestination(destinationXInWorldCoordinates,destinationYInWorldCoordinates);
+            PublishAttackCommandBeganEvent(this.UnitId, targetUnit.UnitId);
+        }
+
+
+        private void UpdateState(State newState)
+        {
+            if (newState == State.MOVING && this.currentState != State.MOVING)
+            {
+                PublishUnitBeganMovingEvent();
+            }
+
+            if (newState == State.FIRING && this.currentState != State.FIRING)
+            {
+                PublishUnitBeganFiringEvent();
+            }
+
+            // if (newState == State.IDLE && this.currentState != State.IDLE)
+            // {
+            //     PublishBeganMissionNoneEvent();
+            // }
+
+            this.currentState = newState;
+        }
 
 
         private void SetPath(List<Point> listOfPoints)
@@ -174,78 +218,46 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-
-
-
-        // public void OrderToMoveToDestination(Point destination)
-        // {
-        //     MapTileInstance currentMapTileInstanceLocation =
-        //         gameWorld.FindMapTileInstance(
-        //             MapTileLocation.CreateFromWorldCoordinatesInVector2(
-        //                 this.GameWorldLocation.WorldCoordinatesAsVector2));
-        //
-        //     currentMapTileInstanceLocation.ClearSlotForMinigunner(this);
-        //     int startColumn = (int)this.GameWorldLocation.WorldCoordinatesAsVector2.X / GameWorld.MAP_TILE_WIDTH;
-        //     int startRow = (int)this.GameWorldLocation.WorldCoordinatesAsVector2.Y / GameWorld.MAP_TILE_HEIGHT;
-        //     Point startPoint = new Point(startColumn, startRow);
-        //
-        //     AStar aStar = new AStar();
-        //
-        //     Point destinationSquare = new Point();
-        //     destinationSquare.X = destination.X / GameWorld.MAP_TILE_WIDTH;
-        //     destinationSquare.Y = destination.Y / GameWorld.MAP_TILE_HEIGHT;
-        //
-        //     Path foundPath = aStar.FindPath(gameWorld.navigationGraph, startPoint, destinationSquare);
-        //
-        //     this.currentCommand = Command.FOLLOW_PATH;
-        //     this.state = State.MOVING;
-        //
-        //     List<Point> plannedPathAsPoints = new List<Point>();
-        //     List<Node> nodeList = foundPath.nodeList;
-        //     foreach (Node node in nodeList)
-        //     {
-        //         Point point = gameWorld.ConvertMapSquareIndexToWorldCoordinate(node.id);
-        //         plannedPathAsPoints.Add(point);
-        //     }
-        //
-        //     this.SetPath(plannedPathAsPoints);
-        //     SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
-        // }
-
-
-
-
         public override void Update()
         {
             UpdateVisibleMapTiles();
-            if (this.currentCommand == Command.NONE)
-            {
-                HandleCommandNone();
-            }
-            else if (this.currentCommand == Command.FOLLOW_PATH)
-            {
-                HandleCommandFollowPath();
-            }
-            // else if (this.currentCommand == Command.ATTACK_TARGET)
-            // {
-            //     HandleCommandAttackTarget(gameTime);
-            // }
 
+            if (!weaponIsLoaded)
+            {
+                reloadTimer--;
+                if (reloadTimer <= 0)
+                {
+                    PublishUnitReloadedWeaponEvent();
+                    weaponIsLoaded = true;
+                }
+            }
+
+            if (this.CurrentMission == Mission.NONE)
+            {
+                HandleMissionNone();
+            }
+            else if (this.CurrentMission == Mission.MOVE_TO_DESTINATION)
+            {
+                HandleMissionMoveToDestination();
+            }
+            else if (this.CurrentMission == Mission.ATTACK_TARGET)
+            {
+                HandleMissionAttackTarget();
+            }
 
         }
 
 
-        private void HandleCommandNone()
+        private void HandleMissionNone()
         {
-            this.state = State.IDLE;
+            UpdateState(State.IDLE);
         }
 
-        private void HandleCommandFollowPath()
+        private void HandleMissionMoveToDestination()
         {
             if (path.Count > 1)
             {
                 MoveTowardsCurrentDestinationInPath();
-
             }
             else if (path.Count == 1)
             {
@@ -258,15 +270,87 @@ namespace mike_and_conquer_simulation.main
             }
             else
             {
-                this.currentCommand = Command.NONE;
+                this.CurrentMission = Mission.NONE;
+                PublishBeganMissionNoneEvent();
             }
 
         }
 
+        private void HandleMissionAttackTarget()
+        {
+            if (currentAttackTarget.Health <= 0)
+            {
+                this.CurrentMission = Mission.NONE;
+                PublishBeganMissionNoneEvent();
+            }
+
+            if (IsInAttackRange())
+            {
+                UpdateState(State.FIRING);
+                if (weaponIsLoaded)
+                {
+                    weaponIsLoaded = false;
+                    reloadTimer = 20;
+                    PublishBulletHitTargetEvent(this.UnitId, currentAttackTarget.UnitId);
+                    bool destroyed = currentAttackTarget.ApplyDamage(10);
+                    PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
+                    if (destroyed)
+                    {
+                        GameWorld.instance.UnitDestroyed(currentAttackTarget.UnitId);
+                    }
+
+                }
+            }
+            else
+            {
+
+                if (path.Count > 0)
+                {
+                    MoveTowardsCurrentDestinationInPath();
+                }
+                else
+                {
+
+                    int destinationXInWorldCoordinates = (int)currentAttackTarget.GameWorldLocation.X;
+                    int destinationYInWorldCoordinates = (int)currentAttackTarget.GameWorldLocation.Y;
+
+                    SetPathToDestination(destinationXInWorldCoordinates, destinationYInWorldCoordinates);
+                }
+            }
+        }
+
+
+        private double Distance(double dX0, double dY0, double dX1, double dY1)
+        {
+            return Math.Sqrt((dX1 - dX0) * (dX1 - dX0) + (dY1 - dY0) * (dY1 - dY0));
+        }
+
+
+        private int CalculateDistanceToTarget()
+        {
+            return (int)Distance(GameWorldLocation.X, GameWorldLocation.Y, currentAttackTarget.GameWorldLocation.X, currentAttackTarget.GameWorldLocation.Y);
+        }
+
+        private bool IsInAttackRange()
+        {
+            int distanceToTarget = CalculateDistanceToTarget();
+
+            if (distanceToTarget < 35)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
         private void MoveTowardsCurrentDestinationInPath()
         {
-            this.state = State.MOVING;
+            UpdateState(State.MOVING);
+
             Point currentDestinationPoint = path[0];
             SetDestination(currentDestinationPoint.X, currentDestinationPoint.Y);
             MoveTowardsDestination(currentDestinationPoint.X, currentDestinationPoint.Y);
@@ -279,17 +363,63 @@ namespace mike_and_conquer_simulation.main
 
         }
 
+        private void PublishUnitBeganMovingEvent()
+        {
+            UnitBeganMovingEventData eventData =
+                new UnitBeganMovingEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+
+
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitBeganMovingEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+
+        private void PublishUnitBeganFiringEvent()
+        {
+            UnitBeganFiringEventData eventData =
+                new UnitBeganFiringEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+
+
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitBeganFiringEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
+        private void PublishBeganMissionNoneEvent()
+        {
+            BeganMissionNoneEventData eventData =
+                new BeganMissionNoneEventData(this.UnitId);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+
+
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    BeganMissionNoneEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
         private void PublishUnitArrivedAtPathStep(Point pathStepPoint)
         {
-
             PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
-
 
             UnitArrivedAtPathStepEventData eventData =
                 new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
-
 
             SimulationStateUpdateEvent simulationStateUpdateEvent =
                 new SimulationStateUpdateEvent(
@@ -341,7 +471,6 @@ namespace mike_and_conquer_simulation.main
                 newY -= (float)deltaY;
             }
 
-
             // TODO:  Leaving in this commented out code for debugging movement issues.
             // Should remove it later if end up not needing it
             //            float xChange = Math.Abs(positionInWorldCoordinates.X - newX);
@@ -381,7 +510,7 @@ namespace mike_and_conquer_simulation.main
         private void LandOnFinalDestinationMapSquare()
         {
 
-            if (this.state == State.MOVING)
+            if (this.currentState == State.MOVING)
             {
                 Point centerOfDestinationSquare = path[0];
 
@@ -391,7 +520,7 @@ namespace mike_and_conquer_simulation.main
 
             }
 
-            this.state = State.LANDING_AT_MAP_SQUARE;
+            this.currentState = State.LANDING_AT_MAP_SQUARE;
 
             MoveTowardsDestination( destinationX, destinationY);
 
@@ -410,8 +539,6 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-
-
         private bool IsAtDestination(int destinationX, int destinationY)
         {
             return IsAtDestinationX(destinationX) && IsAtDestinationY(destinationY);
@@ -426,8 +553,6 @@ namespace mike_and_conquer_simulation.main
             );
 
         }
-
-
 
         private bool IsAtDestinationX(int destinationX)
         {
@@ -473,13 +598,6 @@ namespace mike_and_conquer_simulation.main
             //     return;
             // }
 
-
-            // MapTileLocation.CreateFromWorldCoordinates((int)this.GameWorldLocation.X, (int)this.GameWorldLocation.Y);
-
-            // MapTileInstance possibleNewMapTileInstance =
-            //     GameWorld.instance.FindMapTileInstance(
-            //         MapTileLocation.CreateFromWorldCoordinatesInVector2(GameWorldLocation.WorldCoordinatesAsVector2));
-
             MapTileInstance possibleNewMapTileInstance =
                 GameWorld.instance.FindMapTileInstance(
                     MapTileLocation.CreateFromWorldCoordinates(
@@ -499,8 +617,7 @@ namespace mike_and_conquer_simulation.main
             UpdateNearbyMapTileVisibility(0, 0, MapTileInstance.MapTileVisibility.Visible);
 
 
-
-            // east side
+            // east side (mother f**ker) 
             UpdateNearbyMapTileVisibility(1, -1, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 0, MapTileInstance.MapTileVisibility.Visible);
             UpdateNearbyMapTileVisibility(1, 1, MapTileInstance.MapTileVisibility.Visible);

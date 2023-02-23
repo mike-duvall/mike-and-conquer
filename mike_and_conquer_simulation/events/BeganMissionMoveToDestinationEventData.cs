@@ -2,10 +2,10 @@
 
 namespace mike_and_conquer_simulation.events
 {
-    public class UnitMoveOrderEventData
+    public class BeganMissionMoveToDestinationEventData
     {
 
-        public const string EventType = "UnitOrderedToMove";
+        public const string EventType = "BeganMissionMoveToDestination";
 
         public int UnitId { get; }
         public long Timestamp { get; }
@@ -15,7 +15,7 @@ namespace mike_and_conquer_simulation.events
 
 
 
-        public UnitMoveOrderEventData(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
+        public BeganMissionMoveToDestinationEventData(int unitId, int destinationXInWorldCoordinates, int destinationYInWorldCoordinates)
         {
             this.UnitId = unitId;
             this.Timestamp = DateTime.Now.Ticks;
