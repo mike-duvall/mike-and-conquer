@@ -26,9 +26,9 @@ namespace mike_and_conquer_simulation.main
 
         private List<SimulationStateListener> listeners;
 
-        public static ILoggerFactory loggerFactory;
-
-        public static ILogger logger;
+        // public static ILoggerFactory loggerFactory;
+        //
+        // public static ILogger logger;
 
 
         public static SimulationMain instance;
@@ -44,25 +44,25 @@ namespace mike_and_conquer_simulation.main
 
 
 
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: false)
-                .Build();
-
-            var loggingConfig = configuration.GetSection("Logging");
-
-            loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder
-                    .AddDebug()
-                    .AddConsole()
-                    .AddConfiguration(loggingConfig)
-                    ;
-            });
-
-
-            logger = loggerFactory.CreateLogger<SimulationMain>();
-            logger.LogInformation("************************Simulation Mike is cool");
-            logger.LogWarning("************************Simulation Mike is cool");
+            // var configuration = new ConfigurationBuilder()
+            //     .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: false)
+            //     .Build();
+            //
+            // var loggingConfig = configuration.GetSection("Logging");
+            //
+            // loggerFactory = LoggerFactory.Create(builder =>
+            // {
+            //     builder
+            //         .AddDebug()
+            //         .AddConsole()
+            //         .AddConfiguration(loggingConfig)
+            //         ;
+            // });
+            //
+            //
+            // logger = loggerFactory.CreateLogger<SimulationMain>();
+            // logger.LogInformation("************************Simulation Mike is cool");
+            // logger.LogWarning("************************Simulation Mike is cool");
 
 
             new SimulationMain();
@@ -248,7 +248,7 @@ namespace mike_and_conquer_simulation.main
                     if (anEvent.ThrownException != null)
                     {
                         string errorMessage = "Exception thrown processing command '" + anEvent.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
-                        logger.LogError(anEvent.ThrownException, errorMessage);
+                        // logger.LogError(anEvent.ThrownException, errorMessage);
                     }
                 }
             }

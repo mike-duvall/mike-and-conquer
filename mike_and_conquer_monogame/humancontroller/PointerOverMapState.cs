@@ -50,24 +50,24 @@ namespace mike_and_conquer_monogame.humancontroller
 
             if (MouseInputUtil.LeftMouseButtonClicked(newMouseState, oldMouseState))
             {
-                MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonClicked");
+                // MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonClicked");
                 leftMouseDownStartPoint = mouseWorldLocationPoint;
 
             }
 
             if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
             {
-                MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonIsBeingHeldDown");
+                // MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonIsBeingHeldDown");
                 if (IsMouseDragHappening(mouseWorldLocationPoint))
                 {
-                    MikeAndConquerGame.instance.logger.LogInformation("IsMouseDragHappening");
+                    // MikeAndConquerGame.instance.logger.LogInformation("IsMouseDragHappening");
                     return new DragSelectingMapState(leftMouseDownStartPoint);
                 }
             }
 
             if (MouseInputUtil.LeftMouseButtonUnclicked(newMouseState, oldMouseState))
             {
-                MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonUnclicked");
+                // MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonUnclicked");
                 leftMouseDownStartPoint.X = -1;
                 leftMouseDownStartPoint.Y = -1;
                 bool handledEvent = HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);

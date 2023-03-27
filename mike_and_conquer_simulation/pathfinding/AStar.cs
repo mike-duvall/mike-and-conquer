@@ -253,16 +253,16 @@ namespace mike_and_conquer_simulation.pathfinding
                 catch (KeyNotFoundException e)
                 {
 
-                    SimulationMain.logger.LogInformation("KeyNotFoundException:");
-                    SimulationMain.logger.LogInformation("For key:" + nextNode.id);
-                    SimulationMain.logger.LogInformation("Start location:" + startLocation + "   goalLocation:" + goalLocation);
-
-                    SimulationMain.logger.LogInformation("Dumping came_from:");
+                    // SimulationMain.logger.LogInformation("KeyNotFoundException:");
+                    // SimulationMain.logger.LogInformation("For key:" + nextNode.id);
+                    // SimulationMain.logger.LogInformation("Start location:" + startLocation + "   goalLocation:" + goalLocation);
+                    //
+                    // SimulationMain.logger.LogInformation("Dumping came_from:");
                     Dictionary<int, int>.KeyCollection keyCollection = came_from.Keys;
                     foreach (int key in keyCollection)
                     {
                         int value = came_from[key];
-                        SimulationMain.logger.LogInformation("key:" + key + "  value:" + value);
+                        // SimulationMain.logger.LogInformation("key:" + key + "  value:" + value);
                     }
 
                     throw e;

@@ -13,12 +13,12 @@ namespace mike_and_conquer_simulation.rest.controller
     public class SimulationControllerQueryController : ControllerBase
     {
 
-        private readonly ILogger<SimulationControllerQueryController> _logger;
-
-        public SimulationControllerQueryController(ILogger<SimulationControllerQueryController> logger)
-        {
-            _logger = logger;
-        }
+        // private readonly ILogger<SimulationControllerQueryController> _logger;
+        //
+        // public SimulationControllerQueryController(ILogger<SimulationControllerQueryController> logger)
+        // {
+        //     _logger = logger;
+        // }
 
 
 

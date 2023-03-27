@@ -33,7 +33,7 @@ namespace mike_and_conquer_monogame.main
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        public ILogger logger;
+        // public ILogger logger;
 
 
         public List<SimulationStateListener> simulationStateListenerList = null;
@@ -71,8 +71,8 @@ namespace mike_and_conquer_monogame.main
         public MikeAndConquerGame()
         {
 
-            logger = MainProgram.loggerFactory.CreateLogger<MikeAndConquerGame>();
-            logger.LogWarning("{DT}: Game1() ctor", DateTime.Now.ToLongTimeString());
+            // logger = MainProgram.loggerFactory.CreateLogger<MikeAndConquerGame>();
+            // logger.LogWarning("{DT}: Game1() ctor", DateTime.Now.ToLongTimeString());
 
             _graphics = new GraphicsDeviceManager(this);
 
@@ -193,7 +193,7 @@ namespace mike_and_conquer_monogame.main
             if (command.ThrownException != null)
             {
                 string errorMessage = "Exception thrown processing command '" + command.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
-                logger.LogError(command.ThrownException, errorMessage);
+                // logger.LogError(command.ThrownException, errorMessage);
             }
 
         }
@@ -309,8 +309,8 @@ namespace mike_and_conquer_monogame.main
         protected override void LoadContent()
         {
 
-            logger.LogInformation("Game1::LoadContent()");
-            logger.LogWarning("Game1::LoadContent()");
+            // logger.LogInformation("Game1::LoadContent()");
+            // logger.LogWarning("Game1::LoadContent()");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -594,7 +594,7 @@ namespace mike_and_conquer_monogame.main
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                MikeAndConquerGame.instance.logger.LogError("Exiting because Escape key was pressed");
+                // MikeAndConquerGame.instance.logger.LogError("Exiting because Escape key was pressed");
                 Exit();
             }
         
@@ -612,7 +612,7 @@ namespace mike_and_conquer_monogame.main
                     command.Process();
                     if (command.ThrownException != null)
                     {
-                        logger.LogError(command.ThrownException.ToString());
+                        // logger.LogError(command.ThrownException.ToString());
                     }
                 }
             }
@@ -870,7 +870,7 @@ namespace mike_and_conquer_monogame.main
 
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = unitView.XInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = unitView.YInWorldCoordinates - 10;
+            unitViewLocationAsWorldCoordinates.Y = unitView.YInWorldCoordinates - 5;
 
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);

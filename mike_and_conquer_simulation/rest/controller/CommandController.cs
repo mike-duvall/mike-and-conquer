@@ -22,12 +22,12 @@ namespace mike_and_conquer_simulation.rest.controller
     public class AdminCommandController : ControllerBase
     {
 
-        private readonly ILogger<AdminCommandController> _logger;
-
-        public AdminCommandController(ILogger<AdminCommandController> logger)
-        {
-            _logger = logger;
-        }
+        // private readonly ILogger<AdminCommandController> _logger;
+        //
+        // public AdminCommandController(ILogger<AdminCommandController> logger)
+        // {
+        //     _logger = logger;
+        // }
 
         
         [HttpPost]
@@ -47,7 +47,7 @@ namespace mike_and_conquer_simulation.rest.controller
             }
             catch (Exception e)
             {
-                _logger.LogWarning(e, "Error processing Command");
+                // _logger.LogWarning(e, "Error processing Command");
 
                 return ValidationProblem(e.Message);
             }
@@ -63,8 +63,8 @@ namespace mike_and_conquer_simulation.rest.controller
         [HttpGet]
         public IEnumerable<MonogameWeatherForecast> Get()
         {
-            _logger.LogInformation("This is some test logging from monogame.  And, Mike is cool");
-            _logger.LogWarning("This is some test logging from monogame.  And, Mike is cool");
+            // _logger.LogInformation("This is some test logging from monogame.  And, Mike is cool");
+            // _logger.LogWarning("This is some test logging from monogame.  And, Mike is cool");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new MonogameWeatherForecast
                 {

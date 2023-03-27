@@ -16,12 +16,12 @@ namespace mike_and_conquer_simulation.rest.controller
     {
 
 
-        private readonly ILogger<SimulationStateUpdateEventsController> _logger;
-
-        public SimulationStateUpdateEventsCountController(ILogger<SimulationStateUpdateEventsController> logger)
-        {
-            _logger = logger;
-        }
+        // private readonly ILogger<SimulationStateUpdateEventsController> _logger;
+        //
+        // public SimulationStateUpdateEventsCountController(ILogger<SimulationStateUpdateEventsController> logger)
+        // {
+        //     _logger = logger;
+        // }
 
         [HttpGet]
         public int Get()

@@ -937,7 +937,7 @@ namespace mike_and_conquer_monogame.gameview
             }
             catch (Exception e)
             {
-                MikeAndConquerGame.instance.logger.LogError(e, "Exception in GameWorldView::LoadContent()");
+                // MikeAndConquerGame.instance.logger.LogError(e, "Exception in GameWorldView::LoadContent()");
                 throw e;
             }
         }
