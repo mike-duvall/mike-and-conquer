@@ -22,7 +22,8 @@ namespace mike_and_conquer_monogame.main
 
         // public static ILoggerFactory loggerFactory;
 
-        public static Serilog.Core.Logger logger;
+        //        public static Serilog.Core.Logger logger;
+        private static Serilog.ILogger logger;
 
         [STAThread]
         static void Main()
@@ -58,25 +59,27 @@ namespace mike_and_conquer_monogame.main
                 .Build();
 
 
-            logger
-            // var logger 
-                = new LoggerConfiguration()
+            // logger
+            // // var logger 
+            //     = new LoggerConfiguration()
+            //     .ReadFrom.Configuration(configuration)
+            //     .CreateLogger();
+
+            Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
 
-
             // var contextLog = logger.ForContext("SourceContext", "LogTest");
-            var contextLog = logger.ForContext<MainProgram>();
-            contextLog.Information("This shows up because of the override!");
-            contextLog.Information("... And this too!");
+            // var contextLog = logger.ForContext<MainProgram>();
+            // contextLog.Information("This shows up because of the override!");
+            // contextLog.Information("... And this too!");
+
+            logger = Log.ForContext<MainProgram>();
 
 
             logger.Information("MainProgram::Main:   Hello, Serilog!");
             DummyClass.DoSomeStuff();
-
-
-
 
             MainProgram.RunRestServer(logger);
             SimulationRestInitializer.RunRestServer();
@@ -93,12 +96,12 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        public static void RunRestServer(Serilog.Core.Logger logger)
+        public static void RunRestServer(Serilog.ILogger logger)
         {
             var task = CreateHostBuilder(logger,null).Build().RunAsync();
         }
 
-        public static IHostBuilder CreateHostBuilder(Serilog.Core.Logger logger, string[] args) =>
+        public static IHostBuilder CreateHostBuilder(Serilog.ILogger logger, string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {

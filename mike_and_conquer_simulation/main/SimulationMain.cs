@@ -9,11 +9,14 @@ using mike_and_conquer_simulation.commands.commandbody;
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace mike_and_conquer_simulation.main
 {
     public class SimulationMain
     {
+
+        private static readonly Serilog.ILogger logger = Log.ForContext<SimulationMain>();
 
         public static int globalId = 1;
 
@@ -61,8 +64,8 @@ namespace mike_and_conquer_simulation.main
             //
             //
             // logger = loggerFactory.CreateLogger<SimulationMain>();
-            // logger.LogInformation("************************Simulation Mike is cool");
-            // logger.LogWarning("************************Simulation Mike is cool");
+            logger.Information("************************Information-Simulation Mike is cool");
+            logger.Warning("************************Warning-Simulation Mike is cool");
 
 
             new SimulationMain();
