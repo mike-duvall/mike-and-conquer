@@ -1,18 +1,17 @@
 ﻿using System;
-using commands;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
+
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using mike_and_conquer_monogame.rest.init;
-using mike_and_conquer_simulation;
+
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.rest.init;
 
 
 using Serilog;
-using Serilog.Context;
+
 
 namespace mike_and_conquer_monogame.main
 {
@@ -20,69 +19,28 @@ namespace mike_and_conquer_monogame.main
     {
 
 
-        // public static ILoggerFactory loggerFactory;
-
-        //        public static Serilog.Core.Logger logger;
-        private static Serilog.ILogger logger;
+        private static Serilog.ILogger _logger;
 
         [STAThread]
         static void Main()
         {
-
-            // var configuration = new ConfigurationBuilder()
-            //     .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: false)
-            //     .Build();
-            //
-            // var loggingConfig = configuration.GetSection("Logging");
-            //
-            // loggerFactory = LoggerFactory.Create(builder =>
-            // {
-            //     builder
-            //         .AddDebug()
-            //         .AddConsole()
-            //         .AddConfiguration(loggingConfig)
-            //         ;
-            // });
-            //
-            //
-            // ILogger logger = loggerFactory.CreateLogger<MainProgram>();
-            // logger.LogInformation("************************Mike is cool");
-            // logger.LogWarning("************************Mike is cool");
-
-            // using var log = new LoggerConfiguration()
-            //     .WriteTo.Console()
-            //     .WriteTo.Debug()
-            //     .CreateLogger();
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
 
-            // logger
-            // // var logger 
-            //     = new LoggerConfiguration()
-            //     .ReadFrom.Configuration(configuration)
-            //     .CreateLogger();
-
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
 
-            // var contextLog = logger.ForContext("SourceContext", "LogTest");
-            // var contextLog = logger.ForContext<MainProgram>();
-            // contextLog.Information("This shows up because of the override!");
-            // contextLog.Information("... And this too!");
+            _logger = Log.ForContext<MainProgram>();
 
-            logger = Log.ForContext<MainProgram>();
+            _logger.Information("MainProgram::Main:   Hello, Serilog!");
 
-
-            logger.Information("MainProgram::Main:   Hello, Serilog!");
-            DummyClass.DoSomeStuff();
-
-            MainProgram.RunRestServer(logger);
-            SimulationRestInitializer.RunRestServer();
+            MainProgram.RunRestServer(_logger);
+            SimulationRestInitializer.RunRestServer(_logger);
 
             MikeAndConquerGame game = new MikeAndConquerGame();
 
@@ -110,8 +68,6 @@ namespace mike_and_conquer_monogame.main
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    // logging.AddConsole();
-                    // logging.AddDebug();
                     logging.AddSerilog();
                 })
 

@@ -12,7 +12,8 @@ namespace mike_and_conquer_monogame.humancontroller
     class DragSelectingMapState : HumanControllerState
     {
 
-        private static readonly Serilog.ILogger logger = Log.ForContext<DragSelectingMapState>();
+
+        private static readonly ILogger Logger = Log.ForContext<DragSelectingMapState>();
 
         public DragSelectingMapState(Point leftMouseDownStartPoint)
         {
@@ -25,7 +26,7 @@ namespace mike_and_conquer_monogame.humancontroller
 
             if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
             {
-                logger.Information("LeftMouseButtonIsBeingHeldDown");
+                Logger.Information("LeftMouseButtonIsBeingHeldDown");
                 Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
                 UnitSelectionBox unitSelectionBox = GameWorldView.instance.unitSelectionBox;
                 unitSelectionBox.HandleMouseMoveDuringDragSelect(mouseWorldLocationPoint);
@@ -34,7 +35,7 @@ namespace mike_and_conquer_monogame.humancontroller
             else 
             {
                 UnitSelectionBox unitSelectionBox = GameWorldView.instance.unitSelectionBox;
-                logger.Information("HandleEndDragSelect");
+                Logger.Information("HandleEndDragSelect");
                 unitSelectionBox.HandleEndDragSelect();
                 if (!GameWorldView.instance.IsAGDIUnitViewSelected())
                 {

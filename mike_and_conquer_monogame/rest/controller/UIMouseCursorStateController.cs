@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using mike_and_conquer_monogame.gameview;
+using mike_and_conquer_monogame.main;
+using Serilog;
 
 namespace mike_and_conquer_monogame.rest.controller
 {
@@ -10,14 +12,6 @@ namespace mike_and_conquer_monogame.rest.controller
 
     public class UIMouseCursorStateController : ControllerBase
     {
-
-        private readonly ILogger<UIMouseCursorStateController> _logger;
-
-        public UIMouseCursorStateController(ILogger<UIMouseCursorStateController> logger)
-        {
-            _logger = logger;
-        }
-
 
 
         [HttpGet]

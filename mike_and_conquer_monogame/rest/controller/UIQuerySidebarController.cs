@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using mike_and_conquer_monogame.gameview;
-using mike_and_conquer_monogame.main;
+
 using mike_and_conquer_monogame.rest.domain;
-using mike_and_conquer_simulation.rest.controller;
+
 
 namespace mike_and_conquer_monogame.rest.controller
 {
@@ -15,13 +15,6 @@ namespace mike_and_conquer_monogame.rest.controller
 
     public class SidebarController : ControllerBase
     {
-
-        private readonly ILogger<SidebarController> _logger;
-
-        public SidebarController(ILogger<SidebarController> logger)
-        {
-            _logger = logger;
-        }
 
 
         [HttpGet]

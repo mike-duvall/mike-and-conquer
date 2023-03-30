@@ -1,7 +1,7 @@
 ﻿
-using System;
+
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+
 
 using Math = System.Math;
 
@@ -18,12 +18,15 @@ using OrderUnitToMoveCommand = mike_and_conquer_simulation.commands.OrderUnitToM
 using SimulationMain = mike_and_conquer_simulation.main.SimulationMain;
 
 using mike_and_conquer_simulation.commands;
+using Serilog;
 
 
 namespace mike_and_conquer_monogame.humancontroller
 {
     public class PointerOverMapState : HumanControllerState
     {
+
+        private static readonly ILogger Logger = Log.ForContext<PointerOverMapState>();
 
         private Point leftMouseDownStartPoint = new Point(-1, -1);
 
@@ -50,24 +53,23 @@ namespace mike_and_conquer_monogame.humancontroller
 
             if (MouseInputUtil.LeftMouseButtonClicked(newMouseState, oldMouseState))
             {
-                // MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonClicked");
+                Logger.Information("LeftMouseButtonClicked");
                 leftMouseDownStartPoint = mouseWorldLocationPoint;
-
             }
 
             if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
             {
-                // MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonIsBeingHeldDown");
+                Logger.Information("LeftMouseButtonIsBeingHeldDown");
                 if (IsMouseDragHappening(mouseWorldLocationPoint))
                 {
-                    // MikeAndConquerGame.instance.logger.LogInformation("IsMouseDragHappening");
+                    Logger.Information("IsMouseDragHappening");
                     return new DragSelectingMapState(leftMouseDownStartPoint);
                 }
             }
 
             if (MouseInputUtil.LeftMouseButtonUnclicked(newMouseState, oldMouseState))
             {
-                // MikeAndConquerGame.instance.logger.LogInformation("LeftMouseButtonUnclicked");
+                Logger.Information("LeftMouseButtonUnclicked");
                 leftMouseDownStartPoint.X = -1;
                 leftMouseDownStartPoint.Y = -1;
                 bool handledEvent = HumanPlayerController.CheckForAndHandleLeftClickOnFriendlyUnit(mouseWorldLocationPoint);

@@ -1,9 +1,12 @@
 ﻿using mike_and_conquer_simulation.main;
+using Serilog;
 
 namespace mike_and_conquer_simulation.commands
 {
     internal class CreateMCVCommand : AsyncSimulationCommand
     {
+
+        private static readonly ILogger Logger = Log.ForContext<CreateMCVCommand>();
 
         public const string CommandName = "CreateMCV";
 
@@ -14,6 +17,7 @@ namespace mike_and_conquer_simulation.commands
 
         protected override void ProcessImpl()
         {
+            Logger.Information("ProcessImpl called");
             result = SimulationMain.instance.CreateMCV(X, Y);
         }
 

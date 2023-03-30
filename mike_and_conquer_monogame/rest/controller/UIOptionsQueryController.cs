@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_monogame.rest.domain;
 
@@ -12,14 +11,6 @@ namespace mike_and_conquer_monogame.rest.controller
 
     public class UIOptionsQueryController : ControllerBase
     {
-
-        private readonly ILogger<UIOptionsQueryController> _logger;
-
-        public UIOptionsQueryController(ILogger<UIOptionsQueryController> logger)
-        {
-            _logger = logger;
-        }
-
 
 
         [HttpGet]

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework.Input;
 using mike_and_conquer_monogame.commands;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.main;
+using Serilog;
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 
@@ -53,6 +52,8 @@ namespace mike_and_conquer_monogame.gameview
 {
     public class GameWorldView
     {
+
+        private static readonly ILogger Logger = Log.ForContext<GameWorldView>();
 
         public GameCursor gameCursor;
 
@@ -937,7 +938,7 @@ namespace mike_and_conquer_monogame.gameview
             }
             catch (Exception e)
             {
-                // MikeAndConquerGame.instance.logger.LogError(e, "Exception in GameWorldView::LoadContent()");
+                Logger.Error(e, "Exception in GameWorldView::LoadContent()");
                 throw e;
             }
         }
