@@ -7,7 +7,7 @@ namespace mike_and_conquer_simulation.commands
     public class PlaceBarracksCommand : AsyncSimulationCommand
     {
 
-        private static readonly ILogger logger = Log.ForContext<PlaceBarracksCommand>();
+        private static readonly ILogger Logger = Log.ForContext<PlaceBarracksCommand>();
 
         public const string CommandName = "PlaceBarracks";
 
@@ -18,7 +18,7 @@ namespace mike_and_conquer_simulation.commands
 
         protected override void ProcessImpl()
         {
-            logger.Information("Running PlaceBarracksCommand");
+            Logger.Information("Running PlaceBarracksCommand");
             SimulationMain.instance.CreateGDIBarracksViaConstructionYard(XInWorldCoordinates, YInWorldCoordinates);
 
             result = true;
