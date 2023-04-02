@@ -36,7 +36,7 @@ namespace mike_and_conquer_monogame.humancontroller
                 {
                     if(GameWorldView.instance.BarracksPlacementIndicatorView.ValidBuildingLocation())
                     {
-                        Logger.Information("{DT}: Sending Place Barracks Command", DateTime.Now.ToLongTimeString());
+                        Logger.Information("Sending Place Barracks Command");
                         
                         Point mouseWorldLocationPoint = MouseInputUtil.GetWorldLocationPointFromMouseState(newMouseState);
                         SimulationMapTileLocation mapTileLocation = SimulationMapTileLocation.CreateFromWorldCoordinates(mouseWorldLocationPoint.X, mouseWorldLocationPoint.Y);
@@ -49,7 +49,7 @@ namespace mike_and_conquer_monogame.humancontroller
                     else
                     {
                         Logger.Warning(
-                             "{DT}: Did not send Place Barracks Command because ValidBuildingLocation() returned false", DateTime.Now.ToLongTimeString());
+                             "Did not send Place Barracks Command because ValidBuildingLocation() returned false");
                     }
 
                 }
