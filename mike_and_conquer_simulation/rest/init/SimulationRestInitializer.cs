@@ -11,7 +11,6 @@ namespace mike_and_conquer_simulation.rest.init
 
         public static void RunRestServer(Serilog.ILogger logger)
         {
-            // CreateHostBuilder(null).Build().Run();
             var task = CreateHostBuilder(logger,null).Build().RunAsync();
         }
 
@@ -26,8 +25,6 @@ namespace mike_and_conquer_simulation.rest.init
                 {
                     logging.ClearProviders();
                     logging.AddSerilog();
-                    // logging.AddConsole();
-                    // logging.AddDebug();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
