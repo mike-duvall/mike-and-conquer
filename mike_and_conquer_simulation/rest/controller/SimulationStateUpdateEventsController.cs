@@ -1,10 +1,11 @@
 ﻿
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.rest.domain;
+using Serilog;
+
 
 
 namespace mike_and_conquer_simulation.rest.controller
@@ -16,17 +17,14 @@ namespace mike_and_conquer_simulation.rest.controller
     {
 
 
-        private readonly ILogger<SimulationStateUpdateEventsController> _logger;
+        private static readonly ILogger Logger = Log.ForContext<SimulationStateUpdateEventsController>();
 
-        public SimulationStateUpdateEventsController(ILogger<SimulationStateUpdateEventsController> logger)
-        {
-            _logger = logger;
-        }
 
         [HttpGet]
         public IEnumerable<RestSimulationStateUpdateEvent> Get([FromQuery] int startIndex)
         {
 
+            Logger.Information("Get called with startIndex = {startIndex}", startIndex);
 
             List<RestSimulationStateUpdateEvent> restReturnList = new List<RestSimulationStateUpdateEvent>();
 

@@ -1,13 +1,16 @@
 ﻿using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
+
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using mike_and_conquer_monogame.rest.init;
-using mike_and_conquer_simulation;
+
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.rest.init;
+
+
+using Serilog;
 
 
 namespace mike_and_conquer_monogame.main
@@ -16,37 +19,28 @@ namespace mike_and_conquer_monogame.main
     {
 
 
-        public static ILoggerFactory loggerFactory;
-
-
+        private static Serilog.ILogger _logger;
 
         [STAThread]
         static void Main()
         {
 
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: false)
+                .AddJsonFile("appsettings.json")
                 .Build();
 
-            var loggingConfig = configuration.GetSection("Logging");
 
-            loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder
-                    .AddDebug()
-                    .AddConsole()
-                    .AddConfiguration(loggingConfig)
-                    ;
-            });
-
-            
-            ILogger logger = loggerFactory.CreateLogger<MainProgram>();
-            logger.LogInformation("************************Mike is cool");
-            logger.LogWarning("************************Mike is cool");
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
 
 
-            MainProgram.RunRestServer();
-            SimulationRestInitializer.RunRestServer();
+            _logger = Log.ForContext<MainProgram>();
+
+            _logger.Information("MainProgram::Main:   Hello, Serilog!");
+
+            MainProgram.RunRestServer(_logger);
+            SimulationRestInitializer.RunRestServer(_logger);
 
             MikeAndConquerGame game = new MikeAndConquerGame();
 
@@ -60,12 +54,12 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        public static void RunRestServer()
+        public static void RunRestServer(Serilog.ILogger logger)
         {
-            var task = CreateHostBuilder(null).Build().RunAsync();
+            var task = CreateHostBuilder(logger,null).Build().RunAsync();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(Serilog.ILogger logger, string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
@@ -74,15 +68,15 @@ namespace mike_and_conquer_monogame.main
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddDebug();
+                    logging.AddSerilog();
                 })
+
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<MonogameRestStartup>()
                         .UseUrls("http://*:5010");
-                });
-
+                })
+                .UseSerilog(logger);
 
     }
 }

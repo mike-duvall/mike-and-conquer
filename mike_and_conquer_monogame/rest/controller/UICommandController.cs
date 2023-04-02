@@ -1,14 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 
 using mike_and_conquer_monogame.commands.ui;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_monogame.rest.domain;
-
-
+using Serilog;
 
 
 namespace mike_and_conquer_monogame.rest.controller
@@ -20,12 +18,7 @@ namespace mike_and_conquer_monogame.rest.controller
     public class UICommandController : ControllerBase
     {
 
-        private readonly ILogger<UICommandController> _logger;
-
-        public UICommandController(ILogger<UICommandController> logger)
-        {
-            _logger = logger;
-        }
+        private static readonly ILogger Logger = Log.ForContext<UICommandController>();
 
 
         [HttpPost]
@@ -33,6 +26,7 @@ namespace mike_and_conquer_monogame.rest.controller
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult PostAdminCommand([FromBody] RestRawCommandUI incomingRawCommand)
         {
+            Logger.Information("PostAdminCommand called with incomingRawCommand = {incomingRawCommand}", incomingRawCommand);
             try
             {
                 RawCommandUI rawCommand = new RawCommandUI();
@@ -46,7 +40,8 @@ namespace mike_and_conquer_monogame.rest.controller
             }
             catch (Exception e)
             {
-                _logger.LogWarning(e, "Error processing Command");
+                Logger.Warning(e, "Error processing Command");
+                
 
                 return ValidationProblem(e.Message);
             }

@@ -1,10 +1,7 @@
-﻿using System;
+﻿
+using Serilog;
+using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using mike_and_conquer_simulation.main;
-// using Microsoft.Xna.Framework;
-// using mike_and_conquer.gameworld;
-// using mike_and_conquer.main;
 using Boolean = System.Boolean;
 
 using Point = System.Drawing.Point;
@@ -185,6 +182,8 @@ namespace mike_and_conquer_simulation.pathfinding
         // This code uses algorithms from here:  https://www.redblobgames.com/pathfinding/a-star/introduction.html
         // Current implementation is actually "Dijkstra’s Algorithm" rather than A *
 
+        private static readonly ILogger Logger = Log.ForContext<AStar>();
+
 
         public Path FindPath(NavigationGraph navigationGraph, Point startPoint, Point endPoint)
         {
@@ -253,16 +252,15 @@ namespace mike_and_conquer_simulation.pathfinding
                 catch (KeyNotFoundException e)
                 {
 
-                    SimulationMain.logger.LogInformation("KeyNotFoundException:");
-                    SimulationMain.logger.LogInformation("For key:" + nextNode.id);
-                    SimulationMain.logger.LogInformation("Start location:" + startLocation + "   goalLocation:" + goalLocation);
-
-                    SimulationMain.logger.LogInformation("Dumping came_from:");
+                    Logger.Information("KeyNotFoundException:");
+                    Logger.Information("For key:" + nextNode.id);
+                    Logger.Information("Start location:" + startLocation + "   goalLocation:" + goalLocation);
+                    Logger.Information("Dumping came_from:");
                     Dictionary<int, int>.KeyCollection keyCollection = came_from.Keys;
                     foreach (int key in keyCollection)
                     {
                         int value = came_from[key];
-                        SimulationMain.logger.LogInformation("key:" + key + "  value:" + value);
+                        Logger.Information("key:" + key + "  value:" + value);
                     }
 
                     throw e;

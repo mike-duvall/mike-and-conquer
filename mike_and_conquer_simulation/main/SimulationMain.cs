@@ -2,18 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using mike_and_conquer_simulation.commands;
 using mike_and_conquer_simulation.commands.commandbody;
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace mike_and_conquer_simulation.main
 {
     public class SimulationMain
     {
+
+        private static readonly ILogger Logger = Log.ForContext<SimulationMain>();
 
         public static int globalId = 1;
 
@@ -25,11 +26,6 @@ namespace mike_and_conquer_simulation.main
         private List<SimulationStateUpdateEvent> simulationStateUpdateEventsHistory;
 
         private List<SimulationStateListener> listeners;
-
-        public static ILoggerFactory loggerFactory;
-
-        public static ILogger logger;
-
 
         public static SimulationMain instance;
 
@@ -44,25 +40,8 @@ namespace mike_and_conquer_simulation.main
 
 
 
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: false)
-                .Build();
-
-            var loggingConfig = configuration.GetSection("Logging");
-
-            loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder
-                    .AddDebug()
-                    .AddConsole()
-                    .AddConfiguration(loggingConfig)
-                    ;
-            });
-
-
-            logger = loggerFactory.CreateLogger<SimulationMain>();
-            logger.LogInformation("************************Simulation Mike is cool");
-            logger.LogWarning("************************Simulation Mike is cool");
+            Logger.Information("************************Information-Simulation Mike is cool");
+            Logger.Warning("************************Warning-Simulation Mike is cool");
 
 
             new SimulationMain();
@@ -172,7 +151,7 @@ namespace mike_and_conquer_simulation.main
 
 
                 int sleepTime = (int) SimulationMain.instance.simulationOptions.CurrentGameSpeed;
-                //TimerHelper.SleepForNoMoreThan(sleepTime, logger);
+                //TimerHelper.SleepForNoMoreThan(sleepTime, Logger);
                 TimerHelper.SleepForNoMoreThan2(sleepTime);
                 // TimerHelper.SleepForNoMoreThan(sleepTime);
                 //Thread.Sleep(1);
@@ -197,7 +176,7 @@ namespace mike_and_conquer_simulation.main
 
 
                 }
-                // logger.LogInformation("delta=" + delta + ",  sleepTime=" + sleepTime);
+                // Logger.LogInformation("delta=" + delta + ",  sleepTime=" + sleepTime);
                 previousTicks = currentTicks;
             }
 
@@ -248,7 +227,7 @@ namespace mike_and_conquer_simulation.main
                     if (anEvent.ThrownException != null)
                     {
                         string errorMessage = "Exception thrown processing command '" + anEvent.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
-                        logger.LogError(anEvent.ThrownException, errorMessage);
+                        // Logger.LogError(anEvent.ThrownException, errorMessage);
                     }
                 }
             }

@@ -1,11 +1,16 @@
 ﻿
 
+using mike_and_conquer_monogame.main;
 using System.Collections.Generic;
+using Serilog;
 
 namespace mike_and_conquer_monogame.util
 {
     public class AnimationSequence
     {
+
+        private static readonly ILogger Logger = Log.ForContext<AnimationSequence>();
+
 
         private List<int> frames;
         private int frameSwitchTimer;
@@ -58,7 +63,7 @@ namespace mike_and_conquer_monogame.util
 
         public int GetCurrentFrame()
         {
-//            MikeAndConquerGame.instance.log.Information("GetCurrentFrame() currentAnimationFrameIndex={0}", currentAnimationFrameIndex);
+            Logger.Information("GetCurrentFrame() currentAnimationFrameIndex={0}", currentAnimationFrameIndex);
             return frames[currentAnimationFrameIndex];
         }
 

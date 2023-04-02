@@ -52,30 +52,30 @@ namespace mike_and_conquer_simulation.main
         /// <summary>
         /// Sleeps as long as possible without exceeding the specified period
         /// </summary>
-        public static void SleepForNoMoreThan(double milliseconds, ILogger logger)
-        {
-            // Assumption is that Thread.Sleep(t) will sleep for at least (t), and at most (t + timerResolution)
-            if (milliseconds < LowestSleepThreshold)
-                return;
-            // double currentResolution = GetCurrentResolution();
-            double currentResolution = GetMinResolution();
-
-            var sleepTime = (int)(milliseconds - currentResolution);
-            // logger.LogInformation("sleepTime=" + sleepTime+ ", currentResolution=" + currentResolution);
-
-            if (sleepTime > 0)
-            {
-                logger.LogInformation("sleeping for sleepTime=" + sleepTime);
-                long startTicks = DateTime.Now.Ticks;
-                Thread.Sleep(sleepTime);
-                long endTicks = DateTime.Now.Ticks;
-                long actualSleepTimeInTicks = endTicks - startTicks;
-                long acutSleepTimeInMilliseconds = actualSleepTimeInTicks / TimeSpan.TicksPerMillisecond;
-                logger.LogInformation("actualSleepTime=" + acutSleepTimeInMilliseconds);
-
-            }
-                
-        }
+        // public static void SleepForNoMoreThan(double milliseconds, ILogger logger)
+        // {
+        //     // Assumption is that Thread.Sleep(t) will sleep for at least (t), and at most (t + timerResolution)
+        //     if (milliseconds < LowestSleepThreshold)
+        //         return;
+        //     // double currentResolution = GetCurrentResolution();
+        //     double currentResolution = GetMinResolution();
+        //
+        //     var sleepTime = (int)(milliseconds - currentResolution);
+        //     // logger.LogInformation("sleepTime=" + sleepTime+ ", currentResolution=" + currentResolution);
+        //
+        //     if (sleepTime > 0)
+        //     {
+        //         logger.LogInformation("sleeping for sleepTime=" + sleepTime);
+        //         long startTicks = DateTime.Now.Ticks;
+        //         Thread.Sleep(sleepTime);
+        //         long endTicks = DateTime.Now.Ticks;
+        //         long actualSleepTimeInTicks = endTicks - startTicks;
+        //         long acutSleepTimeInMilliseconds = actualSleepTimeInTicks / TimeSpan.TicksPerMillisecond;
+        //         logger.LogInformation("actualSleepTime=" + acutSleepTimeInMilliseconds);
+        //
+        //     }
+        //         
+        // }
 
         public static void SleepForNoMoreThan(double milliseconds)
         {

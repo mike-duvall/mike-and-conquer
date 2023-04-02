@@ -1,6 +1,6 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;

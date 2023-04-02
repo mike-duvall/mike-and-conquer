@@ -2,20 +2,20 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace mike_and_conquer_simulation.rest.init
 {
     public class SimulationRestInitializer
     {
 
-        public static void RunRestServer()
+        public static void RunRestServer(Serilog.ILogger logger)
         {
-            // CreateHostBuilder(null).Build().Run();
-            var task = CreateHostBuilder(null).Build().RunAsync();
+            var task = CreateHostBuilder(logger,null).Build().RunAsync();
         }
 
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(Serilog.ILogger logger,string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
@@ -24,14 +24,14 @@ namespace mike_and_conquer_simulation.rest.init
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddDebug();
+                    logging.AddSerilog();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<SimulationRestStartup>()
                         .UseUrls("http://*:5000");
                         //.UseUrls("http://*:80");
-                });
+                })
+                .UseSerilog(logger);
     }
 }

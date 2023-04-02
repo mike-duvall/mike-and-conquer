@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using mike_and_conquer_simulation.main;
 using mike_and_conquer_simulation.rest.domain;
 
@@ -12,13 +11,6 @@ namespace mike_and_conquer_simulation.rest.controller
 
     public class SimulationControllerQueryController : ControllerBase
     {
-
-        private readonly ILogger<SimulationControllerQueryController> _logger;
-
-        public SimulationControllerQueryController(ILogger<SimulationControllerQueryController> logger)
-        {
-            _logger = logger;
-        }
 
 
 

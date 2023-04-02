@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,7 +17,7 @@ using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.main;
 using Newtonsoft.Json;
-
+using Serilog;
 using MemoryStream = System.IO.MemoryStream;
 using Form = System.Windows.Forms.Form;
 using BarracksSidebarIconView = mike_and_conquer_monogame.gameview.sidebar.BarracksSidebarIconView;
@@ -31,10 +30,10 @@ namespace mike_and_conquer_monogame.main
 {
     public class MikeAndConquerGame : Game
     {
+        private static readonly ILogger Logger = Log.ForContext<MikeAndConquerGame>();
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        public ILogger logger;
-
 
         public List<SimulationStateListener> simulationStateListenerList = null;
 
@@ -70,9 +69,6 @@ namespace mike_and_conquer_monogame.main
 
         public MikeAndConquerGame()
         {
-
-            logger = MainProgram.loggerFactory.CreateLogger<MikeAndConquerGame>();
-            logger.LogWarning("{DT}: Game1() ctor", DateTime.Now.ToLongTimeString());
 
             _graphics = new GraphicsDeviceManager(this);
 
@@ -193,7 +189,7 @@ namespace mike_and_conquer_monogame.main
             if (command.ThrownException != null)
             {
                 string errorMessage = "Exception thrown processing command '" + command.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
-                logger.LogError(command.ThrownException, errorMessage);
+                Logger.Error(command.ThrownException, errorMessage);
             }
 
         }
@@ -309,8 +305,7 @@ namespace mike_and_conquer_monogame.main
         protected override void LoadContent()
         {
 
-            logger.LogInformation("Game1::LoadContent()");
-            logger.LogWarning("Game1::LoadContent()");
+            Logger.Information("Game1::LoadContent()");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -594,7 +589,7 @@ namespace mike_and_conquer_monogame.main
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                MikeAndConquerGame.instance.logger.LogError("Exiting because Escape key was pressed");
+                Logger.Error("Exiting because Escape key was pressed");
                 Exit();
             }
         
@@ -612,7 +607,7 @@ namespace mike_and_conquer_monogame.main
                     command.Process();
                     if (command.ThrownException != null)
                     {
-                        logger.LogError(command.ThrownException.ToString());
+                        Logger.Error(command.ThrownException.ToString());
                     }
                 }
             }
@@ -865,15 +860,29 @@ namespace mike_and_conquer_monogame.main
 
         public void SelectUnit(int unitId)
         {
+            Logger.Information("SelectUnit with unitId=" + unitId);
 
             UnitView unitView = GetUnitViewByIdViaCommand(unitId);
 
+
+
+            Logger.Information(
+                "SelectUnit: unitView.UnitId=" + unitView.UnitId +
+                ", unitView.XInWorldCoordinates=" + unitView.XInWorldCoordinates +
+                ", unitView.YInWorldCoordinates=" + unitView.YInWorldCoordinates);
+
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = unitView.XInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = unitView.YInWorldCoordinates - 10;
+            unitViewLocationAsWorldCoordinates.Y = unitView.YInWorldCoordinates - 5;
+
+            Logger.Information(
+                "SelectUnit: unitViewLocationAsWorldCoordinates.X=" + unitViewLocationAsWorldCoordinates.X +
+                ", unitViewLocationAsWorldCoordinates.Y=" + unitViewLocationAsWorldCoordinates.Y);
 
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
+
+            Logger.Information("transformedLocation.X=" + transformedLocation.X + ",transformedLocation.Y=" + transformedLocation.Y);
 
             int screenWidth = GameWorldView.instance.ScreenWidth;
             int screenHeight = GameWorldView.instance.ScreenHeight;
