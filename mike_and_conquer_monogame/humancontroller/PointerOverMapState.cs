@@ -59,7 +59,7 @@ namespace mike_and_conquer_monogame.humancontroller
 
             if (MouseInputUtil.LeftMouseButtonIsBeingHeldDown(newMouseState, oldMouseState))
             {
-                Logger.Information("LeftMouseButtonIsBeingHeldDown");
+                // Logger.Information("LeftMouseButtonIsBeingHeldDown");
                 if (IsMouseDragHappening(mouseWorldLocationPoint))
                 {
                     Logger.Information("IsMouseDragHappening");
@@ -223,6 +223,8 @@ namespace mike_and_conquer_monogame.humancontroller
         private bool CheckForAndHandleLeftClickOnMap(Point mouseLocation)
         {
 
+            Logger.Information("CheckForAndHandleLeftClickOnMap with mouseLocation.X=" + mouseLocation.X + ", and mouseLocation.Y=" + mouseLocation.Y);
+
             int mouseX = mouseLocation.X;
             int mouseY = mouseLocation.Y;
 
@@ -240,6 +242,8 @@ namespace mike_and_conquer_monogame.humancontroller
 
 
                     Point centerOfSquare = clickedMapTileInstance.GetCenter();
+
+                    Logger.Information("Ordering selected UnitView to move.  UnitView.UnitId=" + unitView.UnitId);
                     OrderToMoveToDestination(unitView.UnitId, centerOfSquare);
                     // unitView.OrderToMoveToDestination(centerOfSquare);
                     unitOrderedToMove = true;
@@ -277,6 +281,8 @@ namespace mike_and_conquer_monogame.humancontroller
 
         internal bool CheckForAndHandleLeftClickOnEnemyUnit(Point mouseLocation)
         {
+
+            Logger.Information("CheckForAndHandleLeftClickOnEnemyUnit with mouseLocation.X=" + mouseLocation.X + ", and mouseLocation.Y=" + mouseLocation.Y);
             int mouseX = mouseLocation.X;
             int mouseY = mouseLocation.Y;
         
@@ -285,17 +291,19 @@ namespace mike_and_conquer_monogame.humancontroller
             {
                 if (unitView.ContainsPoint(mouseX, mouseY))
                 {
+                    Logger.Information("Found unitView that contained point.  unitView.UnitId=" + unitView.UnitId);
                     handled = true;
 
                     List<UnitView> currentlySelectedUnitViews = GetCurrentlySelectedGDIUnitViews();
                     foreach (UnitView selectedUnitView in currentlySelectedUnitViews)
                     {
+                        Logger.Information("Ordering selected UnitView to attack.  UnitView.UnitId=" +  selectedUnitView.UnitId);
                         OrderToAttackTarget(selectedUnitView, unitView);
                     }
                     // MikeAndConquerGame.instance.SoundManager.PlayUnitAwaitingOrders();
                 }
             }
-
+            Logger.Information("Existing CheckForAndHandleLeftClickOnEnemyUnit.  handled=" + handled);
 
             return handled;
         }

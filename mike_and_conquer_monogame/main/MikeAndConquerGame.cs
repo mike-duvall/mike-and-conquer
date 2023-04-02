@@ -860,15 +860,29 @@ namespace mike_and_conquer_monogame.main
 
         public void SelectUnit(int unitId)
         {
+            Logger.Information("SelectUnit with unitId=" + unitId);
 
             UnitView unitView = GetUnitViewByIdViaCommand(unitId);
+
+
+
+            Logger.Information(
+                "SelectUnit: unitView.UnitId=" + unitView.UnitId +
+                ", unitView.XInWorldCoordinates=" + unitView.XInWorldCoordinates +
+                ", unitView.YInWorldCoordinates=" + unitView.YInWorldCoordinates);
 
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = unitView.XInWorldCoordinates;
             unitViewLocationAsWorldCoordinates.Y = unitView.YInWorldCoordinates - 5;
 
+            Logger.Information(
+                "SelectUnit: unitViewLocationAsWorldCoordinates.X=" + unitViewLocationAsWorldCoordinates.X +
+                ", unitViewLocationAsWorldCoordinates.Y=" + unitViewLocationAsWorldCoordinates.Y);
+
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
+
+            Logger.Information("transformedLocation.X=" + transformedLocation.X + ",transformedLocation.Y=" + transformedLocation.Y);
 
             int screenWidth = GameWorldView.instance.ScreenWidth;
             int screenHeight = GameWorldView.instance.ScreenHeight;
