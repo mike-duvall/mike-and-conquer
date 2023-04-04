@@ -284,6 +284,12 @@ namespace mike_and_conquer_simulation.main
             return gameWorld.CreateGDIMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
 
+        internal Minigunner CreateGDIMinigunner(int xInWorldCoordinates, int yInWorldCoordinates, int health)
+        {
+            return gameWorld.CreateGDIMinigunner(xInWorldCoordinates, yInWorldCoordinates, health);
+        }
+
+
         internal Minigunner CreateNodMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
         {
             return gameWorld.CreateNodMinigunner(xInWorldCoordinates, yInWorldCoordinates);
@@ -462,6 +468,11 @@ namespace mike_and_conquer_simulation.main
                 CreateGDIMinigunnerCommand createGdiUnit = new CreateGDIMinigunnerCommand();
                 createGdiUnit.X = commandBody.StartLocationXInWorldCoordinates;
                 createGdiUnit.Y = commandBody.StartLocationYInWorldCoordinates;
+                if (commandBody.Health.HasValue)
+                {
+                    createGdiUnit.health = commandBody.Health.Value;
+                }
+
 
                 return createGdiUnit;
 

@@ -58,6 +58,8 @@ namespace mike_and_conquer_monogame.commands
             condition.Set();
         }
 
+        Pickup here
+        Fix failing tests
 
 
         // TODO Consider making an abstract SetResult() method

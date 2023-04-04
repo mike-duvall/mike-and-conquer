@@ -531,6 +531,12 @@ namespace mike_and_conquer_simulation.gameworld
             return gdiPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates);
         }
 
+        public Minigunner CreateGDIMinigunner(int xInWorldCoordinates, int yInWorldCoordinates, int health)
+        {
+            return gdiPlayer.CreateMinigunner(xInWorldCoordinates, yInWorldCoordinates, health);
+        }
+
+
         public Minigunner CreateGDIMinigunnerAtRandomLocation()
         {
             Point validRandomMinigunnerPosition = CreateRandomValidMinigunnerPosition();

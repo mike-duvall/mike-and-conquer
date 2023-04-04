@@ -29,12 +29,21 @@ namespace mike_and_conquer_simulation.main
 
         protected int health;
 
+        protected int maxHealth;
+
         public int UnitId { get; set; }
 
         public int Health
         {
             get { return health; }
         }
+
+        public int MaxHealth
+        {
+            get { return maxHealth; }
+        }
+
+
 
         public abstract void Update();
 

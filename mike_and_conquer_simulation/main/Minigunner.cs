@@ -63,7 +63,17 @@ namespace mike_and_conquer_simulation.main
         private int reloadTimer;
         private bool weaponIsLoaded;
 
-        public Minigunner()
+        // private static int DEFAULT_HEALTH = 50;
+        private static int MAX_HEALTH = 50;
+
+
+         
+        public Minigunner(int xInWorldCoordinates, int yInWorldCoordinates) :this(xInWorldCoordinates, yInWorldCoordinates, MAX_HEALTH)
+        {
+
+        }
+
+        public Minigunner(int xInWorldCoordinates, int yInWorldCoordinates, int startingHealth)
         {
             currentState = State.IDLE;
             CurrentMission = Mission.NONE;
@@ -73,7 +83,11 @@ namespace mike_and_conquer_simulation.main
 
             reloadTimer = 0;
             weaponIsLoaded = true;
-            health = 50;
+            this.maxHealth = MAX_HEALTH;
+            this.health = startingHealth;
+
+            this.gameWorldLocation =
+                GameWorldLocation.CreateFromWorldCoordinates(xInWorldCoordinates, yInWorldCoordinates);
 
             // isMoving = false;
 

@@ -5,7 +5,8 @@
 
         public const string EventType = "JeepCreated";
 
-        public JeepCreateEventData(int unitId, string player, int x, int y) : base(unitId, player,x, y)
+        // TODO: Add non-harded values for health and maxhealth
+        public JeepCreateEventData(int unitId, string player, int x, int y) : base(unitId, player,x, y, 50, 50)
         {
         }
     }
