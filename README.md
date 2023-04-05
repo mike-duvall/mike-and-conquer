@@ -12,7 +12,7 @@ In general, the intent of this project is to exactly re-implement the original g
 The current state of the code varies.  Some of code is pretty high quality that I'm proud of and is in a good state, while some of it has been temporarily slapped together to work for now but is need of refactoring and improvement.  My planned end state is to get all of the code in pristine state, but it's not there yet
 
 
-Here is screenshot of curren state:
+Here is screenshot of current state:
 
 
 ![Alt text](/mike_and_conquer_monogame/screenshots/Screenshot-1.png?raw=true "Screenshot 1")
