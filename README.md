@@ -14,7 +14,13 @@ The current state of the code varies.  Some of code is pretty high quality that 
 Here is screenshot of current state:
 
 
-![Alt text](/mike_and_conquer_monogame/screenshots/Screenshot-1.png?raw=true "Screenshot 1")
+![Alt text](/mike_and_conquer_monogame/video-and-screenshots/Screenshot-1.png?raw=true "Screenshot 1")
 
+
+Here is a video of the current state:
+
+
+<video src="/mike_and_conquer_monogame/video-and-screenshots/mike-and-conquer-clip.mp4" controls="controls" style="max-width: 730px;">
+</video>
 
 
