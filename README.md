@@ -19,8 +19,5 @@ Here is screenshot of current state:
 
 Here is a video of the current state:
 
-
-<video src="/mike_and_conquer_monogame/video-and-screenshots/mike-and-conquer-clip.mp4" controls="controls" style="max-width: 730px;">
-</video>
-
+https://user-images.githubusercontent.com/4364791/230379676-e3a82c3c-4f37-4872-9bef-1b4b5769fa60.mp4
 
