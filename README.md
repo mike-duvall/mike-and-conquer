@@ -34,7 +34,21 @@ https://user-images.githubusercontent.com/4364791/230379676-e3a82c3c-4f37-4872-9
 mike-and-conquer consists of two high level projects:  mike_and_conquer_monogame and mike_and_conquer_simulation.
 
 
-(Describe breakdown here)
+mike_and_conquer_simulation is the non-UI game engine/simulation.  It handles the gameworld and game logic.  
+
+mike_and_conquer_monogame is the UI for the game.  It displays the games graphics and handles input from the mouse and keyboard
+
+Communication with mike_and_conquer_simulation is done via commands and events.  Commands are used to setup game state and to communicate player input.  Sample commands would be: SetGameSpeedCommand and OrderUnitToMoveCommand.
+Events are used to publish what changes to the game state.  Example events would be: UnitPositionChange and MinigunnerCreated
+
+mike_and_conquer_monogame listens to these events and updates the graphical game state accordingly.
+
+mike_and_conquer_monogame also translates user input into commands and sends those commands to mike_and_conquer_simulation for execution
+
+In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame provide REST interfaces that faciliate setting up and running test scenarios via a separate test project: mike_and_conquer_test.  
+
+
+Threads here...
 
 
 
