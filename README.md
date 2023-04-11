@@ -11,13 +11,54 @@ In general, the intent of this project is to exactly re-implement the original g
 
 The current state of the code varies.  Some of code is pretty high quality that I'm proud of and is in a good state, while some of it has been temporarily slapped together to work for now but is need of refactoring and improvement.  My planned end state is to get all of the code in pristine state, but it's not there yet
 
+
+## Current work
+
+You see the project Kanban board here:  https://github.com/users/mike-duvall/projects/1/views/2
+
+
 Here is screenshot of current state:
 
 
-![Alt text](/mike_and_conquer_monogame/video-and-screenshots/Screenshot-1.png?raw=true "Screenshot 1")
+![Screenshot 1](/mike_and_conquer_monogame/video-and-screenshots/Screenshot-1.png?raw=true "Screenshot 1")
 
 
 Here is a video of the current state:
 
 https://user-images.githubusercontent.com/4364791/230379676-e3a82c3c-4f37-4872-9bef-1b4b5769fa60.mp4
+
+
+## Overall Design
+
+
+mike-and-conquer consists of two high level projects:  mike_and_conquer_monogame and mike_and_conquer_simulation.
+
+
+(Describe breakdown here)
+
+
+
+View vs simulation.  Publishing of events from simulation.  Interface of each.
+
+Both have REST interfaces
+
+Breakdown of UI client vs admin client
+
+Communication via events and commands
+
+Both having a constantly running loop that pulls commands from the command queue
+
+Threading and thread safety
+
+Testing
+
+Running headless
+
+Determinsitic simulation
+
+
+Timing of the main simulation loop (based on monogame implementation.  Pretty closely matches actual speed of real game)
+
+
+Logging
 
