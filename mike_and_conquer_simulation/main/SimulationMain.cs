@@ -233,18 +233,6 @@ namespace mike_and_conquer_simulation.main
             }
         }
 
-        internal void PostSetGameSpeedCommand(SimulationOptions.GameSpeed aGameSpeed)
-        {
-            SetGameSpeedCommand aCommand = new SetGameSpeedCommand();
-            aCommand.GameSpeed = aGameSpeed;
-
-            lock (inputCommandQueue)
-            {
-                inputCommandQueue.Enqueue(aCommand);
-            }
-
-        }
-
         public List<SimulationStateUpdateEvent> GetCopyOfEventHistoryViaEvent()
         {
             GetCopyOfEventHistoryCommand anEvent = new GetCopyOfEventHistoryCommand();
@@ -417,15 +405,23 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-        internal void PostCommand(RawCommand incomingAdminCommand)
+        public void PostCommand(AsyncSimulationCommand command)
         {
-
-            AsyncSimulationCommand command = ConvertRawCommand(incomingAdminCommand);
-
             lock (inputCommandQueue)
             {
                 inputCommandQueue.Enqueue(command);
             }
+
+        }
+
+
+
+        internal void PostCommand(RawCommand incomingAdminCommand)
+        {
+
+            AsyncSimulationCommand asyncSimulationCommand = ConvertRawCommand(incomingAdminCommand);
+
+            PostCommand(asyncSimulationCommand);
 
 
         }
@@ -566,14 +562,6 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-        public void PostCommand(AsyncSimulationCommand command)
-        {
-            lock (inputCommandQueue)
-            {
-                inputCommandQueue.Enqueue(command);
-            }
-
-        }
 
         public void StartScenario(PlayerController playerController)
         {
