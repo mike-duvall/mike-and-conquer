@@ -49,6 +49,10 @@ mike_and_conquer_monogame listens to these events and updates the graphical game
 
 mike_and_conquer_monogame also translates user input into commands and sends those commands to mike_and_conquer_simulation for execution
 
+
+![High Level Architecture](/docs/high-level.drawio.png?raw=true "High Level Architecture")
+
+
 In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame provide REST interfaces that faciliate setting up and running test scenarios via a separate test project: mike_and_conquer_test.  
 
 
