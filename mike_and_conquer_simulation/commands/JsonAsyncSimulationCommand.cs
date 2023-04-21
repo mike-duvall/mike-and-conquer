@@ -1,11 +1,11 @@
 ﻿
 namespace mike_and_conquer_simulation.commands
 {
-    internal class RawCommand
+    internal class JsonAsyncSimulationCommand
     {
         public string CommandType { get; set; }
 
-        public string CommandData { get; set; }
+        public string JsonCommandData { get; set; }
 
     }
 }
