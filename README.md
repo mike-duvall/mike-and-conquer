@@ -34,6 +34,7 @@ https://user-images.githubusercontent.com/4364791/230379676-e3a82c3c-4f37-4872-9
 mike-and-conquer consists of two high level projects:  mike_and_conquer_monogame and mike_and_conquer_simulation.
 
 
+<<<<<<< HEAD
 mike_and_conquer_simulation is the non-UI game engine/simulation.  It handles the gameworld and game logic.  
 
 mike_and_conquer_monogame is the UI for the game.  It displays the games graphics and handles input from the mouse and keyboard
@@ -49,6 +50,8 @@ In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame prov
 
 
 Threads here...
+
+(Describe breakdown here)
 
 
 
