@@ -26,15 +26,15 @@ namespace mike_and_conquer_simulation.rest.controller
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult PostAdminCommand([FromBody] RestRawCommand incomingRawCommand)
+        public ActionResult PostAdminCommand([FromBody] RestJsonAsyncSimulationCommand incomingJsonAsyncSimulationCommand)
         {
             try
             {
-                RawCommand rawCommand = new RawCommand();
-                rawCommand.CommandType = incomingRawCommand.CommandType;
-                rawCommand.CommandData = incomingRawCommand.CommandData;
+                JsonAsyncSimulationCommand jsonAsyncSimulationCommand = new JsonAsyncSimulationCommand();
+                jsonAsyncSimulationCommand.CommandType = incomingJsonAsyncSimulationCommand.CommandType;
+                jsonAsyncSimulationCommand.JsonCommandData = incomingJsonAsyncSimulationCommand.JsonCommandData;
 
-                SimulationMain.instance.PostCommand(rawCommand);
+                SimulationMain.instance.PostCommand(jsonAsyncSimulationCommand);
                 return new OkObjectResult(new {Message = "Command Accepted"});
 
             }

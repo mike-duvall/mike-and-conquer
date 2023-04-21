@@ -416,23 +416,19 @@ namespace mike_and_conquer_simulation.main
 
 
 
-        internal void PostCommand(RawCommand incomingAdminCommand)
+        internal void PostCommand(JsonAsyncSimulationCommand incomingAdminCommand)
         {
-
-            AsyncSimulationCommand asyncSimulationCommand = ConvertRawCommand(incomingAdminCommand);
-
+            AsyncSimulationCommand asyncSimulationCommand = ParseAsyncSimulationCommand(incomingAdminCommand);
             PostCommand(asyncSimulationCommand);
-
-
         }
 
-        AsyncSimulationCommand ConvertRawCommand(RawCommand rawCommand)
+        AsyncSimulationCommand ParseAsyncSimulationCommand(JsonAsyncSimulationCommand jsonAsyncSimulationCommand)
         {
-            if (rawCommand.CommandType.Equals(CreateGDIMinigunnerCommand.CommandName))
+            if (jsonAsyncSimulationCommand.CommandType.Equals(CreateGDIMinigunnerCommand.CommandName))
             {
 
                 CreateMinigunnerCommandBody commandBody =
-                    JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 CreateGDIMinigunnerCommand createGdiUnit = new CreateGDIMinigunnerCommand();
                 createGdiUnit.X = commandBody.StartLocationXInWorldCoordinates;
@@ -441,11 +437,11 @@ namespace mike_and_conquer_simulation.main
                 return createGdiUnit;
 
             }
-            if (rawCommand.CommandType.Equals(CreateNodMinigunnerCommand.CommandName))
+            if (jsonAsyncSimulationCommand.CommandType.Equals(CreateNodMinigunnerCommand.CommandName))
             {
 
                 CreateMinigunnerCommandBody commandBody =
-                    JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<CreateMinigunnerCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 CreateNodMinigunnerCommand command = new CreateNodMinigunnerCommand();
                 command.X = commandBody.StartLocationXInWorldCoordinates;
@@ -456,23 +452,23 @@ namespace mike_and_conquer_simulation.main
             }
 
 
-            if (rawCommand.CommandType.Equals(CreateGDIMinigunnerAtRandomLocationCommand.CommandName)) 
+            if (jsonAsyncSimulationCommand.CommandType.Equals(CreateGDIMinigunnerAtRandomLocationCommand.CommandName)) 
             {
                 CreateGDIMinigunnerAtRandomLocationCommand command = new CreateGDIMinigunnerAtRandomLocationCommand();
                 return command;
             }
-            if (rawCommand.CommandType.Equals(CreateNodMinigunnerAtRandomLocationCommand.CommandName))
+            if (jsonAsyncSimulationCommand.CommandType.Equals(CreateNodMinigunnerAtRandomLocationCommand.CommandName))
             {
                 CreateNodMinigunnerAtRandomLocationCommand command = new CreateNodMinigunnerAtRandomLocationCommand();
                 return command;
             }
 
 
-            else if (rawCommand.CommandType.Equals(CreateJeepCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(CreateJeepCommand.CommandName))
             {
 
                 CreateJeepCommandBody commandBody =
-                    JsonConvert.DeserializeObject<CreateJeepCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<CreateJeepCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 CreateJeepCommand createdUnit = new CreateJeepCommand();
                 createdUnit.X = commandBody.StartLocationXInWorldCoordinates;
@@ -481,11 +477,11 @@ namespace mike_and_conquer_simulation.main
                 return createdUnit;
 
             }
-            else if (rawCommand.CommandType.Equals(CreateMCVCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(CreateMCVCommand.CommandName))
             {
 
                 CreateMCVCommandBody commandBody =
-                    JsonConvert.DeserializeObject<CreateMCVCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<CreateMCVCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 CreateMCVCommand createdUnit = new CreateMCVCommand();
                 createdUnit.X = commandBody.StartLocationXInWorldCoordinates;
@@ -495,18 +491,18 @@ namespace mike_and_conquer_simulation.main
 
             }
 
-            else if (rawCommand.CommandType.Equals(StartScenarioCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(StartScenarioCommand.CommandName))
             {
 
                 return new StartScenarioCommand();
 
             }
 
-            else if (rawCommand.CommandType.Equals(OrderUnitToAttackCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(OrderUnitToAttackCommand.CommandName))
             {
 
                 OrderUnitAttackCommandBody commandBody =
-                    JsonConvert.DeserializeObject<OrderUnitAttackCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<OrderUnitAttackCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 OrderUnitToAttackCommand aCommand = new OrderUnitToAttackCommand();
                 aCommand.AttackerUnitId = commandBody.AttackerUnitId;
@@ -515,11 +511,11 @@ namespace mike_and_conquer_simulation.main
                 return aCommand;
 
             }
-            else if (rawCommand.CommandType.Equals(OrderUnitToMoveCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(OrderUnitToMoveCommand.CommandName))
             {
 
                 OrderUnitMoveCommandBody commandBody =
-                    JsonConvert.DeserializeObject<OrderUnitMoveCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<OrderUnitMoveCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 OrderUnitToMoveCommand anEvent = new OrderUnitToMoveCommand();
                 anEvent.UnitId = commandBody.UnitId;
@@ -531,10 +527,10 @@ namespace mike_and_conquer_simulation.main
             }
 
 
-            else if (rawCommand.CommandType.Equals(SetGameSpeedCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(SetGameSpeedCommand.CommandName))
             {
                 SetSimulationOptionsCommandBody commandBody =
-                    JsonConvert.DeserializeObject<SetSimulationOptionsCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<SetSimulationOptionsCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 SimulationOptions.GameSpeed inputGameSpeed = SimulationOptions.ConvertGameSpeedStringToEnum(commandBody.GameSpeed);
                 SetGameSpeedCommand aCommand = new SetGameSpeedCommand();
@@ -543,11 +539,11 @@ namespace mike_and_conquer_simulation.main
                 return aCommand;
 
             }
-            else if (rawCommand.CommandType.Equals(RemoveUnitCommand.CommandName))
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(RemoveUnitCommand.CommandName))
             {
 
                 RemoveUnitCommandBody commandBody =
-                    JsonConvert.DeserializeObject<RemoveUnitCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<RemoveUnitCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
 
                 RemoveUnitCommand command = new RemoveUnitCommand();
                 command.UnitId = commandBody.UnitId;
@@ -556,7 +552,7 @@ namespace mike_and_conquer_simulation.main
 
             else
             {
-                throw new Exception("Unknown CommandType:" + rawCommand.CommandType);
+                throw new Exception("Unknown CommandType:" + jsonAsyncSimulationCommand.CommandType);
             }
 
 
