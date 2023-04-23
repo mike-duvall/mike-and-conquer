@@ -38,7 +38,7 @@ mike_and_conquer_simulation is the non-UI game engine/simulation.  It handles th
 mike_and_conquer_monogame is the UI for the game.  It displays the games graphics and handles input from the mouse and keyboard
 
 Communication with mike_and_conquer_simulation is done via commands and events.  Commands are used to setup game state and to communicate player input.  Sample commands would be: SetGameSpeedCommand and OrderUnitToMoveCommand.
-Events are used to publish what changes to the game state.  Example events would be: UnitPositionChange and MinigunnerCreated
+Events are used to publish what changes to the game state.  Example events would be: UnitPositionChanged and MinigunnerCreated
 
 mike_and_conquer_monogame listens to these events and updates the graphical game state accordingly.
 
@@ -54,17 +54,10 @@ In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame prov
 Threads here...
 
 
-(Describe breakdown here)
-(Test change via built in github editor)
-
-
-View vs simulation.  Publishing of events from simulation.  Interface of each.
-
 Both have REST interfaces
 
 Breakdown of UI client vs admin client
 
-Communication via events and commands
 
 Both having a constantly running loop that pulls commands from the command queue
 
@@ -79,6 +72,4 @@ Determinsitic simulation
 
 Timing of the main simulation loop (based on monogame implementation.  Pretty closely matches actual speed of real game)
 
-
-Logging
 
