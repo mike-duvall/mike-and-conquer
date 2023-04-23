@@ -182,9 +182,9 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        internal void ProcessUiCommandSynchronously(RawCommandUI rawCommandUi)
+        internal void ProcessUiCommandSynchronously(JsonUICommand jsonUiCommand)
         {
-            AsyncViewCommand command = ConvertRawCommand(rawCommandUi);
+            AsyncViewCommand command = ConvertRawCommand(jsonUiCommand);
             command.Process();
             if (command.ThrownException != null)
             {
@@ -195,83 +195,83 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        internal AsyncViewCommand ConvertRawCommand(RawCommandUI rawCommand)
+        internal AsyncViewCommand ConvertRawCommand(JsonUICommand jsonUiCommand)
         {
 
 
-            if (rawCommand.CommandType.Equals(StartScenarioUICommand.CommandName))
+            if (jsonUiCommand.CommandType.Equals(StartScenarioUICommand.CommandName))
             {
 
                 StartScenarioUICommand command = new StartScenarioUICommand(new HumanPlayerController());
                 return command;
 
             }
-            else if (rawCommand.CommandType.Equals(SelectUnitCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(SelectUnitCommand.CommandName))
             {
                 SelectUnitCommandBody commandBody =
-                    JsonConvert.DeserializeObject<SelectUnitCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<SelectUnitCommandBody>(jsonUiCommand.JsonCommandData);
 
                 SelectUnitCommand command = new SelectUnitCommand(commandBody.UnitId);
                 return command;
             }
-            else if (rawCommand.CommandType.Equals(LeftClickCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(LeftClickCommand.CommandName))
             {
                 ClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<ClickCommandBody>(jsonUiCommand.JsonCommandData);
 
                 LeftClickCommand command =
                     new LeftClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
-            if (rawCommand.CommandType.Equals(LeftClickSidebarCommand.CommandName))
+            if (jsonUiCommand.CommandType.Equals(LeftClickSidebarCommand.CommandName))
             {
                 ClickSidebarCommandBody commandBody =
-                    JsonConvert.DeserializeObject<ClickSidebarCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<ClickSidebarCommandBody>(jsonUiCommand.JsonCommandData);
 
                 LeftClickSidebarCommand command =
                     new LeftClickSidebarCommand(commandBody.SidebarIconName);
                 return command;
             }
-            else if (rawCommand.CommandType.Equals(RightClickCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(RightClickCommand.CommandName))
             {
                 ClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<ClickCommandBody>(jsonUiCommand.JsonCommandData);
 
                 RightClickCommand command =
                     new RightClickCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
-            else if (rawCommand.CommandType.Equals(LeftClickAndHoldCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(LeftClickAndHoldCommand.CommandName))
             {
                 ClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<ClickCommandBody>(jsonUiCommand.JsonCommandData);
 
                 LeftClickAndHoldCommand command =
                     new LeftClickAndHoldCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
-            else if (rawCommand.CommandType.Equals(MoveMouseCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(MoveMouseCommand.CommandName))
             {
                 ClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<ClickCommandBody>(jsonUiCommand.JsonCommandData);
 
                 MoveMouseCommand command =
                     new MoveMouseCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
             }
-            else if (rawCommand.CommandType.Equals(ReleaseLeftMouseButtonCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(ReleaseLeftMouseButtonCommand.CommandName))
             {
                 ClickCommandBody commandBody =
-                    JsonConvert.DeserializeObject<ClickCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<ClickCommandBody>(jsonUiCommand.JsonCommandData);
 
                 ReleaseLeftMouseButtonCommand command = new ReleaseLeftMouseButtonCommand(commandBody.XInWorldCoordinates, commandBody.YInWorldCoordinates);
                 return command;
 
             }
-            else if (rawCommand.CommandType.Equals(SetUIOptionsCommand.CommandName))
+            else if (jsonUiCommand.CommandType.Equals(SetUIOptionsCommand.CommandName))
             {
                 SetUIOptionsCommandBody commandBody =
-                    JsonConvert.DeserializeObject<SetUIOptionsCommandBody>(rawCommand.CommandData);
+                    JsonConvert.DeserializeObject<SetUIOptionsCommandBody>(jsonUiCommand.JsonCommandData);
 
                 SetUIOptionsCommand command = new SetUIOptionsCommand(commandBody.DrawShroud, commandBody.MapZoomLevel);
                 return command;
@@ -281,7 +281,7 @@ namespace mike_and_conquer_monogame.main
 
             else
             {
-                throw new Exception("Unknown CommandType:" + rawCommand.CommandType);
+                throw new Exception("Unknown CommandType:" + jsonUiCommand.CommandType);
             }
 
         }
