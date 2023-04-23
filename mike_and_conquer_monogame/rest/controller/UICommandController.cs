@@ -24,16 +24,16 @@ namespace mike_and_conquer_monogame.rest.controller
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult PostAdminCommand([FromBody] RestRawCommandUI incomingRawCommand)
+        public ActionResult PostAdminCommand([FromBody] RestJsonUICommand incomingJsonUiCommand)
         {
-            Logger.Information("PostAdminCommand called with incomingRawCommand = {incomingRawCommand}", incomingRawCommand);
+            Logger.Information("PostAdminCommand called with incomingJsonUiCommand = {incomingJsonUiCommand}", incomingJsonUiCommand);
             try
             {
-                RawCommandUI rawCommand = new RawCommandUI();
-                rawCommand.CommandType = incomingRawCommand.CommandType;
-                rawCommand.CommandData = incomingRawCommand.CommandData;
+                JsonUICommand jsonUiCommand = new JsonUICommand();
+                jsonUiCommand.CommandType = incomingJsonUiCommand.CommandType;
+                jsonUiCommand.JsonCommandData = incomingJsonUiCommand.JsonCommandData;
                 
-                MikeAndConquerGame.instance.ProcessUiCommandSynchronously(rawCommand);
+                MikeAndConquerGame.instance.ProcessUiCommandSynchronously(jsonUiCommand);
 
                 return new OkObjectResult(new { Message = "Command Accepted" });
 
