@@ -129,17 +129,19 @@ namespace mike_and_conquer_monogame.humancontroller
             mouseInput.mkhi.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE;
             uint y3 = SendInput(1, ref mouseInput, mouseInputStructSize);
 
+            System.Threading.Thread.Sleep(500);
+
             mouseInput.mkhi.mi.dwFlags = mouseDownFlag;
             // mouseInput.mkhi.mi.time = (uint)DateTime.Now.Ticks;
             mouseInput.mkhi.mi.time = 0;
             uint y = SendInput(1, ref mouseInput, mouseInputStructSize);
             
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(500);
             
             mouseInput.mkhi.mi.dwFlags = mouseUpFlag;
             uint y2 = SendInput(1, ref mouseInput, mouseInputStructSize);
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(500);
 
         }
 

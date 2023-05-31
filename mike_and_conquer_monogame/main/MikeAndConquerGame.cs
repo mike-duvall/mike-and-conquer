@@ -852,7 +852,7 @@ namespace mike_and_conquer_monogame.main
 
         private UnitView GetUnitViewByIdViaCommand(int unitId)
         {
-            GetMinigunnerViewCommand command = new GetMinigunnerViewCommand(GameWorldView.instance, unitId);
+            GetUnitViewCommand command = new GetUnitViewCommand(unitId);
             PostCommand(command);
             UnitView unitView = (UnitView) command.GetResult();
             return unitView;
@@ -1015,19 +1015,6 @@ namespace mike_and_conquer_monogame.main
         }
 
 
-        public UnitView GetUnitViewByIdByEvent(int unitId)
-        {
-
-            GetUnitViewCommand command = new GetUnitViewCommand(unitId);
-
-            lock (inputCommandQueue)
-            {
-                inputCommandQueue.Enqueue(command);
-            }
-
-            UnitView unitView = command.GetUnitView();
-            return unitView;
-        }
 
         public MemoryStream GetScreenshotViaEvent()
         {
