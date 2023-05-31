@@ -53,7 +53,8 @@ mike_and_conquer_monogame also translates user input into commands and sends tho
 ![High Level Architecture](/docs/high-level.drawio.png?raw=true "High Level Architecture")
 
 
-In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame provide REST interfaces that faciliate setting up and running test scenarios via a separate test project: mike_and_conquer_test.  
+In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame provide REST interfaces that faciliate setting up and running test scenarios via a separate test project:
+* mike_and_conquer_test (https://github.com/mike-duvall/mike-and-conquer-test)
 
 
 
