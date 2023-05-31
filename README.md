@@ -53,26 +53,22 @@ In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame prov
 
 
 
-## TBD
+## To be documented
 
 
-* Use threads
-** Threading and thread safety
-
-
-
-Both having a constantly running loop that pulls commands from the command queue
+* Use of threads
+    * Threading and thread safety
+    * Both projects a constantly running loop that pulls commands from the command queue
 
 
 
-Testing
-	Breakdown of UI client vs admin client
+* Testing
+    * Breakdown of UI client vs admin client
 
-Running headless
+* Running headless
 
-Determinsitic simulation
+* Determinsitic simulation
 
-
-Timing of the main simulation loop (based on monogame implementation.  Pretty closely matches actual speed of real game)
+* Timing of the main simulation loop (based on monogame implementation.  Pretty closely matches actual speed of real game)
 
 
