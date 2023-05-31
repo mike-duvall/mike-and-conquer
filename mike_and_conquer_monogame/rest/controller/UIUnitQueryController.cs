@@ -21,7 +21,7 @@ namespace mike_and_conquer_monogame.rest.controller
         public ActionResult Get([FromQuery] int unitId)
         {
 
-            UnitView unitView = MikeAndConquerGame.instance.GetUnitViewByIdByEvent(unitId);
+            UnitView unitView = MikeAndConquerGame.instance.GetUnitViewById(unitId);
 
 
             RestUnit restUnit = new RestUnit();
