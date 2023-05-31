@@ -51,19 +51,22 @@ mike_and_conquer_monogame also translates user input into commands and sends tho
 In addition, both mike_and_conquer_simulation and mike_and_conquer_monogame provide REST interfaces that faciliate setting up and running test scenarios via a separate test project: mike_and_conquer_test.  
 
 
-Threads here...
 
 
-Both have REST interfaces
+## TBD
 
-Breakdown of UI client vs admin client
+
+* Use threads
+** Threading and thread safety
+
 
 
 Both having a constantly running loop that pulls commands from the command queue
 
-Threading and thread safety
+
 
 Testing
+	Breakdown of UI client vs admin client
 
 Running headless
 
