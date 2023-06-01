@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using mike_and_conquer_simulation.commands;
@@ -17,10 +15,10 @@ namespace mike_and_conquer_simulation.rest.controller
     [Route("simulation/command")]
 
 
-    public class AdminCommandController : ControllerBase
+    public class SimulationCommandController : ControllerBase
     {
 
-        private static readonly ILogger Logger = Log.ForContext<AdminCommandController>();
+        private static readonly ILogger Logger = Log.ForContext<SimulationCommandController>();
 
 
         [HttpPost]

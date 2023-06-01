@@ -13,11 +13,11 @@ namespace mike_and_conquer_simulation.rest.controller
     [ApiController]
     [Route("simulation/query/events")]
 
-    public class SimulationStateUpdateEventsController : ControllerBase
+    public class SimulationQueryEventsController : ControllerBase
     {
 
 
-        private static readonly ILogger Logger = Log.ForContext<SimulationStateUpdateEventsController>();
+        private static readonly ILogger Logger = Log.ForContext<SimulationQueryEventsController>();
 
 
         [HttpGet]
@@ -29,7 +29,7 @@ namespace mike_and_conquer_simulation.rest.controller
             List<RestSimulationStateUpdateEvent> restReturnList = new List<RestSimulationStateUpdateEvent>();
 
             List<SimulationStateUpdateEvent> simulationStateUpdateList = 
-                SimulationMain.instance.GetCopyOfEventHistoryViaEvent();
+                SimulationMain.instance.GetCopyOfEventHistoryViaCommand();
 
 
             int currentIndex = 0;

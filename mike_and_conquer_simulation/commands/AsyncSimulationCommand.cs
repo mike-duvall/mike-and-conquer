@@ -18,26 +18,9 @@ namespace mike_and_conquer_simulation.commands
             this.thrownException = null;
         }
 
-        //        protected abstract GameState ProcessImpl();
         protected abstract void ProcessImpl();
 
 
-
-        // public GameState Process()
-        // {
-        //     GameState newGameState = null;
-        //     try
-        //     {
-        //         newGameState = ProcessImpl();
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         thrownException = e;
-        //     }
-        //
-        //     condition.Set();
-        //     return newGameState;
-        // }
         public void Process()
         {
             try
@@ -59,15 +42,6 @@ namespace mike_and_conquer_simulation.commands
         // setting a result
         public Object GetResult()
         {
-            // condition.WaitOne();
-            // if (thrownException != null)
-            // {
-            //     throw thrownException;
-            // }
-            // else
-            // {
-            //     return result;
-            // }
             WaitUntilCompleted();
             return result;
         }

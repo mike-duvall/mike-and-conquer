@@ -202,7 +202,7 @@ namespace mike_and_conquer_simulation.main
         private void Tick()
         {
             Update();
-            ProcessInputEventQueue();
+            ProcessInputCommandQueue();
         }
 
         private void Update()
@@ -216,7 +216,7 @@ namespace mike_and_conquer_simulation.main
 
         }
 
-        private void ProcessInputEventQueue()
+        private void ProcessInputCommandQueue()
         {
             lock (inputCommandQueue)
             {
@@ -226,14 +226,14 @@ namespace mike_and_conquer_simulation.main
                     anEvent.Process();
                     if (anEvent.ThrownException != null)
                     {
-                        string errorMessage = "Exception thrown processing command '" + anEvent.ToString() + "' in SimulationMain.ProcessInputEventQueue().  Exception stacktrace follows:";
+                        string errorMessage = "Exception thrown processing command '" + anEvent.ToString() + "' in SimulationMain.ProcessInputCommandQueue().  Exception stacktrace follows:";
                         // Logger.LogError(anEvent.ThrownException, errorMessage);
                     }
                 }
             }
         }
 
-        public List<SimulationStateUpdateEvent> GetCopyOfEventHistoryViaEvent()
+        public List<SimulationStateUpdateEvent> GetCopyOfEventHistoryViaCommand()
         {
             GetCopyOfEventHistoryCommand anEvent = new GetCopyOfEventHistoryCommand();
 

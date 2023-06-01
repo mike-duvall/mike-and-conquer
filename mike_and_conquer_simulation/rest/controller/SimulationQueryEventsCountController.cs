@@ -12,13 +12,13 @@ namespace mike_and_conquer_simulation.rest.controller
     [ApiController]
     [Route("simulation/query/eventscount")]
 
-    public class SimulationStateUpdateEventsCountController : ControllerBase
+    public class SimulationQueryEventsCountController : ControllerBase
     {
 
 
-        // private readonly ILogger<SimulationStateUpdateEventsController> _logger;
+        // private readonly ILogger<SimulationQueryEventsController> _logger;
         //
-        // public SimulationStateUpdateEventsCountController(ILogger<SimulationStateUpdateEventsController> logger)
+        // public SimulationQueryEventsCountController(ILogger<SimulationQueryEventsController> logger)
         // {
         //     _logger = logger;
         // }
@@ -26,10 +26,10 @@ namespace mike_and_conquer_simulation.rest.controller
         [HttpGet]
         public int Get()
         {
-            List<RestSimulationStateUpdateEvent> restReturnList = new List<RestSimulationStateUpdateEvent>();
+            // List<RestSimulationStateUpdateEvent> restReturnList = new List<RestSimulationStateUpdateEvent>();
 
             List<SimulationStateUpdateEvent> simulationStateUpdateList = 
-                SimulationMain.instance.GetCopyOfEventHistoryViaEvent();
+                SimulationMain.instance.GetCopyOfEventHistoryViaCommand();
 
             return simulationStateUpdateList.Count;
         }
