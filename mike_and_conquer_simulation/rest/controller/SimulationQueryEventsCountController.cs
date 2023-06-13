@@ -1,10 +1,10 @@
 ﻿
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.main;
-using mike_and_conquer_simulation.rest.domain;
+
 
 
 namespace mike_and_conquer_simulation.rest.controller
@@ -16,17 +16,10 @@ namespace mike_and_conquer_simulation.rest.controller
     {
 
 
-        // private readonly ILogger<SimulationQueryEventsController> _logger;
-        //
-        // public SimulationQueryEventsCountController(ILogger<SimulationQueryEventsController> logger)
-        // {
-        //     _logger = logger;
-        // }
 
         [HttpGet]
         public int Get()
         {
-            // List<RestSimulationStateUpdateEvent> restReturnList = new List<RestSimulationStateUpdateEvent>();
 
             List<SimulationStateUpdateEvent> simulationStateUpdateList = 
                 SimulationMain.instance.GetCopyOfEventHistoryViaCommand();
