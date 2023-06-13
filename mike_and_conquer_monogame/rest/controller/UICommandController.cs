@@ -29,11 +29,11 @@ namespace mike_and_conquer_monogame.rest.controller
             Logger.Information("PostAdminCommand called with incomingJsonUiCommand = {incomingJsonUiCommand}", incomingJsonUiCommand);
             try
             {
-                JsonAsynViewCommand jsonAsynViewCommand = new JsonAsynViewCommand();
-                jsonAsynViewCommand.CommandType = incomingJsonUiCommand.CommandType;
-                jsonAsynViewCommand.JsonCommandData = incomingJsonUiCommand.JsonCommandData;
+                JsonAsyncViewCommand jsonAsyncViewCommand = new JsonAsyncViewCommand();
+                jsonAsyncViewCommand.CommandType = incomingJsonUiCommand.CommandType;
+                jsonAsyncViewCommand.JsonCommandData = incomingJsonUiCommand.JsonCommandData;
                 
-                MikeAndConquerGame.instance.ProcessUiCommandSynchronously(jsonAsynViewCommand);
+                MikeAndConquerGame.instance.ProcessUiCommandSynchronously(jsonAsyncViewCommand);
 
                 return new OkObjectResult(new { Message = "Command Accepted" });
 
