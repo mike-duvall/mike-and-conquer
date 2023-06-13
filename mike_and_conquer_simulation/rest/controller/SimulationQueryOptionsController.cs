@@ -9,7 +9,7 @@ namespace mike_and_conquer_simulation.rest.controller
     [Route("simulation/query/options")]
 
 
-    public class SimulationControllerQueryController : ControllerBase
+    public class SimulationQueryOptionsController : ControllerBase
     {
 
 
@@ -18,6 +18,10 @@ namespace mike_and_conquer_simulation.rest.controller
         public ActionResult Get()
         {
             // TODO:  Is this thread safe and does it need to be?
+            // I think it technically might be since GameOptions is an enum, which should be atomic
+            // and it's getting converted to a String, which should also be atomic
+            // but probably still should make it follow the standard pattern of using a thread safe
+            // Async command to retrieve the data
 
             SimulationOptions options = SimulationMain.instance.GetSimulationOptions();
             SimulationOptions.GameSpeed gameSpeed = options.CurrentGameSpeed;

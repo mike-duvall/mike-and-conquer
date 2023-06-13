@@ -1,7 +1,7 @@
 ﻿
 namespace mike_and_conquer_monogame.commands.ui
 {
-    internal class JsonUICommand
+    internal class JsonAsyncViewCommand
     {
         public string CommandType { get; set; }
 
