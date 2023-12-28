@@ -63,6 +63,8 @@ namespace mike_and_conquer_simulation.main
         private int reloadTimer;
         private bool weaponIsLoaded;
 
+        private static int MAX_HEALTH = 50;
+
         public Minigunner()
         {
             currentState = State.IDLE;
@@ -73,7 +75,8 @@ namespace mike_and_conquer_simulation.main
 
             reloadTimer = 0;
             weaponIsLoaded = true;
-            health = 50;
+            health = MAX_HEALTH;
+            maxHealth = MAX_HEALTH;
 
             // isMoving = false;
 

@@ -1537,17 +1537,17 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-        public void AddMinigunnerView(int id, string player,int x, int y)
+        public void AddMinigunnerView(int id, string player,int x, int y, int maxHealth, int health)
         {
             UnitView unitView = null;
             if ("GDI".Equals(player))
             {
-                unitView = new GdiMinigunnerView(id, x, y);
+                unitView = new GdiMinigunnerView(id, x, y, maxHealth, health);
                 gdiUnitViewList.Add(unitView);
             }
             else if ("Nod".Equals(player))
             {
-                unitView = new NodMinigunnerView(id, x, y);
+                unitView = new NodMinigunnerView(id, x, y, maxHealth, health);
                 nodUnitViewList.Add(unitView);
             }
 

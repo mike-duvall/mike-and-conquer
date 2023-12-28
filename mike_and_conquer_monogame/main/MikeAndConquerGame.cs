@@ -643,9 +643,9 @@ namespace mike_and_conquer_monogame.main
 
 
 
-        public void AddMinigunnerView(int id, string player, int x, int y)
+        public void AddMinigunnerView(int id, string player, int x, int y, int maxHealth, int health)
         {
-            gameWorldView.AddMinigunnerView(id, player, x, y);
+            gameWorldView.AddMinigunnerView(id, player, x, y, maxHealth, health);
         }
 
         public void RemoveUnitView(int unitId)
