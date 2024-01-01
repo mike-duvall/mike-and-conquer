@@ -661,6 +661,23 @@ namespace mike_and_conquer_simulation.gameworld
             return nodPlayer.FindUnitWithUnitId(unitId);
         }
 
+        internal Unit FindUnitWithUnitId(int unitId)
+        {
+            Unit unit = FindGDIUnitWithUnitId(unitId);
+            if (unit != null)
+            {
+                return unit;
+            }
+            unit = FindNodUnitWithUnitId(unitId);
+            if (unit != null)
+            {
+                return unit;
+            }
+            return null;
+        }
+
+        
+
 
         public void SetGDIPlayerController(PlayerController playerController)
         {
@@ -1289,5 +1306,22 @@ namespace mike_and_conquer_simulation.gameworld
                 nodPlayer.RemoveUnit(unitId);
             }
         }
+
+        // public Unit ApplyDamageToUnit(int unitId, int damageAmount)
+        // {
+        //     throw new NotImplementedException();
+        // }
+
+        internal Unit ApplyDamageToUnit(int unitId, int damageAmount)
+        {
+            Unit foundUnit = FindUnitWithUnitId(unitId);
+            if (foundUnit != null)
+            {
+                foundUnit.ApplyDamage(damageAmount);
+            }
+            return foundUnit;
+        }
+
+
     }
 }

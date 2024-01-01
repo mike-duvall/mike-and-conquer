@@ -261,6 +261,8 @@ namespace mike_and_conquer_simulation.main
 
 
 
+
+
         public bool ApplyDamage(int amountOfDamage)
         {
             health -= amountOfDamage;

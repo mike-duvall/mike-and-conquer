@@ -152,7 +152,7 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add(new UpdateConstructionYardViewWhenConstructionYardCompletesBuildingBarracks (this));
             simulationStateListenerList.Add(new UpdateMinigunnerPercentBuildCompleted(this));
 
-            
+            simulationStateListenerList.Add(new UpdateUnitViewWhenUnitTakesDamageEventHandler(this));
 
             IsMouseVisible = true;
             gameWorldView = new GameWorldView();
@@ -699,6 +699,10 @@ namespace mike_and_conquer_monogame.main
             gameWorldView.UpdateMinigunnerPercentCompleted(percentCompleted);
         }
 
+        public void UpdateUnitViewHealth(int unitId, int newHealthAmount)
+        {
+            gameWorldView.UpdateUnitViewHealth(unitId, newHealthAmount);
+        }
 
         protected override void Draw(GameTime gameTime)
         {

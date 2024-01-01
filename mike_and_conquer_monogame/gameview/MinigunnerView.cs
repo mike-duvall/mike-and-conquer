@@ -14,7 +14,6 @@ namespace mike_and_conquer_monogame.gameview
         private UnitSprite unitSprite;
         private UnitSelectionCursor unitSelectionCursor;
         private DestinationSquare destinationSquare;
-        // private Minigunner myMinigunner;
         private bool drawDestinationSquare;
 
 
