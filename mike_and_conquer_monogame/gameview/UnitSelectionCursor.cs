@@ -160,10 +160,18 @@ namespace mike_and_conquer_monogame.gameview
             Color[] data = new Color[rectangle.Width * rectangle.Height];
         
             Color cncPalleteColorBlack = new Color(0, 255, 255, 255);
-            Color cncPalleteColorGreen = new Color(4, 255, 255, 255);
+            Color cncPalleteHealthColorGreen = new Color(4, 255, 255, 255);
+            Color cncPalleteHealthColorYellow = new Color(5, 255, 255, 255);
+            Color cncPalleteHealthColorRed = new Color(8, 255, 255, 255);
+
+            Color cncPalletteColorHealthBackground = new Color(240, 255, 255, 255);
         
             FillHorizontalLine(data, rectangle.Width, rectangle.Height, 0, cncPalleteColorBlack);
-        
+
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, cncPalletteColorHealthBackground);
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, cncPalletteColorHealthBackground);
+
+
             FillHorizontalLine(data, rectangle.Width, rectangle.Height, 3, cncPalleteColorBlack);
         
             FillVerticalLine(data, rectangle.Width, rectangle.Height, 0, cncPalleteColorBlack);
@@ -174,9 +182,20 @@ namespace mike_and_conquer_monogame.gameview
             float ratio = (float)nonBorderHealthBarWidth / (float)maxHealth;
             int unitHealth = myUnitView.Health;
             int healthBarLength = (int)(unitHealth * ratio);
-        
-            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, cncPalleteColorGreen, 1, healthBarLength);
-            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, cncPalleteColorGreen, 1, healthBarLength);
+
+            Color healthColor = cncPalleteHealthColorGreen;
+
+            if (healthBarLength <= 2)
+            {
+                healthColor = cncPalleteHealthColorRed;
+            }
+            else if (healthBarLength <= 5)
+            {
+                healthColor = cncPalleteHealthColorYellow;
+            }
+
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, healthColor, 1, healthBarLength);
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, healthColor, 1, healthBarLength);
         
             rectangle.SetData(data);
         
