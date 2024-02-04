@@ -27,14 +27,24 @@ namespace mike_and_conquer_simulation.main
             get { return gameWorldLocation; }
         }
 
-        protected int health;
-
         public int UnitId { get; set; }
+
+
+        protected int health;
 
         public int Health
         {
             get { return health; }
         }
+
+        protected int maxHealth;
+
+        public int MaxHealth
+        {
+            get { return maxHealth; }
+        }
+
+
 
         public abstract void Update();
 
@@ -247,6 +257,8 @@ namespace mike_and_conquer_simulation.main
 
             SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
         }
+
+
 
 
 

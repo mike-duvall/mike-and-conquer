@@ -258,7 +258,13 @@ namespace mike_and_conquer_simulation.gameworld
 
             unitList.Add(minigunner);
 
-            PublishUnitCreateEvent(MinigunnerCreateEventData.EventType, minigunner.UnitId, xInWorldCoordinates, yInWorldCoordinates);
+            PublishUnitCreateEvent(
+                MinigunnerCreateEventData.EventType,
+                minigunner.UnitId,
+                xInWorldCoordinates,
+                yInWorldCoordinates,
+                minigunner.MaxHealth,
+                minigunner.Health);
 
             return minigunner;
         }
@@ -350,13 +356,15 @@ namespace mike_and_conquer_simulation.gameworld
         // }
 
 
-        private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
+        private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates, int maxHealth, int health)
         {
             UnitCreateEventData eventData = new UnitCreateEventData(
                 unitId,
                 "Nod",
                 xInWorldCoordinates,
-                yInWorldCoordinates);
+                yInWorldCoordinates,
+                maxHealth,
+                health);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =

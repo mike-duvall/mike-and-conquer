@@ -5,7 +5,7 @@
 
         public const string EventType = "JeepCreated";
 
-        public JeepCreateEventData(int unitId, string player, int x, int y) : base(unitId, player,x, y)
+        public JeepCreateEventData(int unitId, string player, int x, int y, int maxHealth, int health) : base(unitId, player,x, y, maxHealth, health)
         {
         }
     }
