@@ -1307,11 +1307,6 @@ namespace mike_and_conquer_simulation.gameworld
             }
         }
 
-        // public Unit ApplyDamageToUnit(int unitId, int damageAmount)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
         internal Unit ApplyDamageToUnit(int unitId, int damageAmount)
         {
             Unit foundUnit = FindUnitWithUnitId(unitId);
