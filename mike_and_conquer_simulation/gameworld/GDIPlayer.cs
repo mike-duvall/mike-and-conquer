@@ -258,7 +258,13 @@ namespace mike_and_conquer_simulation.gameworld
 
             unitList.Add(minigunner);
 
-            PublishUnitCreateEvent(MinigunnerCreateEventData.EventType, minigunner.UnitId, xInWorldCoordinates, yInWorldCoordinates);
+            PublishUnitCreateEvent(
+                MinigunnerCreateEventData.EventType,
+                minigunner.UnitId,
+                xInWorldCoordinates,
+                yInWorldCoordinates,
+                minigunner.MaxHealth,
+                minigunner.Health);
 
             return minigunner;
         }
@@ -270,7 +276,13 @@ namespace mike_and_conquer_simulation.gameworld
             jeep.GameWorldLocation.Y = yInWorldCoordinates;
             unitList.Add(jeep);
 
-            PublishUnitCreateEvent(JeepCreateEventData.EventType, jeep.UnitId, xInWorldCoordinates, yInWorldCoordinates);
+            PublishUnitCreateEvent(
+                JeepCreateEventData.EventType,
+                jeep.UnitId,
+                xInWorldCoordinates,
+                yInWorldCoordinates,
+                jeep.MaxHealth,
+                jeep.Health);
             return jeep;
         }
 
@@ -281,7 +293,13 @@ namespace mike_and_conquer_simulation.gameworld
             mcv.GameWorldLocation.Y = yInWorldCoordinates;
             unitList.Add(mcv);
 
-            PublishUnitCreateEvent(MCVCreateEventData.EventType, mcv.UnitId, xInWorldCoordinates, yInWorldCoordinates);
+            PublishUnitCreateEvent(
+                MCVCreateEventData.EventType,
+                mcv.UnitId,
+                xInWorldCoordinates,
+                yInWorldCoordinates,
+                mcv.MaxHealth,
+                mcv.Health);
             return mcv;
 
         }
@@ -317,7 +335,9 @@ namespace mike_and_conquer_simulation.gameworld
                     GDIConstructionYardCreatedEventData.EventType,
                     unidId,
                     gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.X,
-                    gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.Y);
+                    gdiConstructionYard.MapTileLocation.WorldCoordinatesAsPoint.Y,
+                    -1,
+                    -1);
 
             }
             else
@@ -343,20 +363,24 @@ namespace mike_and_conquer_simulation.gameworld
                 GDIBarracksPlacedEventData.EventType,
                 unidId,
                 gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.X,
-                gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.Y);
+                gdiBarracks.MapTileLocation.WorldCoordinatesAsPoint.Y,
+                -1,
+                -1);
 
             return gdiBarracks;
 
         }
 
 
-        private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates)
+        private void PublishUnitCreateEvent(string eventType, int unitId, int xInWorldCoordinates, int yInWorldCoordinates, int maxHealth, int health)
         {
             UnitCreateEventData eventData = new UnitCreateEventData(
                 unitId,
                 "GDI",
                 xInWorldCoordinates,
-                yInWorldCoordinates);
+                yInWorldCoordinates,
+                maxHealth,
+                health);
 
             string serializedEventData = JsonConvert.SerializeObject(eventData);
             SimulationStateUpdateEvent simulationStateUpdateEvent =

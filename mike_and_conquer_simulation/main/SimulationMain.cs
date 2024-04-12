@@ -525,8 +525,6 @@ namespace mike_and_conquer_simulation.main
                 return anEvent;
 
             }
-
-
             else if (jsonAsyncSimulationCommand.CommandType.Equals(SetGameSpeedCommand.CommandName))
             {
                 SetSimulationOptionsCommandBody commandBody =
@@ -547,6 +545,16 @@ namespace mike_and_conquer_simulation.main
 
                 RemoveUnitCommand command = new RemoveUnitCommand();
                 command.UnitId = commandBody.UnitId;
+                return command;
+            }
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(ApplyDamageToUnitCommand.CommandName))
+            {
+                ApplyDamageToUnitCommandBody commandBody =
+                    JsonConvert.DeserializeObject<ApplyDamageToUnitCommandBody>(jsonAsyncSimulationCommand.JsonCommandData);
+
+                ApplyDamageToUnitCommand command = new ApplyDamageToUnitCommand();
+                command.UnitId = commandBody.UnitId;
+                command.DamageAmount = commandBody.DamageAmount;
                 return command;
             }
 
@@ -575,5 +583,9 @@ namespace mike_and_conquer_simulation.main
         }
 
 
+        internal Unit ApplyDamageToUnit(int unitId, int damageAmount)
+        {
+            return gameWorld.ApplyDamageToUnit(unitId, damageAmount);
+        }
     }
 }

@@ -1537,17 +1537,17 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-        public void AddMinigunnerView(int id, string player,int x, int y)
+        public void AddMinigunnerView(int id, string player,int x, int y, int maxHealth, int health)
         {
             UnitView unitView = null;
             if ("GDI".Equals(player))
             {
-                unitView = new GdiMinigunnerView(id, x, y);
+                unitView = new GdiMinigunnerView(id, x, y, maxHealth, health);
                 gdiUnitViewList.Add(unitView);
             }
             else if ("Nod".Equals(player))
             {
-                unitView = new NodMinigunnerView(id, x, y);
+                unitView = new NodMinigunnerView(id, x, y, maxHealth, health);
                 nodUnitViewList.Add(unitView);
             }
 
@@ -1664,6 +1664,20 @@ namespace mike_and_conquer_monogame.gameview
             gdiBarracksView.PercentMinigunnerBuildComplete = percentCompleted;
         }
 
+        public void UpdateUnitViewHealth(int unitId, int newHealthAmount)
+        {
+            UnitView unitView = FindUnitViewById(unitId);
+            if (unitView != null)
+            {
+                unitView.Health = newHealthAmount;
+            }
+
+            if (unitView == null)
+            {
+                throw new Exception("Could not find UnitView with id:" + unitId + ", when attempting to update its health");
+            }
+        }
+
 
         public void AddGDIJeepView(int id, int x, int y)
         {
@@ -1742,6 +1756,16 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
+
+        private UnitView FindUnitViewById(int unitId) {
+            UnitView foundUnitView = FindGDIUnitViewById(unitId);
+            if (foundUnitView == null)
+            {
+                foundUnitView = FindNodUnitViewById(unitId);
+            }
+            return foundUnitView;
+        }
+            
 
 
 

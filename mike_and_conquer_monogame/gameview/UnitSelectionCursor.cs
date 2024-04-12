@@ -25,9 +25,9 @@ namespace mike_and_conquer_monogame.gameview
         private Vector2 selectionCursorPosition;
 
 
-        // private Texture2D healthBarTexture;
-        // private Texture2D healthBarShadowTexture;
-        // Vector2 healthBarPosition;
+        private Texture2D healthBarTexture;
+        private Texture2D healthBarShadowTexture;
+        Vector2 healthBarPosition;
 
         Boolean drawBoundingRectangle;
 
@@ -52,11 +52,11 @@ namespace mike_and_conquer_monogame.gameview
             this.selectionCursorTexture = InitializeSelectionCursor();
 
             boundingRectangle = InitializeBoundingRectangle();
-            // healthBarTexture = null;
+            healthBarTexture = null;
 
             drawBoundingRectangle = false;
 
-            // healthBarShadowTexture = InitializeHealthBarShadow();
+            healthBarShadowTexture = InitializeHealthBarShadow();
         }
 
 
@@ -148,61 +148,80 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        // private Texture2D InitializeHealthBar()
-        // {
-        //     
-        //     int healthBarHeight = 4;
-        //     int healthBarWidth = myGameObject.UnitSize.Width;
-        //
-        //     Texture2D rectangle =
-        //         new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
-        //
-        //     Color[] data = new Color[rectangle.Width * rectangle.Height];
-        //
-        //     Color cncPalleteColorBlack = new Color(0, 255, 255, 255);
-        //     Color cncPalleteColorGreen = new Color(4, 255, 255, 255);
-        //
-        //     FillHorizontalLine(data, rectangle.Width, rectangle.Height, 0, cncPalleteColorBlack);
-        //
-        //     FillHorizontalLine(data, rectangle.Width, rectangle.Height, 3, cncPalleteColorBlack);
-        //
-        //     FillVerticalLine(data, rectangle.Width, rectangle.Height, 0, cncPalleteColorBlack);
-        //     FillVerticalLine(data, rectangle.Width, rectangle.Height, healthBarWidth - 1, cncPalleteColorBlack);
-        //
-        //     int nonBorderHealthBarWidth = healthBarWidth - 2;
-        //     int maxHealth = myGameObject.MaxHealth;
-        //     float ratio = (float)nonBorderHealthBarWidth / (float)maxHealth;
-        //     int unitHealth = myGameObject.Health;
-        //     int healthBarLength = (int)(unitHealth * ratio);
-        //
-        //     FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, cncPalleteColorGreen, 1, healthBarLength);
-        //     FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, cncPalleteColorGreen, 1, healthBarLength);
-        //
-        //     rectangle.SetData(data);
-        //
-        //     return rectangle;
-        //
-        // }
+        private Texture2D InitializeHealthBar()
+        {
+            
+            int healthBarHeight = 4;
+            int healthBarWidth = myUnitView.UnitSize.Width;
+        
+            Texture2D rectangle =
+                new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
+        
+            Color[] data = new Color[rectangle.Width * rectangle.Height];
+        
+            Color cncPalleteColorBlack = new Color(0, 255, 255, 255);
+            Color cncPalleteHealthColorGreen = new Color(4, 255, 255, 255);
+            Color cncPalleteHealthColorYellow = new Color(5, 255, 255, 255);
+            Color cncPalleteHealthColorRed = new Color(8, 255, 255, 255);
 
-        // internal Texture2D InitializeHealthBarShadow()
-        // {
-        //     int healthBarHeight = 4;
-        //     // int healthBarWidth = 12;  // This is hard coded for minigunner
-        //     int healthBarWidth = myGameObject.UnitSize.Width;  
-        //
-        //     Texture2D rectangle =
-        //         new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
-        //
-        //     Color[] data = new Color[rectangle.Width * rectangle.Height];
-        //
-        //     Color cncPalleteColorShadow = new Color(255, 255, 255, 255);
-        //
-        //     FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, cncPalleteColorShadow);
-        //     FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, cncPalleteColorShadow);
-        //
-        //     rectangle.SetData(data);
-        //     return rectangle;
-        // }
+            Color cncPalletteColorHealthBackground = new Color(240, 255, 255, 255);
+        
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 0, cncPalleteColorBlack);
+
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, cncPalletteColorHealthBackground);
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, cncPalletteColorHealthBackground);
+
+
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 3, cncPalleteColorBlack);
+        
+            FillVerticalLine(data, rectangle.Width, rectangle.Height, 0, cncPalleteColorBlack);
+            FillVerticalLine(data, rectangle.Width, rectangle.Height, healthBarWidth - 1, cncPalleteColorBlack);
+        
+            int nonBorderHealthBarWidth = healthBarWidth - 2;
+            int maxHealth = myUnitView.MaxHealth;
+            float ratio = (float)nonBorderHealthBarWidth / (float)maxHealth;
+            int unitHealth = myUnitView.Health;
+            int healthBarLength = (int)(unitHealth * ratio);
+
+            Color healthColor = cncPalleteHealthColorGreen;
+
+            if (healthBarLength <= 2)
+            {
+                healthColor = cncPalleteHealthColorRed;
+            }
+            else if (healthBarLength <= 5)
+            {
+                healthColor = cncPalleteHealthColorYellow;
+            }
+
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, healthColor, 1, healthBarLength);
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, healthColor, 1, healthBarLength);
+        
+            rectangle.SetData(data);
+        
+            return rectangle;
+        
+        }
+
+        internal Texture2D InitializeHealthBarShadow()
+        {
+            int healthBarHeight = 4;
+            // int healthBarWidth = 12;  // This is hard coded for minigunner
+            int healthBarWidth = myUnitView.UnitSize.Width;  
+        
+            Texture2D rectangle =
+                new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
+        
+            Color[] data = new Color[rectangle.Width * rectangle.Height];
+        
+            Color cncPalleteColorShadow = new Color(255, 255, 255, 255);
+        
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, cncPalleteColorShadow);
+            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, cncPalleteColorShadow);
+        
+            rectangle.SetData(data);
+            return rectangle;
+        }
 
 
 
@@ -280,11 +299,11 @@ namespace mike_and_conquer_monogame.gameview
         public void Update(GameTime gameTime)
         {
 
-            // if (healthBarTexture != null)
-            // {
-            //     healthBarTexture.Dispose();
-            // }
-            // healthBarTexture = InitializeHealthBar();
+            if (healthBarTexture != null)
+            {
+                healthBarTexture.Dispose();
+            }
+            healthBarTexture = InitializeHealthBar();
 
             Point selectionCursorOffset = myUnitView.SelectionCursorOffset;
             // GameWorldLocation gameWorldLocation = myGameObject.GameWorldLocation;
@@ -301,8 +320,8 @@ namespace mike_and_conquer_monogame.gameview
                 myUnitView.YInWorldCoordinates + selectionCursorOffset.Y);
 
 
-            // healthBarPosition = selectionCursorPosition;
-            // healthBarPosition.Y -= 4;
+            healthBarPosition = selectionCursorPosition;
+            healthBarPosition.Y -= 4;
 
         }
 
@@ -316,12 +335,12 @@ namespace mike_and_conquer_monogame.gameview
             //     spriteBatch.Draw(boundingRectangle, selectionCursorPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, 0f);
             // }
 
-            // spriteBatch.Draw(healthBarTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(healthBarTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, layerDepth);
         }
 
         internal void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch, float layerDepth)
         {
-            // spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, layerDepth);
         }
 
     }

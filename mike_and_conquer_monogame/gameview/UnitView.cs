@@ -15,6 +15,10 @@ namespace mike_and_conquer_monogame.gameview
 
         public bool Selected { get; set; }
 
+        public int MaxHealth { get; set; }
+
+        public int Health { get; set; }
+
 
         public Color color;
 

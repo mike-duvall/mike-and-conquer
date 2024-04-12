@@ -14,7 +14,6 @@ namespace mike_and_conquer_monogame.gameview
         private UnitSprite unitSprite;
         private UnitSelectionCursor unitSelectionCursor;
         private DestinationSquare destinationSquare;
-        // private Minigunner myMinigunner;
         private bool drawDestinationSquare;
 
 
@@ -26,11 +25,13 @@ namespace mike_and_conquer_monogame.gameview
         enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
 
-        protected MinigunnerView(int unitId,string spriteListKey, int xInWorldCoordinates, int yInWorldCoordinates)
+        protected MinigunnerView(int unitId,string spriteListKey, int xInWorldCoordinates, int yInWorldCoordinates, int maxHealth, int health)
         {
             this.UnitId = unitId;
             this.XInWorldCoordinates = xInWorldCoordinates;
             this.YInWorldCoordinates = yInWorldCoordinates;
+            this.MaxHealth = maxHealth;
+            this.Health = health;
             this.unitSprite = new UnitSprite(spriteListKey);
             this.unitSprite.drawBoundingRectangle = false;
             this.unitSprite.drawShadow = true;

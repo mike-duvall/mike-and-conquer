@@ -17,7 +17,8 @@ namespace mike_and_conquer_monogame.gameview
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
 
-        public GdiMinigunnerView(int unitId,  int xInWorldCoordinates, int yInWorldCoordinates) : base( unitId, SPRITE_KEY, xInWorldCoordinates, yInWorldCoordinates)
+        public GdiMinigunnerView(int unitId,  int xInWorldCoordinates, int yInWorldCoordinates,int maxHealth, int health)
+            : base( unitId, SPRITE_KEY, xInWorldCoordinates, yInWorldCoordinates, maxHealth, health)
         {
 
         }
