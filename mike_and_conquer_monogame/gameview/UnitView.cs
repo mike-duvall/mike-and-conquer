@@ -63,8 +63,8 @@ namespace mike_and_conquer_monogame.gameview
         internal Rectangle CreateClickDetectionRectangle()
         {
 
-            int unitWidth = 12;
-            int unitHeight = 12;
+            int unitWidth = this.unitSize.Width;
+            int unitHeight = this.unitSize.Height;
 
             int x = (int)(XInWorldCoordinates - (unitWidth / 2));
             int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
