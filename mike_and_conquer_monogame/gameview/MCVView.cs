@@ -33,7 +33,8 @@ namespace mike_and_conquer_monogame.gameview
             this.YInWorldCoordinates = yInWorldCoordinates;
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
-            this.unitSprite.drawBoundingRectangle = true;
+            // this.unitSprite.drawBoundingRectangle = true;
+            this.unitSprite.drawBoundingRectangle = false;
             this.unitSprite.drawShadow = true;
             // this.mcvSelectionBox = new MCVSelectionBox();
 

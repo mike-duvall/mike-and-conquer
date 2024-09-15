@@ -900,7 +900,8 @@ namespace mike_and_conquer_monogame.main
         {
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+            // unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates;
 
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);
