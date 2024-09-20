@@ -67,7 +67,8 @@ namespace mike_and_conquer_monogame.gameview
             int unitHeight = this.unitSize.Height;
 
             int x = (int)(XInWorldCoordinates - (unitWidth / 2));
-            int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
+            // int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
+            int y = (int)(YInWorldCoordinates - (unitWidth / 2));
 
 
             // TODO: Is this a memory leak?

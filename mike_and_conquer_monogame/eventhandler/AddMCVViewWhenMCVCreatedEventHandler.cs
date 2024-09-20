@@ -1,4 +1,5 @@
-﻿using mike_and_conquer_monogame.commands;
+﻿using System;
+using mike_and_conquer_monogame.commands;
 using mike_and_conquer_monogame.main;
 using mike_and_conquer_simulation.events;
 using Newtonsoft.Json;
@@ -18,15 +19,19 @@ namespace mike_and_conquer_monogame.eventhandler
 
         public override void Update(SimulationStateUpdateEvent anEvent)
         {
-            if (anEvent.EventType.Equals(MCVCreateEventData.EventType))
+            // if (anEvent.EventType.Equals(MCVCreateEventData.EventType))
+            // {
+            //     MCVCreateEventData eventData =
+            //         JsonConvert.DeserializeObject<MCVCreateEventData>(anEvent.EventData);
+            //
+            //     AddMCVViewCommand viewCommand = new AddMCVViewCommand(eventData.UnitId, eventData.X, eventData.Y);
+            //
+            //     mikeAndConquerGame.PostCommand(viewCommand);
+            //
+            // }
+            if (true)
             {
-                MCVCreateEventData eventData =
-                    JsonConvert.DeserializeObject<MCVCreateEventData>(anEvent.EventData);
-
-                AddMCVViewCommand viewCommand = new AddMCVViewCommand(eventData.UnitId, eventData.X, eventData.Y);
-
-                mikeAndConquerGame.PostCommand(viewCommand);
-
+                throw new Exception("This shouldn't have been called");
             }
 
 

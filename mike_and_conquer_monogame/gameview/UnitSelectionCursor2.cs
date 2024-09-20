@@ -12,7 +12,7 @@ using Boolean = System.Boolean;
 
 namespace mike_and_conquer_monogame.gameview;
 
-public class UnitSelectionCursor
+public class UnitSelectionCursor2
 {
     private Texture2D boundingRectangle;
 
@@ -29,22 +29,42 @@ public class UnitSelectionCursor
 
     private bool drawBoundingRectangle;
 
-    private Vector2 origin;
+    // private Vector2 origin;
+    private Vector2 middleOfUnitSelectionCursor;
+    private Vector2 healthBarTextureOrigin;
 
     private float defaultScale = 1;
 
+    private int width;
+    private int height;
 
-    private UnitSelectionCursor()
+    private int selectionCursorPartLength;
+    private int healthBarWidth;
+
+
+    private UnitSelectionCursor2()
     {
     }
 
 
-    public UnitSelectionCursor(UnitView unitView, int x, int y)
+    public UnitSelectionCursor2(
+        UnitView unitView,
+        int width,
+        int height,
+        int selectionCursorPartLength,
+        int healthBarWidth,
+        int locationX,
+        int locationY)
     {
         myUnitView = unitView;
-        origin = new Vector2();
-        origin.X = 0;
-        origin.Y = 0;
+        this.width = width;
+        this.height = height;
+        this.selectionCursorPartLength = selectionCursorPartLength;
+        this.healthBarWidth = healthBarWidth;
+
+        healthBarTextureOrigin = new Vector2(18, 16);
+        middleOfUnitSelectionCursor  = new Vector2(width / 2, height / 2);
+
 
         selectionCursorTexture = InitializeSelectionCursor();
 
@@ -128,7 +148,8 @@ public class UnitSelectionCursor
     private Texture2D InitializeHealthBar()
     {
         var healthBarHeight = 4;
-        var healthBarWidth = myUnitView.UnitSize.Width;
+        // var healthBarWidth = myUnitView.UnitSize.Width;
+
 
         var rectangle =
             new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
@@ -175,9 +196,16 @@ public class UnitSelectionCursor
 
     internal Texture2D InitializeHealthBarShadow()
     {
+
+
+        // Pickup here
+        // Fix code for creating unit selection cursor to work properly for MCV, matching what's in real Cnc
+        // Unit selection cursor is much bigger than the actual unit
+
+
         var healthBarHeight = 4;
         // int healthBarWidth = 12;  // This is hard coded for minigunner
-        var healthBarWidth = myUnitView.UnitSize.Width;
+        // var healthBarWidth = myUnitView.UnitSize.Width;
 
         var rectangle =
             new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
@@ -249,15 +277,24 @@ public class UnitSelectionCursor
 
     private Texture2D InitializeSelectionCursor()
     {
-        var unitSize = myUnitView.UnitSize;
+        // var unitSize = myUnitView.UnitSize;
+        //
+        // var width = unitSize.Width + 1;
+        // var height = unitSize.Height - 4 + 1;
 
-        var width = unitSize.Width + 1;
-        var height = unitSize.Height - 4 + 1;
+        // var width = unitSize.Width + 1;
+        // var height = unitSize.Height - 4 + 1;
 
-        var horizontalLength = unitSize.Width / 5 + 1;
-        var verticalLength = unitSize.Height / 5 + 1;
 
-        return CreateUnitSelectionTexture(width, height, horizontalLength, verticalLength);
+        // var horizontalLength = unitSize.Width / 5 + 1;
+        // var verticalLength = unitSize.Height / 5 + 1;
+
+        // var horizontalLength = width / 5 + 1;
+        // var verticalLength = height / 5 + 1;
+
+
+
+        return CreateUnitSelectionTexture(width, height, selectionCursorPartLength, selectionCursorPartLength);
     }
 
 
@@ -280,13 +317,17 @@ public class UnitSelectionCursor
             myUnitView.YInWorldCoordinates + selectionCursorOffset.Y);
 
 
+        // Pickup here
+        // Continue to fine tune selection cursor position
+        // Get health bar working
+
         healthBarPosition = selectionCursorPosition;
         healthBarPosition.Y -= 4;
     }
 
     internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch, float layerDepth)
     {
-        spriteBatch.Draw(selectionCursorTexture, selectionCursorPosition, null, Color.White, 0f, origin, defaultScale,
+        spriteBatch.Draw(selectionCursorTexture, selectionCursorPosition, null, Color.White, 0f, middleOfUnitSelectionCursor, defaultScale,
             SpriteEffects.None, layerDepth);
         // if (drawBoundingRectangle)
         // {
@@ -294,13 +335,14 @@ public class UnitSelectionCursor
         //     spriteBatch.Draw(boundingRectangle, selectionCursorPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, 0f);
         // }
 
-        spriteBatch.Draw(healthBarTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale,
+        spriteBatch.Draw(healthBarTexture, healthBarPosition, null, Color.White, 0f, healthBarTextureOrigin, defaultScale,
             SpriteEffects.None, layerDepth);
     }
 
     internal void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch, float layerDepth)
     {
-        spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale,
+        spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, healthBarTextureOrigin, defaultScale,
             SpriteEffects.None, layerDepth);
+
     }
 }
