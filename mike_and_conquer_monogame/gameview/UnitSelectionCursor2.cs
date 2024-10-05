@@ -16,6 +16,7 @@ public class UnitSelectionCursor2
 {
     private Texture2D boundingRectangle;
 
+
     // private GameObject myGameObject;
     private readonly UnitView myUnitView;
 
@@ -35,10 +36,11 @@ public class UnitSelectionCursor2
 
     private float defaultScale = 1;
 
-    private int width;
-    private int height;
+    private int overallWidth;
+    private int overallHeight;
 
-    private int selectionCursorPartLength;
+    private int selectionCursorPartWidth;
+    private int selectionCursorPartHeight;
     private int healthBarWidth;
 
 
@@ -49,21 +51,26 @@ public class UnitSelectionCursor2
 
     public UnitSelectionCursor2(
         UnitView unitView,
-        int width,
-        int height,
-        int selectionCursorPartLength,
+        int overallWidth,
+        int overallHeight,
+        int selectionCursorPartWidth,
+        int selectionCursorPartHeight,
         int healthBarWidth,
+        int healthBarX,
+        int healthBarY,
         int locationX,
         int locationY)
     {
         myUnitView = unitView;
-        this.width = width;
-        this.height = height;
-        this.selectionCursorPartLength = selectionCursorPartLength;
+        this.overallWidth = overallWidth;
+        this.overallHeight = overallHeight;
+        this.selectionCursorPartWidth = selectionCursorPartWidth;
+        this.selectionCursorPartHeight = selectionCursorPartHeight;
         this.healthBarWidth = healthBarWidth;
 
-        healthBarTextureOrigin = new Vector2(18, 16);
-        middleOfUnitSelectionCursor  = new Vector2(width / 2, height / 2);
+        // healthBarTextureOrigin = new Vector2(18, 16);
+        healthBarTextureOrigin = new Vector2(healthBarX, healthBarY);
+        middleOfUnitSelectionCursor  = new Vector2(overallWidth / 2, overallHeight / 2);
 
 
         selectionCursorTexture = InitializeSelectionCursor();
@@ -222,9 +229,9 @@ public class UnitSelectionCursor2
     }
 
 
-    private Texture2D CreateUnitSelectionTexture(int width, int height, int horizontalLength, int verticalLength)
+    private Texture2D CreateUnitSelectionTexture(int overallWidth, int overallHeight, int partWidth, int partHeight)
     {
-        var unitSelectionTextureKey = "UnitSelectionTexture-width-" + width + "-height-" + height;
+        var unitSelectionTextureKey = "UnitSelectionTexture-width-" + overallWidth + "-height-" + overallHeight;
 
 
         var unitSelectionTexture = MikeAndConquerGame.instance.SpriteSheet.GetTextureForKey(unitSelectionTextureKey);
@@ -234,7 +241,7 @@ public class UnitSelectionCursor2
             var cncPalleteColorWhite = new Color(255, 255, 255, 255);
 
             unitSelectionTexture =
-                new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, width, height);
+                new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, overallWidth, overallHeight);
 
             var data = new Color[unitSelectionTexture.Width * unitSelectionTexture.Height];
 
@@ -242,29 +249,29 @@ public class UnitSelectionCursor2
             var startY = 0;
 
             // top left
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
 
             // bottom left
-            startY = height - verticalLength;
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
-            startY = height - 1;
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
+            startY = overallHeight - partHeight;
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
+            startY = overallHeight - 1;
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
 
             // top right
-            startX = width - horizontalLength;
+            startX = overallWidth - partWidth;
             startY = 0;
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
-            startX = width - 1;
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
+            startX = overallWidth - 1;
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
 
             // bottom right
-            startY = height - verticalLength;
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
-            startX = width - horizontalLength;
+            startY = overallHeight - partHeight;
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
+            startX = overallWidth - partWidth;
 
-            startY = height - 1;
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
+            startY = overallHeight - 1;
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
 
             unitSelectionTexture.SetData(data);
 
@@ -294,7 +301,7 @@ public class UnitSelectionCursor2
 
 
 
-        return CreateUnitSelectionTexture(width, height, selectionCursorPartLength, selectionCursorPartLength);
+        return CreateUnitSelectionTexture(overallWidth, overallHeight, selectionCursorPartWidth, selectionCursorPartHeight);
     }
 
 

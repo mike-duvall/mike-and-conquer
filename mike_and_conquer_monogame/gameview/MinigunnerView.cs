@@ -5,14 +5,16 @@ using mike_and_conquer_monogame.main;
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
+using XnaPoint = Microsoft.Xna.Framework.Point;
 
- 
+
 namespace mike_and_conquer_monogame.gameview
 {
     public class MinigunnerView : UnitView
     {
         private UnitSprite unitSprite;
-        private UnitSelectionCursor unitSelectionCursor;
+        // private UnitSelectionCursor unitSelectionCursor;
+        private UnitSelectionCursor2 unitSelectionCursor;
         private DestinationSquare destinationSquare;
         private bool drawDestinationSquare;
 
@@ -39,11 +41,35 @@ namespace mike_and_conquer_monogame.gameview
             this.unitSize = new UnitSize(12, 16);
 
 
-            this.unitSelectionCursor = new UnitSelectionCursor(this, XInWorldCoordinates, YInWorldCoordinates);
+            // UnitView unitView,
+            // int overallWidth,
+            // int overallHeight,
+            // int selectionCursorPartWidth,
+            // int selectionCursorPartHeight,
+            // int healthBarWidth,
+            // int locationX,
+            // int locationY)
+
+
+            this.unitSelectionCursor = new UnitSelectionCursor2(
+                this,
+                13,
+                13,
+                3,
+                4,
+                12,
+                6,
+                6,
+                XInWorldCoordinates,
+                YInWorldCoordinates);
+
+
             // this.destinationSquare = new DestinationSquare();
             this.drawDestinationSquare = false;
             SetupAnimations();
-            this.selectionCursorOffset = new Point(-6, -10);
+
+            // this.selectionCursorOffset = new Point(0, -5);  // X is correct, y too high
+            this.selectionCursorOffset = new Point(0, -4);
         }
 
 

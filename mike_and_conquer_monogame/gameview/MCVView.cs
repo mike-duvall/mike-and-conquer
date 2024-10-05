@@ -33,17 +33,27 @@ public class MCVView : UnitView
 
 
         unitSprite = new UnitSprite(SPRITE_KEY);
-        this.unitSprite.drawBoundingRectangle = true;
-        // unitSprite.drawBoundingRectangle = false;
+        // this.unitSprite.drawBoundingRectangle = true;
+        unitSprite.drawBoundingRectangle = false;
         unitSprite.drawShadow = true;
         // this.mcvSelectionBox = new MCVSelectionBox();
 
-        unitSize = new UnitSize(24, 24);
+        unitSize = new UnitSize(26, 26);
         // this.selectionCursorOffset = new XnaPoint(-18, -14);
         selectionCursorOffset = new XnaPoint(0, 2);
 
 
-        unitSelectionCursor = new UnitSelectionCursor2(this, 37, 33, 8, 36, XInWorldCoordinates, YInWorldCoordinates);
+        unitSelectionCursor = new UnitSelectionCursor2(
+            this,
+            37,
+            33,
+            8,
+            8,
+            36,
+            18,
+            16,
+            XInWorldCoordinates,
+            YInWorldCoordinates);
 
         // this.destinationSquare = new DestinationSquare();
         drawDestinationSquare = false;
@@ -75,10 +85,10 @@ public class MCVView : UnitView
         unitSprite.DrawNoShadow(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
 
 
-        // if (Selected)
-        // {
-        unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
-        // }
+        if (Selected)
+        {
+            unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
+        }
     }
 
 
