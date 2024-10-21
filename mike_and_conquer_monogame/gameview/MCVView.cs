@@ -12,7 +12,7 @@ public class MCVView : UnitView
 {
     private UnitSprite unitSprite;
     // private UnitSelectionCursor unitSelectionCursor;
-    private UnitSelectionCursor2 unitSelectionCursor;
+    private UnitSelectionCursor unitSelectionCursor;
     private DestinationSquare destinationSquare;
     private bool drawDestinationSquare;
 
@@ -53,7 +53,7 @@ public class MCVView : UnitView
         selectionCursorOffset = new XnaPoint(0, 2);
 
 
-        unitSelectionCursor = new UnitSelectionCursor2(
+        unitSelectionCursor = new UnitSelectionCursor(
             this,
             37,
             33,

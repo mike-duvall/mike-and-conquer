@@ -14,7 +14,7 @@ namespace mike_and_conquer_monogame.gameview
     {
         private UnitSprite unitSprite;
         // private UnitSelectionCursor unitSelectionCursor;
-        private UnitSelectionCursor2 unitSelectionCursor;
+        private UnitSelectionCursor unitSelectionCursor;
         private DestinationSquare destinationSquare;
         private bool drawDestinationSquare;
 
@@ -42,7 +42,7 @@ namespace mike_and_conquer_monogame.gameview
 
             this.unitSize = new UnitSize(12, 16);
 
-            this.unitSelectionCursor = new UnitSelectionCursor2(
+            this.unitSelectionCursor = new UnitSelectionCursor(
                 this,
                 13,
                 13,

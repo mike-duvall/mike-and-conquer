@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
 using mike_and_conquer_monogame.main;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
@@ -16,6 +15,7 @@ public class UnitSelectionCursor
 {
     private Texture2D boundingRectangle;
 
+
     // private GameObject myGameObject;
     private readonly UnitView myUnitView;
 
@@ -29,9 +29,18 @@ public class UnitSelectionCursor
 
     private bool drawBoundingRectangle;
 
-    private Vector2 origin;
+    // private Vector2 origin;
+    private Vector2 middleOfUnitSelectionCursor;
+    private Vector2 healthBarTextureOrigin;
 
     private float defaultScale = 1;
+
+    private int overallWidth;
+    private int overallHeight;
+
+    private int selectionCursorPartWidth;
+    private int selectionCursorPartHeight;
+    private int healthBarWidth;
 
 
     private UnitSelectionCursor()
@@ -39,12 +48,29 @@ public class UnitSelectionCursor
     }
 
 
-    public UnitSelectionCursor(UnitView unitView, int x, int y)
+    public UnitSelectionCursor(
+        UnitView unitView,
+        int overallWidth,
+        int overallHeight,
+        int selectionCursorPartWidth,
+        int selectionCursorPartHeight,
+        int healthBarWidth,
+        int healthBarX,
+        int healthBarY,
+        int locationX,
+        int locationY)
     {
         myUnitView = unitView;
-        origin = new Vector2();
-        origin.X = 0;
-        origin.Y = 0;
+        this.overallWidth = overallWidth;
+        this.overallHeight = overallHeight;
+        this.selectionCursorPartWidth = selectionCursorPartWidth;
+        this.selectionCursorPartHeight = selectionCursorPartHeight;
+        this.healthBarWidth = healthBarWidth;
+
+        // healthBarTextureOrigin = new Vector2(18, 16);
+        healthBarTextureOrigin = new Vector2(healthBarX, healthBarY);
+        middleOfUnitSelectionCursor  = new Vector2(overallWidth / 2, overallHeight / 2);
+
 
         selectionCursorTexture = InitializeSelectionCursor();
 
@@ -128,7 +154,8 @@ public class UnitSelectionCursor
     private Texture2D InitializeHealthBar()
     {
         var healthBarHeight = 4;
-        var healthBarWidth = myUnitView.UnitSize.Width;
+        // var healthBarWidth = myUnitView.UnitSize.Width;
+
 
         var rectangle =
             new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
@@ -175,9 +202,13 @@ public class UnitSelectionCursor
 
     internal Texture2D InitializeHealthBarShadow()
     {
+
+
+
+
         var healthBarHeight = 4;
         // int healthBarWidth = 12;  // This is hard coded for minigunner
-        var healthBarWidth = myUnitView.UnitSize.Width;
+        // var healthBarWidth = myUnitView.UnitSize.Width;
 
         var rectangle =
             new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
@@ -194,9 +225,9 @@ public class UnitSelectionCursor
     }
 
 
-    private Texture2D CreateUnitSelectionTexture(int width, int height, int horizontalLength, int verticalLength)
+    private Texture2D CreateUnitSelectionTexture(int overallWidth, int overallHeight, int partWidth, int partHeight)
     {
-        var unitSelectionTextureKey = "UnitSelectionTexture-width-" + width + "-height-" + height;
+        var unitSelectionTextureKey = "UnitSelectionTexture-width-" + overallWidth + "-height-" + overallHeight;
 
 
         var unitSelectionTexture = MikeAndConquerGame.instance.SpriteSheet.GetTextureForKey(unitSelectionTextureKey);
@@ -206,7 +237,7 @@ public class UnitSelectionCursor
             var cncPalleteColorWhite = new Color(255, 255, 255, 255);
 
             unitSelectionTexture =
-                new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, width, height);
+                new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, overallWidth, overallHeight);
 
             var data = new Color[unitSelectionTexture.Width * unitSelectionTexture.Height];
 
@@ -214,29 +245,29 @@ public class UnitSelectionCursor
             var startY = 0;
 
             // top left
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
 
             // bottom left
-            startY = height - verticalLength;
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
-            startY = height - 1;
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
+            startY = overallHeight - partHeight;
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
+            startY = overallHeight - 1;
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
 
             // top right
-            startX = width - horizontalLength;
+            startX = overallWidth - partWidth;
             startY = 0;
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
-            startX = width - 1;
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
+            startX = overallWidth - 1;
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
 
             // bottom right
-            startY = height - verticalLength;
-            DrawVerticalLine(data, cncPalleteColorWhite, width, height, startX, startY, verticalLength);
-            startX = width - horizontalLength;
+            startY = overallHeight - partHeight;
+            DrawVerticalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partHeight);
+            startX = overallWidth - partWidth;
 
-            startY = height - 1;
-            DrawHorizontalLine(data, cncPalleteColorWhite, width, height, startX, startY, horizontalLength);
+            startY = overallHeight - 1;
+            DrawHorizontalLine(data, cncPalleteColorWhite, overallWidth, overallHeight, startX, startY, partWidth);
 
             unitSelectionTexture.SetData(data);
 
@@ -249,15 +280,24 @@ public class UnitSelectionCursor
 
     private Texture2D InitializeSelectionCursor()
     {
-        var unitSize = myUnitView.UnitSize;
+        // var unitSize = myUnitView.UnitSize;
+        //
+        // var width = unitSize.Width + 1;
+        // var height = unitSize.Height - 4 + 1;
 
-        var width = unitSize.Width + 1;
-        var height = unitSize.Height - 4 + 1;
+        // var width = unitSize.Width + 1;
+        // var height = unitSize.Height - 4 + 1;
 
-        var horizontalLength = unitSize.Width / 5 + 1;
-        var verticalLength = unitSize.Height / 5 + 1;
 
-        return CreateUnitSelectionTexture(width, height, horizontalLength, verticalLength);
+        // var horizontalLength = unitSize.Width / 5 + 1;
+        // var verticalLength = unitSize.Height / 5 + 1;
+
+        // var horizontalLength = width / 5 + 1;
+        // var verticalLength = height / 5 + 1;
+
+
+
+        return CreateUnitSelectionTexture(overallWidth, overallHeight, selectionCursorPartWidth, selectionCursorPartHeight);
     }
 
 
@@ -286,7 +326,7 @@ public class UnitSelectionCursor
 
     internal void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch, float layerDepth)
     {
-        spriteBatch.Draw(selectionCursorTexture, selectionCursorPosition, null, Color.White, 0f, origin, defaultScale,
+        spriteBatch.Draw(selectionCursorTexture, selectionCursorPosition, null, Color.White, 0f, middleOfUnitSelectionCursor, defaultScale,
             SpriteEffects.None, layerDepth);
         // if (drawBoundingRectangle)
         // {
@@ -294,13 +334,14 @@ public class UnitSelectionCursor
         //     spriteBatch.Draw(boundingRectangle, selectionCursorPosition, null, Color.White, 0f, origin, defaultScale, SpriteEffects.None, 0f);
         // }
 
-        spriteBatch.Draw(healthBarTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale,
+        spriteBatch.Draw(healthBarTexture, healthBarPosition, null, Color.White, 0f, healthBarTextureOrigin, defaultScale,
             SpriteEffects.None, layerDepth);
     }
 
     internal void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch, float layerDepth)
     {
-        spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, origin, defaultScale,
+        spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, healthBarTextureOrigin, defaultScale,
             SpriteEffects.None, layerDepth);
+
     }
 }
