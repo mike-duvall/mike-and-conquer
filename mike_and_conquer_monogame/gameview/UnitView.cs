@@ -60,7 +60,7 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        internal Rectangle CreateClickDetectionRectangle()
+        internal virtual Rectangle CreateClickDetectionRectangle()
         {
 
             int unitWidth = this.unitSize.Width;
@@ -68,7 +68,7 @@ namespace mike_and_conquer_monogame.gameview
 
             int x = (int)(XInWorldCoordinates - (unitWidth / 2));
             // int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
-            int y = (int)(YInWorldCoordinates - (unitWidth / 2));
+            int y = (int)(YInWorldCoordinates - (unitHeight / 2));
 
 
             // TODO: Is this a memory leak?

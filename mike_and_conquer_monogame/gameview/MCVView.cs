@@ -4,6 +4,7 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using XnaPoint = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace mike_and_conquer_monogame.gameview;
 
@@ -16,6 +17,15 @@ public class MCVView : UnitView
     private bool drawDestinationSquare;
 
     //        enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
+
+
+    private bool showClickDetectionRectangle;
+    private ClickDetectionRectangle clickDetectionRectangle;
+
+    private int clickDetectionRectangleYOffset = 1;
+    private int clickDetectionRectangleXOffset = 0;
+
+
 
     public const string SPRITE_KEY = "MCV";
     public const string SHP_FILE_NAME = "Shp\\mcv.shp";
@@ -61,12 +71,33 @@ public class MCVView : UnitView
         var animationSequence = new AnimationSequence(1);
         animationSequence.AddFrame(0);
         unitSprite.AddAnimationSequence(0, animationSequence);
+
+        // showClickDetectionRectangle = true;
+        showClickDetectionRectangle = false;
+        clickDetectionRectangle = new ClickDetectionRectangle(
+            this.XInWorldCoordinates + clickDetectionRectangleXOffset,
+            this.YInWorldCoordinates + clickDetectionRectangleYOffset,
+            this.unitSize.Width,
+            this.unitSize.Height);
+
     }
+
+    internal override Rectangle CreateClickDetectionRectangle()
+    {
+        return clickDetectionRectangle.GetRectangle();
+
+    }
+
 
 
     internal override void Update(GameTime gameTime)
     {
         unitSelectionCursor.Update(gameTime);
+        clickDetectionRectangle.Update(
+            gameTime,
+            XInWorldCoordinates + clickDetectionRectangleXOffset,
+            YInWorldCoordinates + clickDetectionRectangleYOffset);
+
     }
 
 
@@ -89,6 +120,12 @@ public class MCVView : UnitView
         {
             unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
         }
+
+        if (showClickDetectionRectangle)
+        {
+            clickDetectionRectangle.DrawNoShadow(gameTime, spriteBatch);
+        }
+
     }
 
 

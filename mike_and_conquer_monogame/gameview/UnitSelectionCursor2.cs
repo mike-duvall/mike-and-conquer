@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
 using mike_and_conquer_monogame.main;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
@@ -205,9 +204,6 @@ public class UnitSelectionCursor2
     {
 
 
-        // Pickup here
-        // Fix code for creating unit selection cursor to work properly for MCV, matching what's in real Cnc
-        // Unit selection cursor is much bigger than the actual unit
 
 
         var healthBarHeight = 4;
@@ -323,10 +319,6 @@ public class UnitSelectionCursor2
             myUnitView.XInWorldCoordinates + selectionCursorOffset.X,
             myUnitView.YInWorldCoordinates + selectionCursorOffset.Y);
 
-
-        // Pickup here
-        // Continue to fine tune selection cursor position
-        // Get health bar working
 
         healthBarPosition = selectionCursorPosition;
         healthBarPosition.Y -= 4;
