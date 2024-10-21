@@ -70,9 +70,6 @@ namespace mike_and_conquer_monogame.gameview
                 this.unitSize.Width + 1,
                 this.unitSize.Height + 1);
 
-            Pickup here
-            Check diffs of changed files, plan next steps, commit changes
-
         }
 
         internal override Rectangle CreateClickDetectionRectangle()
