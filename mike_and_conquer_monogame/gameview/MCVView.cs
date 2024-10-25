@@ -1,4 +1,5 @@
-﻿using mike_and_conquer_monogame.gamesprite;
+﻿using System.Transactions;
+using mike_and_conquer_monogame.gamesprite;
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using GameTime = Microsoft.Xna.Framework.GameTime;
@@ -10,7 +11,7 @@ namespace mike_and_conquer_monogame.gameview;
 
 public class MCVView : UnitView
 {
-    private UnitSprite unitSprite;
+    // private UnitSprite unitSprite;
     // private UnitSelectionCursor unitSelectionCursor;
     private UnitSelectionCursor unitSelectionCursor;
     private DestinationSquare destinationSquare;
@@ -44,7 +45,8 @@ public class MCVView : UnitView
 
         unitSprite = new UnitSprite(SPRITE_KEY);
         // this.unitSprite.drawBoundingRectangle = true;
-        unitSprite.drawBoundingRectangle = false;
+
+        // unitSprite.drawBoundingRectangle = false;
         unitSprite.drawShadow = true;
         // this.mcvSelectionBox = new MCVSelectionBox();
 

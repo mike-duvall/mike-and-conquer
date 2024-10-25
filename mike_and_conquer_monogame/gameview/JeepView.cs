@@ -51,7 +51,8 @@ namespace mike_and_conquer_monogame.gameview
             this.YInWorldCoordinates = yInWorldCoordinates;
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
-            this.unitSprite.drawBoundingRectangle = false;
+            // this.unitSprite.drawBoundingRectangle = false;
+            
             this.unitSprite.drawShadow = true;
             // this.mcvSelectionBox = new MCVSelectionBox();
             // this.unitSelectionCursor = new UnitSelectionCursor(myMCV, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.X, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.Y);
@@ -63,12 +64,6 @@ namespace mike_and_conquer_monogame.gameview
             animationSequence.AddFrame(8);
             unitSprite.AddAnimationSequence(0, animationSequence);
 
-        }
-
-
-        internal override void Update(GameTime gameTime)
-        {
-            // unitSelectionCursor.Update(gameTime);
         }
 
 
@@ -95,6 +90,11 @@ namespace mike_and_conquer_monogame.gameview
             // }
 
 
+        }
+
+        internal override void Update(GameTime gameTime)
+        {
+           
         }
 
 

@@ -13,6 +13,7 @@ namespace mike_and_conquer_monogame.gameview
         public static XnaColor CncRed_55_05_02 = new XnaColor(0x7e, 0, 0);
         public static XnaColor CncYellow_63_52_18 = new XnaColor(0x95, 0, 0);
         public static XnaColor CncTeal_14_38_36 = new XnaColor(0xdd, 0, 0);
+        public static XnaColor CncWhite_63_63_63 = new XnaColor(0xff, 0, 0);
 
     }
 }

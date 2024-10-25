@@ -6,14 +6,13 @@ using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using System;
 
 
 namespace mike_and_conquer_monogame.gameview
 {
     public class MinigunnerView : UnitView
     {
-        private UnitSprite unitSprite;
-        // private UnitSelectionCursor unitSelectionCursor;
         private UnitSelectionCursor unitSelectionCursor;
         private DestinationSquare destinationSquare;
         private bool drawDestinationSquare;
@@ -37,10 +36,12 @@ namespace mike_and_conquer_monogame.gameview
             this.MaxHealth = maxHealth;
             this.Health = health;
             this.unitSprite = new UnitSprite(spriteListKey);
-            this.unitSprite.drawBoundingRectangle = false;
-            this.unitSprite.drawShadow = true;
 
             this.unitSize = new UnitSize(12, 16);
+
+
+            this.unitSprite.drawShadow = true;
+
 
             this.unitSelectionCursor = new UnitSelectionCursor(
                 this,

@@ -46,7 +46,8 @@ namespace mike_and_conquer_monogame.gameview
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
             this.unitSprite.drawShadow = true;
-            this.unitSprite.drawBoundingRectangle = false;
+            // this.unitSprite.drawBoundingRectangle = false;
+
             this.unitSprite.middleOfSpriteInSpriteCoordinates.Y += (GameWorldView.MAP_TILE_HEIGHT / 2);
 
             SetupAnimations();

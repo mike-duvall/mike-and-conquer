@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using mike_and_conquer_monogame.gameview;
 using mike_and_conquer_monogame.openra;
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
@@ -24,8 +25,8 @@ namespace mike_and_conquer_monogame.gamesprite
 
         Texture2D currentTexture;
 
-        Texture2D spriteBorderRectangleTexture;
         public Boolean drawBoundingRectangle;
+        private SquareView boundingRectanbleSquareView;
 
         public Vector2 middleOfSpriteInSpriteCoordinates;
 
@@ -53,7 +54,6 @@ namespace mike_and_conquer_monogame.gamesprite
             this.animationSequenceMap = new Dictionary<int, util.AnimationSequence>();
             unitFrameList = MikeAndConquerGame.instance.SpriteSheet.GetUnitFramesForShpFile(spriteListKey);
 
-            spriteBorderRectangleTexture = CreateSpriteBorderRectangleTexture();
 
             middleOfSpriteInSpriteCoordinates = new Vector2();
 
@@ -62,7 +62,10 @@ namespace mike_and_conquer_monogame.gamesprite
             middleOfSpriteInSpriteCoordinates.Y = firstUnitFrame.Texture.Height / 2;
             this.width = firstUnitFrame.Texture.Width;
             this.height = firstUnitFrame.Texture.Height;
+            // drawBoundingRectangle = true;
             drawBoundingRectangle = false;
+            boundingRectanbleSquareView = new SquareView(0, 0, width, height, CnCColorAsXnaColor.CncWhite_63_63_63, CnCColorAsXnaColor.CncRed_55_05_02);
+
             this.animate = true;
             int[] remap = { };
             palette = new ImmutablePalette(MikeAndConquerGame.CONTENT_DIRECTORY_PREFIX + "temperat.pal", remap);
@@ -97,32 +100,6 @@ namespace mike_and_conquer_monogame.gamesprite
         }
 
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 positionInWorldCoordinates, float layerDepth)
-        {
-            AnimationSequence currentAnimationSequence = animationSequenceMap[currentAnimationSequenceIndex];
-            if (animate)
-            {
-                currentAnimationSequence.Update();
-            }
-
-            int currentAnimationImageIndex = currentAnimationSequence.GetCurrentFrame();
-            currentTexture = unitFrameList[currentAnimationImageIndex].Texture;
-
-            float defaultScale = 1;
-
-            if (drawShadow)
-            {
-                UpdateShadowPixels(positionInWorldCoordinates, currentAnimationImageIndex);
-            }
-
-            spriteBatch.Draw(currentTexture, positionInWorldCoordinates, null, Color.White, 0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, layerDepth);
-
-            if (drawBoundingRectangle)
-            {
-                spriteBatch.Draw(spriteBorderRectangleTexture, positionInWorldCoordinates, null, Color.White, 0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 0f);
-            }
-
-        }
 
         public void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch, Vector2 positionInWorldCoordinates, float layerDepth)
         {
@@ -144,9 +121,10 @@ namespace mike_and_conquer_monogame.gamesprite
 
             if (drawBoundingRectangle)
             {
-                // TODO use snapped coordinates?
-                spriteBatch.Draw(spriteBorderRectangleTexture, positionInWorldCoordinates, null, Color.White, 0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, 0f);
+                boundingRectanbleSquareView.Update(gameTime, (int)positionInWorldCoordinates.X, (int)positionInWorldCoordinates.Y);
+                boundingRectanbleSquareView.DrawNoShadow(gameTime, spriteBatch);
             }
+
 
         }
 
@@ -220,7 +198,6 @@ namespace mike_and_conquer_monogame.gamesprite
             currentTexture.SetData(texturePixelData);
 
         }
-
 
         internal Texture2D CreateSpriteBorderRectangleTexture()
         {
