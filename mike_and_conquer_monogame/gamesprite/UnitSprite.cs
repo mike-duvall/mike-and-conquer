@@ -4,7 +4,6 @@ using mike_and_conquer_monogame.gameview;
 using mike_and_conquer_monogame.openra;
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
-using Boolean = System.Boolean;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Color = Microsoft.Xna.Framework.Color;
 using GameTime = Microsoft.Xna.Framework.GameTime;
@@ -17,16 +16,15 @@ namespace mike_and_conquer_monogame.gamesprite
 {
     public class UnitSprite
     {
+        private readonly Dictionary<int, AnimationSequence> animationSequenceMap;
+        private int currentAnimationSequenceIndex;
 
-        Dictionary<int, AnimationSequence> animationSequenceMap;
-        int currentAnimationSequenceIndex;
+        private readonly List<UnitFrame> unitFrameList;
 
-        private List<UnitFrame> unitFrameList;
+        private Texture2D currentTexture;
 
-        Texture2D currentTexture;
-
-        public Boolean drawBoundingRectangle;
-        private SquareView boundingRectanbleSquareView;
+        private bool drawBoundingRectangle;
+        private readonly SquareView boundingRectangleSquareView;
 
         public Vector2 middleOfSpriteInSpriteCoordinates;
 
@@ -64,7 +62,7 @@ namespace mike_and_conquer_monogame.gamesprite
             this.height = firstUnitFrame.Texture.Height;
             // drawBoundingRectangle = true;
             drawBoundingRectangle = false;
-            boundingRectanbleSquareView = new SquareView(0, 0, width, height, CnCColorAsXnaColor.CncWhite_63_63_63, CnCColorAsXnaColor.CncRed_55_05_02);
+            boundingRectangleSquareView = new SquareView(0, 0, width, height, CnCColorAsXnaColor.CncWhite_63_63_63, CnCColorAsXnaColor.CncRed_55_05_02);
 
             this.animate = true;
             int[] remap = { };
@@ -111,25 +109,20 @@ namespace mike_and_conquer_monogame.gamesprite
 
             int currentAnimationImageIndex = currentAnimationSequence.GetCurrentFrame();
 
-//            int currentAnimationImageIndex = 0;
-
             currentTexture = unitFrameList[currentAnimationImageIndex].Texture;
 
-            float defaultScale = 1;
+            const float defaultScale = 1;
 
             spriteBatch.Draw(currentTexture, positionInWorldCoordinates, null, Color.White, 0f, middleOfSpriteInSpriteCoordinates, defaultScale, SpriteEffects.None, layerDepth);
 
             if (drawBoundingRectangle)
             {
-                boundingRectanbleSquareView.Update(gameTime, (int)positionInWorldCoordinates.X, (int)positionInWorldCoordinates.Y);
-                boundingRectanbleSquareView.DrawNoShadow(gameTime, spriteBatch);
+                boundingRectangleSquareView.Update(gameTime, (int)positionInWorldCoordinates.X, (int)positionInWorldCoordinates.Y);
+                boundingRectangleSquareView.DrawNoShadow(gameTime, spriteBatch);
             }
 
 
         }
-
-
-
 
         public void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch, Vector2 positionInWorldCoordinates, float layerDepth)
         {
@@ -140,8 +133,6 @@ namespace mike_and_conquer_monogame.gamesprite
             }
 
             int currentAnimationImageIndex = currentAnimationSequence.GetCurrentFrame();
-
-//            int currentAnimationImageIndex = 0;
 
             Texture2D shadowOnlyTexture = unitFrameList[currentAnimationImageIndex].ShadowOnlyTexture;
 
@@ -197,63 +188,6 @@ namespace mike_and_conquer_monogame.gamesprite
                 );
             currentTexture.SetData(texturePixelData);
 
-        }
-
-        internal Texture2D CreateSpriteBorderRectangleTexture()
-        {
-
-            Color color = Color.White;
-            string borderRectangleName = "BorderRectangle-Color-R-" + color.R + "-G-" + color.G + "-B-" + color.B +
-                                         "-width-" + width + "-height-" + height;
-
-            Texture2D borderRectangleTexture = MikeAndConquerGame.instance.SpriteSheet.GetTextureForKey(borderRectangleName);
-
-            if (borderRectangleTexture == null)
-            {
-
-                borderRectangleTexture =
-                    new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, unitFrameList[0].Texture.Width,
-                        unitFrameList[0].Texture.Height);
-                Color[] data = new Color[borderRectangleTexture.Width * borderRectangleTexture.Height];
-                FillHorizontalLine(data, borderRectangleTexture.Width, borderRectangleTexture.Height, 0, Color.White);
-                FillHorizontalLine(data, borderRectangleTexture.Width, borderRectangleTexture.Height, borderRectangleTexture.Height - 1, Color.White);
-                FillVerticalLine(data, borderRectangleTexture.Width, borderRectangleTexture.Height, 0, Color.White);
-                FillVerticalLine(data, borderRectangleTexture.Width, borderRectangleTexture.Height, borderRectangleTexture.Width - 1, Color.White);
-
-                int centerX = (borderRectangleTexture.Width / 2) ;
-                int centerY = (borderRectangleTexture.Height / 2);
-
-                // Check how this works for even sized sprites with true center
-
-                int centerOffset = (centerY * borderRectangleTexture.Width) + centerX;
-
-                data[centerOffset] = Color.Red;
-
-                borderRectangleTexture.SetData(data);
-                MikeAndConquerGame.instance.SpriteSheet.SetTextureForKey(borderRectangleName, borderRectangleTexture);
-            }
-
-            return borderRectangleTexture;
-
-        }
-
-
-        internal void FillHorizontalLine(Color[] data, int width, int height, int lineIndex, Color color)
-        {
-            int beginIndex = width * lineIndex;
-            for (int i = beginIndex; i < (beginIndex + width); ++i)
-            {
-                data[i] = color;
-            }
-        }
-
-        internal void FillVerticalLine(Color[] data, int width, int height, int lineIndex, Color color)
-        {
-            int beginIndex = lineIndex;
-            for (int i = beginIndex; i < (width * height); i += width)
-            {
-                data[i] = color;
-            }
         }
 
         public void SetAnimate(bool animateFlag)
