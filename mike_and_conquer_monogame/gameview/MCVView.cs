@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿
+
 using mike_and_conquer_monogame.gamesprite;
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -6,6 +7,7 @@ using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using XnaPoint = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using mike_and_conquer_monogame.main;
 
 namespace mike_and_conquer_monogame.gameview;
 
@@ -116,6 +118,11 @@ public class MCVView : UnitView
             YInWorldCoordinates);
 
         unitSprite.DrawNoShadow(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
+
+        if (GameOptions.instance.DrawPaths && plannedPathView != null)
+        {
+            plannedPathView.Draw(spriteBatch);
+        }
 
 
         if (Selected)

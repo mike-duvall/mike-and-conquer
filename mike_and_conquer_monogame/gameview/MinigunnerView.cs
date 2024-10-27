@@ -6,7 +6,7 @@ using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using System;
+
 
 
 namespace mike_and_conquer_monogame.gameview
@@ -130,18 +130,6 @@ namespace mike_and_conquer_monogame.gameview
 
 
             // TODO:  move everything but actual drawing to Update() method
-            // if (myMinigunner.state == Minigunner.State.IDLE)
-            // {
-                // unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
-            // }
-            // else if (myMinigunner.state == Minigunner.State.MOVING)
-            // {
-            //     unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.WALKING_UP);
-            // }
-            // else if (myMinigunner.state == Minigunner.State.ATTACKING)
-            // {
-            //     unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.SHOOTING_UP);
-            // }
 
             if (CurrentUnitState == UnitState.FIRING)
             {
@@ -157,7 +145,6 @@ namespace mike_and_conquer_monogame.gameview
             }
 
 
-            // unitSprite.DrawNoShadow(gameTime, spriteBatch, myMinigunner.GameWorldLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
             Vector2 worldCoordinatesAsVector2 = new Vector2(
                 XInWorldCoordinates,
                 YInWorldCoordinates);
