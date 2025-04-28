@@ -48,7 +48,7 @@ namespace mike_and_conquer_simulation.main
         // private MapTileInstance currentMapTileInstance;
 
         // TODO: Set this to proper MCV max health
-        private static int MAX_HEALTH = 50;
+        private static int MAX_HEALTH = 600;
 
         public MCV()
         {
