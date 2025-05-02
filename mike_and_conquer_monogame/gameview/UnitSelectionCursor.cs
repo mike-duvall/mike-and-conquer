@@ -186,12 +186,37 @@ public class UnitSelectionCursor
         var unitHealth = myUnitView.Health;
         var healthBarLength = (int)(unitHealth * ratio);
 
-        var healthColor = cncPalleteHealthColorGreen;
+        // var healthColor = cncPalleteHealthColorGreen;
+        // if (healthBarLength <= 17)
+        // {
+        //     healthColor = cncPalleteHealthColorYellow;
+        // }
+        // if (healthBarLength <= 8)
+        // {
+        //     healthColor = cncPalleteHealthColorRed;
+        // }
+        //
+        //
+        //
+        // if (healthBarLength <= 2)
+        //     healthColor = cncPalleteHealthColorRed;
+        // else if (healthBarLength <= 5) healthColor = cncPalleteHealthColorYellow;
+        //
+        var healthPercentage = (float)unitHealth / maxHealth;
 
-        if (healthBarLength <= 2)
+        Color healthColor;
+        if (healthPercentage <= 0.25f)
+        {
             healthColor = cncPalleteHealthColorRed;
-        else if (healthBarLength <= 5) healthColor = cncPalleteHealthColorYellow;
-
+        }
+        else if (healthPercentage <= 0.5f)
+        {
+            healthColor = cncPalleteHealthColorYellow;
+        }
+        else
+        {
+            healthColor = cncPalleteHealthColorGreen;
+        }
         FillHorizontalLine(data, rectangle.Width, rectangle.Height, 1, healthColor, 1, healthBarLength);
         FillHorizontalLine(data, rectangle.Width, rectangle.Height, 2, healthColor, 1, healthBarLength);
 
