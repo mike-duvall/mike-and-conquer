@@ -112,9 +112,9 @@ namespace mike_and_conquer_simulation.main
             this.SetPath(plannedPathAsPoints);
             SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
 
+            PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
             PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-            PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
         }
 

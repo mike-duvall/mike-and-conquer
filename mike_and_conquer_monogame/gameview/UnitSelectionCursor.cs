@@ -154,8 +154,6 @@ public class UnitSelectionCursor
     private Texture2D InitializeHealthBar()
     {
         var healthBarHeight = 4;
-        // var healthBarWidth = myUnitView.UnitSize.Width;
-
 
         var rectangle =
             new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
@@ -186,22 +184,6 @@ public class UnitSelectionCursor
         var unitHealth = myUnitView.Health;
         var healthBarLength = (int)(unitHealth * ratio);
 
-        // var healthColor = cncPalleteHealthColorGreen;
-        // if (healthBarLength <= 17)
-        // {
-        //     healthColor = cncPalleteHealthColorYellow;
-        // }
-        // if (healthBarLength <= 8)
-        // {
-        //     healthColor = cncPalleteHealthColorRed;
-        // }
-        //
-        //
-        //
-        // if (healthBarLength <= 2)
-        //     healthColor = cncPalleteHealthColorRed;
-        // else if (healthBarLength <= 5) healthColor = cncPalleteHealthColorYellow;
-        //
         var healthPercentage = (float)unitHealth / maxHealth;
 
         Color healthColor;
@@ -228,12 +210,7 @@ public class UnitSelectionCursor
     internal Texture2D InitializeHealthBarShadow()
     {
 
-
-
-
         var healthBarHeight = 4;
-        // int healthBarWidth = 12;  // This is hard coded for minigunner
-        // var healthBarWidth = myUnitView.UnitSize.Width;
 
         var rectangle =
             new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, healthBarWidth, healthBarHeight);
