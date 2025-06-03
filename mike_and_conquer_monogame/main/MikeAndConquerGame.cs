@@ -134,7 +134,6 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add(masterEventHandler);
 
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
-            // simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
 
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
             

@@ -37,7 +37,6 @@ public class MCVView : UnitView
 
     public MCVView(int unitId, int xInWorldCoordinates, int yInWorldCoordinates, int maxHealth, int health)
     {
-        // this.myMCV = mcv;
         this.UnitId = unitId;
         this.XInWorldCoordinates = xInWorldCoordinates;
         this.YInWorldCoordinates = yInWorldCoordinates;
@@ -46,9 +45,6 @@ public class MCVView : UnitView
 
 
         unitSprite = new UnitSprite(SPRITE_KEY);
-        // this.unitSprite.drawBoundingRectangle = true;
-
-        // unitSprite.drawBoundingRectangle = false;
         unitSprite.drawShadow = true;
         // this.mcvSelectionBox = new MCVSelectionBox();
 
