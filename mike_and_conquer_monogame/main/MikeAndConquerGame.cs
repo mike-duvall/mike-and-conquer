@@ -116,6 +116,7 @@ namespace mike_and_conquer_monogame.main
             masterEventHandler.RegisterEventHandler(typeof(GDIBarracksPlacedEventData), typeof(AddGDIBarracksViewCommand));
             masterEventHandler.RegisterEventHandler(typeof(GDIConstructionYardCreatedEventData), typeof(AddGDIConstructionYardViewCommand));
             masterEventHandler.RegisterEventHandler(typeof(MinigunnerCreateEventData), typeof(AddMinigunnerViewCommand));
+            masterEventHandler.RegisterEventHandler(typeof(MCVCreateEventData), typeof(AddMCVViewCommand));
 
             masterEventHandler.RegisterEventHandler(
                 typeof(UnitBeganMovingEventData),
@@ -133,7 +134,6 @@ namespace mike_and_conquer_monogame.main
             simulationStateListenerList.Add(masterEventHandler);
 
             simulationStateListenerList.Add(new AddJeepViewWhenJeepCreatedEventHandler(this));
-            simulationStateListenerList.Add(new AddMCVViewWhenMCVCreatedEventHandler(this));
 
             simulationStateListenerList.Add(new UpdateUnitViewPositionWhenUnitPositionChangedEventHandler(this));
             
@@ -658,9 +658,9 @@ namespace mike_and_conquer_monogame.main
             gameWorldView.AddGDIJeepView(id, x, y);
         }
 
-        public void AddMCVView(int id, int x, int y)
+        public void AddMCVView(int id, int x, int y, int maxHealth, int health)
         {
-            gameWorldView.AddGDIMCVView(id, x, y);
+            gameWorldView.AddGDIMCVView(id, x, y, maxHealth, health);
         }
 
         public void AddGDIConstructionYardView(int id, int x, int y)
@@ -900,7 +900,8 @@ namespace mike_and_conquer_monogame.main
         {
             Vector2 unitViewLocationAsWorldCoordinates = new Vector2();
             unitViewLocationAsWorldCoordinates.X = xInWorldCoordinates;
-            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+            // unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates - 10;
+            unitViewLocationAsWorldCoordinates.Y = yInWorldCoordinates;
 
             Vector2 transformedLocation =
                 GameWorldView.instance.ConvertWorldCoordinatesToScreenCoordinates(unitViewLocationAsWorldCoordinates);

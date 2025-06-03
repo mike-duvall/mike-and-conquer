@@ -1584,9 +1584,9 @@ namespace mike_and_conquer_monogame.gameview
 
             
         }
-        public void AddGDIMCVView(int id, int x, int y)
+        public void AddGDIMCVView(int id, int x, int y, int maxHealth, int health)
         {
-            MCVView view = new MCVView(id, x, y);
+            MCVView view = new MCVView(id, x, y, maxHealth, health);
             gdiUnitViewList.Add(view);
         }
 

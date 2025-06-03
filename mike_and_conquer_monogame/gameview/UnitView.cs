@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using mike_and_conquer_monogame.gamesprite;
 using mike_and_conquer_simulation.events;
+using SharpDX.Direct3D9;
 
 namespace mike_and_conquer_monogame.gameview
 {
@@ -28,6 +30,8 @@ namespace mike_and_conquer_monogame.gameview
 
         // TODO:  Consider if UnitState needs to be a class, with state variables, such as attack target, destination, etc
         public enum UnitState { IDLE, MOVING, FIRING };
+
+        protected UnitSprite unitSprite;
 
 
         public UnitState CurrentUnitState
@@ -60,14 +64,15 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        internal Rectangle CreateClickDetectionRectangle()
+        internal virtual Rectangle CreateClickDetectionRectangle()
         {
 
-            int unitWidth = 12;
-            int unitHeight = 12;
+            int unitWidth = this.unitSize.Width;
+            int unitHeight = this.unitSize.Height;
 
             int x = (int)(XInWorldCoordinates - (unitWidth / 2));
-            int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
+            // int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
+            int y = (int)(YInWorldCoordinates - (unitHeight / 2));
 
 
             // TODO: Is this a memory leak?

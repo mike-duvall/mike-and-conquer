@@ -23,52 +23,21 @@ namespace mike_and_conquer_monogame.gameview
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
 
-
-        // public MCVView(MCV mcv)
-        // {
-        //     this.myMCV = mcv;
-        //     this.unitSprite = new UnitSprite(SPRITE_KEY);
-        //     this.unitSprite.drawBoundingRectangle = false;
-        //     this.unitSprite.drawShadow = true;
-        //     // this.mcvSelectionBox = new MCVSelectionBox();
-        //     this.unitSelectionCursor = new UnitSelectionCursor(myMCV, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.X, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.Y);
-        //
-        //     this.destinationSquare = new DestinationSquare();
-        //     this.drawDestinationSquare = false;
-        //
-        //     AnimationSequence animationSequence = new AnimationSequence(1);
-        //     animationSequence.AddFrame(0);
-        //     unitSprite.AddAnimationSequence(0, animationSequence);
-        //
-        // }
-
-
         public JeepView(int unitId,  int xInWorldCoordinates, int yInWorldCoordinates)
         {
-            // this.myMCV = mcv;
             this.UnitId = unitId;
             this.XInWorldCoordinates = xInWorldCoordinates;
             this.YInWorldCoordinates = yInWorldCoordinates;
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
-            this.unitSprite.drawBoundingRectangle = false;
+            
             this.unitSprite.drawShadow = true;
-            // this.mcvSelectionBox = new MCVSelectionBox();
-            // this.unitSelectionCursor = new UnitSelectionCursor(myMCV, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.X, (int)this.myMCV.GameWorldLocation.WorldCoordinatesAsVector2.Y);
-
-            // this.destinationSquare = new DestinationSquare();
             this.drawDestinationSquare = false;
 
             AnimationSequence animationSequence = new AnimationSequence(1);
             animationSequence.AddFrame(8);
             unitSprite.AddAnimationSequence(0, animationSequence);
 
-        }
-
-
-        internal override void Update(GameTime gameTime)
-        {
-            // unitSelectionCursor.Update(gameTime);
         }
 
 
@@ -95,6 +64,11 @@ namespace mike_and_conquer_monogame.gameview
             // }
 
 
+        }
+
+        internal override void Update(GameTime gameTime)
+        {
+           
         }
 
 

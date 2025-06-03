@@ -47,14 +47,19 @@ namespace mike_and_conquer_simulation.main
 
         // private MapTileInstance currentMapTileInstance;
 
+        private static int MAX_HEALTH = 600;
+
         public MCV()
         {
+
             state = State.IDLE;
             currentCommand = Command.NONE;
             this.movementDistanceEpsilon = 0.1f;
             float speedFromCncInLeptons = 12;  // 12 leptons, for MCV, MPH_MEDIUM_SLOW = 12
-            // float speedFromCncInLeptons = 30;  // 30 leptons, for Jeep, MPH_MEDIUM_FAST = 30
+                                               // float speedFromCncInLeptons = 30;  // 30 leptons, for Jeep, MPH_MEDIUM_FAST = 30
 
+            health = MAX_HEALTH;
+            maxHealth = MAX_HEALTH;
 
             float pixelsPerSquare = 24;
             float leptonsPerSquare = 256;
@@ -106,9 +111,9 @@ namespace mike_and_conquer_simulation.main
             this.SetPath(plannedPathAsPoints);
             SetDestination(plannedPathAsPoints[0].X, plannedPathAsPoints[0].Y);
 
+            PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
             PublishBeganMissionMoveToDestinationEvent(this.UnitId, destinationXInWorldCoordinates, destinationYInWorldCoordinates);
-            PublishUnitMovementPlanCreatedEvent(plannedPathAsPoints);
 
         }
 

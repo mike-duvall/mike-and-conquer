@@ -28,6 +28,8 @@ namespace mike_and_conquer_monogame.rest.controller
 
             restUnit.UnitId = unitView.UnitId;
             restUnit.Selected = unitView.Selected;
+            restUnit.XInWorldCoordinates = unitView.XInWorldCoordinates;
+            restUnit.YInWorldCoordinates = unitView.YInWorldCoordinates;
 
             return new OkObjectResult(restUnit);
         }

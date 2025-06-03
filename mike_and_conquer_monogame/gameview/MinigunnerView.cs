@@ -1,26 +1,29 @@
-﻿using Microsoft.Xna.Framework;
-using mike_and_conquer_monogame.gamesprite;
+﻿using mike_and_conquer_monogame.gamesprite;
 using mike_and_conquer_monogame.main;
-// using mike_and_conquer.gameobjects;
 using AnimationSequence = mike_and_conquer_monogame.util.AnimationSequence;
 using GameTime = Microsoft.Xna.Framework.GameTime;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
- 
+
+
 namespace mike_and_conquer_monogame.gameview
 {
     public class MinigunnerView : UnitView
     {
-        private UnitSprite unitSprite;
         private UnitSelectionCursor unitSelectionCursor;
         private DestinationSquare destinationSquare;
         private bool drawDestinationSquare;
 
 
+        private bool showClickDetectionRectangle;
+        private ClickDetectionRectangle clickDetectionRectangle;
 
-        // public int XInWorldCoordinates { get; set; }
-        // public int YInWorldCoordinates { get; set; }
-        //
+
+        private int clickDetectionRectangleYOffset = -5;
+        private int clickDetectionRectangleXOffset = 0;
 
         enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
@@ -33,20 +36,48 @@ namespace mike_and_conquer_monogame.gameview
             this.MaxHealth = maxHealth;
             this.Health = health;
             this.unitSprite = new UnitSprite(spriteListKey);
-            this.unitSprite.drawBoundingRectangle = false;
-            this.unitSprite.drawShadow = true;
 
             this.unitSize = new UnitSize(12, 16);
 
 
-            this.unitSelectionCursor = new UnitSelectionCursor(this, XInWorldCoordinates, YInWorldCoordinates);
+            this.unitSprite.drawShadow = true;
+
+
+            this.unitSelectionCursor = new UnitSelectionCursor(
+                this,
+                13,
+                13,
+                3,
+                4,
+                12,
+                6,
+                6,
+                XInWorldCoordinates,
+                YInWorldCoordinates);
+
+
             // this.destinationSquare = new DestinationSquare();
             this.drawDestinationSquare = false;
             SetupAnimations();
-            this.selectionCursorOffset = new Point(-6, -10);
+
+            // this.selectionCursorOffset = new Point(0, -5);  // X is correct, y too high
+            this.selectionCursorOffset = new Point(0, -4);
+
+            // showClickDetectionRectangle = true;
+            showClickDetectionRectangle = false;
+            clickDetectionRectangle = new ClickDetectionRectangle(
+                this.XInWorldCoordinates + clickDetectionRectangleXOffset,
+                this.YInWorldCoordinates + clickDetectionRectangleYOffset,
+                this.unitSize.Width + 1,
+                this.unitSize.Height + 1);
+
         }
 
+        internal override Rectangle CreateClickDetectionRectangle()
+        {
+            return clickDetectionRectangle.GetRectangle();
 
+        }
 
         private void SetupAnimations()
         {
@@ -79,9 +110,14 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
+
         internal override void Update(GameTime gameTime)
         {
             unitSelectionCursor.Update(gameTime);
+            clickDetectionRectangle.Update(
+                gameTime,
+                XInWorldCoordinates + clickDetectionRectangleXOffset,
+                YInWorldCoordinates + clickDetectionRectangleYOffset);
         }
 
 
@@ -94,18 +130,6 @@ namespace mike_and_conquer_monogame.gameview
 
 
             // TODO:  move everything but actual drawing to Update() method
-            // if (myMinigunner.state == Minigunner.State.IDLE)
-            // {
-                // unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.STANDING_STILL);
-            // }
-            // else if (myMinigunner.state == Minigunner.State.MOVING)
-            // {
-            //     unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.WALKING_UP);
-            // }
-            // else if (myMinigunner.state == Minigunner.State.ATTACKING)
-            // {
-            //     unitSprite.SetCurrentAnimationSequenceIndex((int)AnimationSequences.SHOOTING_UP);
-            // }
 
             if (CurrentUnitState == UnitState.FIRING)
             {
@@ -121,7 +145,6 @@ namespace mike_and_conquer_monogame.gameview
             }
 
 
-            // unitSprite.DrawNoShadow(gameTime, spriteBatch, myMinigunner.GameWorldLocation.WorldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
             Vector2 worldCoordinatesAsVector2 = new Vector2(
                 XInWorldCoordinates,
                 YInWorldCoordinates);
@@ -137,6 +160,11 @@ namespace mike_and_conquer_monogame.gameview
             if (Selected)
             {
                 unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
+            }
+
+            if(showClickDetectionRectangle)
+            {
+                clickDetectionRectangle.DrawNoShadow(gameTime, spriteBatch);
             }
 
         }

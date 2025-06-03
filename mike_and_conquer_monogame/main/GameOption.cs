@@ -29,7 +29,6 @@ namespace mike_and_conquer_monogame.main
         public bool DrawPaths = false;
         // public bool DrawPaths = true;
 
-
         // public enum GameSpeed
         // {
         //     Slowest = 250,
