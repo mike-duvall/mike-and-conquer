@@ -567,7 +567,7 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-        public void StartScenario(PlayerController playerController)
+        internal void StartScenario(PlayerController playerController)
         {
 
             lock (simulationStateUpdateEventsHistory)

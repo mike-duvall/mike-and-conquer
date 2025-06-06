@@ -6,7 +6,7 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace mike_and_conquer_simulation.gameworld
 {
-    public class MapTileInstance
+    internal class MapTileInstance
     {
 
         public int MapTileInstanceId { get; set; }

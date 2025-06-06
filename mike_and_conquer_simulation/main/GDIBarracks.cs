@@ -14,13 +14,13 @@ using Point = System.Drawing.Point;
 namespace mike_and_conquer_simulation.main
 { 
 
-    public class GDIBarracks
+    internal class GDIBarracks
     {
 
 
         private MapTileLocation mapTileLocation;
 
-        public MapTileLocation MapTileLocation
+        internal MapTileLocation MapTileLocation
         {
             get { return mapTileLocation; }
         }

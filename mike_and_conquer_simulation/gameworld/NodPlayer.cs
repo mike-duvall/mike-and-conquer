@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace mike_and_conquer_simulation.gameworld
 {
-    class NodPlayer
+    internal class NodPlayer
     {
 
 

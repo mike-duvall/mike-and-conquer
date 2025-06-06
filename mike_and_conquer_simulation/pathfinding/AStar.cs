@@ -9,7 +9,7 @@ using Point = System.Drawing.Point;
 namespace mike_and_conquer_simulation.pathfinding
 {
 
-    public class Path
+    internal class Path
     {
         public List<Node> nodeList;
 
@@ -185,14 +185,14 @@ namespace mike_and_conquer_simulation.pathfinding
         private static readonly ILogger Logger = Log.ForContext<AStar>();
 
 
-        public Path FindPath(NavigationGraph navigationGraph, Point startPoint, Point endPoint)
+        internal Path FindPath(NavigationGraph navigationGraph, Point startPoint, Point endPoint)
         {
             int startPointIndex = (startPoint.Y * navigationGraph.width) + startPoint.X;
             int endPointIndex = (endPoint.Y * navigationGraph.width) + endPoint.X;
             return this.FindPath(navigationGraph, startPointIndex, endPointIndex);
         }
 
-        public Path FindPath(NavigationGraph navigationGraph, int startLocation, int goalLocation)
+        internal Path FindPath(NavigationGraph navigationGraph, int startLocation, int goalLocation)
 
         {
 
