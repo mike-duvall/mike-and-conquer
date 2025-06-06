@@ -7,7 +7,7 @@ using Point = System.Drawing.Point;
 namespace mike_and_conquer_simulation.gameworld
 { 
 
-    public class TerrainItemDescriptor
+    internal class TerrainItemDescriptor
     {
 
         private String terrainItemType;

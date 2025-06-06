@@ -6,7 +6,7 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace mike_and_conquer_simulation.util
 {
-    public class PointUtil
+    internal class PointUtil
     {
 
         public static System.Drawing.Point ConvertVector2ToPoint(System.Numerics.Vector2 aVector2)

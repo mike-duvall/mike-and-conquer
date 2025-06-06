@@ -15,7 +15,7 @@ using JsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace mike_and_conquer_simulation.main
 {
-    public class GDIConstructionYard
+    internal class GDIConstructionYard
     {
         private MapTileLocation mapTileLocation;
         public MapTileLocation MapTileLocation
