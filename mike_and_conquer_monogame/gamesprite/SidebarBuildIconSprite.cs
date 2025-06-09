@@ -1,5 +1,6 @@
 ﻿// using System;
 using System.Collections.Generic;
+using mike_and_conquer_monogame.util;
 using Math = System.Math;
 // using Microsoft.Xna.Framework;
 // using Microsoft.Xna.Framework.Graphics;
@@ -61,7 +62,7 @@ namespace mike_and_conquer_monogame.gamesprite
             this.staticTexture = staticTexture;
             this.frameData = frameData;
             this.isBuilding = false;
-            spriteBorderRectangleTexture = CreateSpriteBorderRectangleTexture();
+            spriteBorderRectangleTexture = TextureUtil.CreateSpriteBorderRectangleTexture(Color.White, Width, Height);
 
             middleOfSpriteInSpriteCoordinates = new Vector2();
 
@@ -304,52 +305,6 @@ namespace mike_and_conquer_monogame.gamesprite
             t.Dispose();
 
         }
-
-        internal Texture2D CreateSpriteBorderRectangleTexture()
-        {
-            Texture2D rectangle = new Texture2D(MikeAndConquerGame.instance.GraphicsDevice, Width, Height);
-            Color[] data = new Color[rectangle.Width * rectangle.Height];
-            FillHorizontalLine(data, rectangle.Width, rectangle.Height, 0, Color.White);
-            FillHorizontalLine(data, rectangle.Width, rectangle.Height, rectangle.Height - 1, Color.White);
-            FillVerticalLine(data, rectangle.Width, rectangle.Height, 0, Color.White);
-            FillVerticalLine(data, rectangle.Width, rectangle.Height, rectangle.Width - 1, Color.White);
-
-            //            int centerX = (rectangle.Width / 2) - 1;
-            //            int centerY = (rectangle.Height / 2) - 1;
-            int centerX = (rectangle.Width / 2) ;
-            int centerY = (rectangle.Height / 2);
-
-            // Check how this works for even sized sprites with true center
-
-            int centerOffset = (centerY * rectangle.Width) + centerX;
-
-            data[centerOffset] = Color.Red;
-
-            rectangle.SetData(data);
-            return rectangle;
-
-        }
-
-
-        internal void FillHorizontalLine(Color[] data, int width, int height, int lineIndex, Color color)
-        {
-            int beginIndex = width * lineIndex;
-            for (int i = beginIndex; i < (beginIndex + width); ++i)
-            {
-                data[i] = color;
-            }
-        }
-
-        internal void FillVerticalLine(Color[] data, int width, int height, int lineIndex, Color color)
-        {
-            int beginIndex = lineIndex;
-            for (int i = beginIndex; i < (width * height); i += width)
-            {
-                data[i] = color;
-            }
-        }
-
-
 
     }
 
