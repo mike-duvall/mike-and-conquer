@@ -119,27 +119,6 @@ namespace mike_and_conquer_simulation.main
             throw new System.NotImplementedException();
         }
 
-        private List<PathStep> ConvertWorldCoordinatePointsToMapTilePathSteps(List<Point> listOfPoints)
-        {
-            List<PathStep> listOfPathSteps = new List<PathStep>();
-        
-            foreach (Point point in listOfPoints)
-            {
-        
-                MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(point.X, point.Y);
-        
-                PathStep pathStep = new PathStep(
-                    mapTileLocation.XInWorldMapTileCoordinates,
-                    mapTileLocation.YInWorldMapTileCoordinates);
-        
-                listOfPathSteps.Add(pathStep);
-            }
-        
-            return listOfPathSteps;
-        
-        }
-
-
         private void PublishUnitMovementPlanCreatedEvent(List<Point> plannedPathAsPoints)
         {
             List<PathStep> plannedPathAsPathSteps = ConvertWorldCoordinatePointsToMapTilePathSteps(plannedPathAsPoints);
@@ -251,27 +230,6 @@ namespace mike_and_conquer_simulation.main
                 path.RemoveAt(0);
             }
         }
-
-        private void PublishUnitArrivedAtPathStep(Point pathStepPoint)
-        {
-
-            PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
-
-
-            UnitArrivedAtPathStepEventData eventData =
-                new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
-
-            string serializedEventData = JsonConvert.SerializeObject(eventData);
-
-
-            SimulationStateUpdateEvent simulationStateUpdateEvent =
-                new SimulationStateUpdateEvent(
-                    UnitArrivedAtPathStepEventData.EventType,
-                    serializedEventData);
-
-            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
-        }
-
 
         void MoveTowardsDestination(int destinationX, int destinationY)
         {

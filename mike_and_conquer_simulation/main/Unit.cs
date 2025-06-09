@@ -1,14 +1,13 @@
 ﻿
-using System;
 using mike_and_conquer_simulation.events;
 using Newtonsoft.Json;
-
-using MapTileInstance = mike_and_conquer_simulation.gameworld.MapTileInstance;
-
-using NumericsVector2 = System.Numerics.Vector2;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using GameWorld = mike_and_conquer_simulation.gameworld.GameWorld;
-
+using MapTileInstance = mike_and_conquer_simulation.gameworld.MapTileInstance;
 using MapTileLocation = mike_and_conquer_simulation.gameworld.MapTileLocation;
+using NumericsVector2 = System.Numerics.Vector2;
 
 
 
@@ -275,6 +274,48 @@ namespace mike_and_conquer_simulation.main
 
             return destroyed;
         }
+
+
+        protected List<PathStep> ConvertWorldCoordinatePointsToMapTilePathSteps(List<Point> listOfPoints)
+        {
+            List<PathStep> listOfPathSteps = new List<PathStep>();
+
+            foreach (Point point in listOfPoints)
+            {
+
+                MapTileLocation mapTileLocation = MapTileLocation.CreateFromWorldCoordinates(point.X, point.Y);
+
+                PathStep pathStep = new PathStep(
+                    mapTileLocation.XInWorldMapTileCoordinates,
+                    mapTileLocation.YInWorldMapTileCoordinates);
+
+                listOfPathSteps.Add(pathStep);
+            }
+
+            return listOfPathSteps;
+
+        }
+
+        protected void PublishUnitArrivedAtPathStep(Point pathStepPoint)
+        {
+
+            PathStep pathStep = new PathStep(pathStepPoint.X, pathStepPoint.Y);
+
+
+            UnitArrivedAtPathStepEventData eventData =
+                new UnitArrivedAtPathStepEventData(this.UnitId, pathStep);
+
+            string serializedEventData = JsonConvert.SerializeObject(eventData);
+
+
+            SimulationStateUpdateEvent simulationStateUpdateEvent =
+                new SimulationStateUpdateEvent(
+                    UnitArrivedAtPathStepEventData.EventType,
+                    serializedEventData);
+
+            SimulationMain.instance.PublishEvent(simulationStateUpdateEvent);
+        }
+
 
 
     }
