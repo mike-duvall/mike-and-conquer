@@ -18,19 +18,37 @@ namespace mike_and_conquer_monogame.gameview
 
         //        enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
+        private static int JEEP_VIEW_CLICK_DETECTION_RECTANGLE_X_OFFSET = 0;
+        private static int JEEP_VIEW_CLICK_DETECTION_RECTANGLE_Y_OFFSET = 1;
+
+        private static int JEEP_UNIT_SIZE_WIDTH = 26;
+        private static int JEEP_UNIT_SIZE_HEIGHT = 26;
+
+
         public const string SPRITE_KEY = "Jeep";
         public const string SHP_FILE_NAME = "Shp\\Jeep.shp";
         public static readonly ShpFileColorMapper SHP_FILE_COLOR_MAPPER = new GdiShpFileColorMapper();
 
 
-        public JeepView(int unitId,  int xInWorldCoordinates, int yInWorldCoordinates)
+        public JeepView(int unitId,  int xInWorldCoordinates, int yInWorldCoordinates) :
+            base(
+                unitId,
+                xInWorldCoordinates,
+                yInWorldCoordinates,
+                JEEP_UNIT_SIZE_WIDTH,
+                JEEP_UNIT_SIZE_HEIGHT,
+                100,
+                100,
+                JEEP_VIEW_CLICK_DETECTION_RECTANGLE_X_OFFSET,
+                JEEP_VIEW_CLICK_DETECTION_RECTANGLE_Y_OFFSET)
         {
             this.UnitId = unitId;
             this.XInWorldCoordinates = xInWorldCoordinates;
             this.YInWorldCoordinates = yInWorldCoordinates;
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
-            
+            this.unitSize = new UnitSize(JEEP_UNIT_SIZE_WIDTH, JEEP_UNIT_SIZE_HEIGHT);
+
             this.unitSprite.drawShadow = true;
             this.drawDestinationSquare = false;
 
@@ -66,7 +84,7 @@ namespace mike_and_conquer_monogame.gameview
 
         }
 
-        internal override void Update(GameTime gameTime)
+        internal override void UpdateInternal(GameTime gameTime)
         {
            
         }

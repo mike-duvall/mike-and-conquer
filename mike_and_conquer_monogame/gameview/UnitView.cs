@@ -22,6 +22,14 @@ namespace mike_and_conquer_monogame.gameview
         public int Health { get; set; }
 
 
+        protected ClickDetectionRectangle clickDetectionRectangle;
+
+        protected bool showClickDetectionRectangle = false;
+
+        private readonly int clickDetectionRectangleYOffset;
+        private readonly int clickDetectionRectangleXOffset;
+
+
         public Color color;
 
         protected UnitSize unitSize;
@@ -64,23 +72,41 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        internal virtual Rectangle CreateClickDetectionRectangle()
+        protected UnitView(
+            int unitId,
+            int xInWorldCoordinates,
+            int yInWorldCoordinates,
+            int unitWidth,
+            int unitHeight,
+            int maxHealth,
+            int health,
+            int clickDetectionRectangleXOffset,
+            int clickDetectionRectangleYOffset)
         {
+            this.UnitId = unitId;
+            this.XInWorldCoordinates = xInWorldCoordinates;
+            this.YInWorldCoordinates = yInWorldCoordinates;
+            this.MaxHealth = maxHealth;
+            this.Health = health;
+            this.unitSize = new UnitSize(unitWidth, unitHeight);
 
-            int unitWidth = this.unitSize.Width;
-            int unitHeight = this.unitSize.Height;
+            this.clickDetectionRectangleXOffset = clickDetectionRectangleXOffset;
+            this.clickDetectionRectangleYOffset = clickDetectionRectangleYOffset;
 
-            int x = (int)(XInWorldCoordinates - (unitWidth / 2));
-            // int y = (int)(YInWorldCoordinates - unitHeight) + (int)(1);
-            int y = (int)(YInWorldCoordinates - (unitHeight / 2));
+            clickDetectionRectangle = new ClickDetectionRectangle(
+                this.XInWorldCoordinates + clickDetectionRectangleXOffset,
+                this.YInWorldCoordinates + clickDetectionRectangleYOffset,
+                this.unitSize.Width,
+                this.unitSize.Height);
+
+        }
 
 
-            // TODO: Is this a memory leak?
-            // Thinking not, as it's just a struct with two values and helper functions
-            // As opposed to something consumes resources on the graphics card?
-            // It doesn't have a Dispose method
-            Rectangle rectangle = new Rectangle(x, y, unitWidth, unitHeight);
-            return rectangle;
+
+        internal Rectangle CreateClickDetectionRectangle()
+        {
+            return clickDetectionRectangle.GetRectangle();
+
         }
 
 
@@ -94,8 +120,17 @@ namespace mike_and_conquer_monogame.gameview
         internal abstract void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch);
         internal abstract void DrawNoShadow(GameTime gameTime, SpriteBatch spriteBatch);
 
-        internal abstract void Update(GameTime gameTime);
+        internal abstract void UpdateInternal(GameTime gameTime);
 
+        internal void Update(GameTime gameTime)
+        {
+            clickDetectionRectangle.Update(
+                gameTime,
+                XInWorldCoordinates + clickDetectionRectangleXOffset,
+                YInWorldCoordinates + clickDetectionRectangleYOffset);
+            UpdateInternal(gameTime);
+
+        }
 
 
     }

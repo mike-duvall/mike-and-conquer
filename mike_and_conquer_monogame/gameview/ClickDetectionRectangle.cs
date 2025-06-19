@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace mike_and_conquer_monogame.gameview
 {
-    internal class ClickDetectionRectangle
+    public class ClickDetectionRectangle
     {
 
         private int xInWorldCoordinates;
