@@ -35,7 +35,6 @@ namespace mike_and_conquer_monogame.gameview
 
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
-            this.unitSprite.drawShadow = true;
 
             // Center of barracks is the center of the upper left tile
             this.unitSprite.middleOfSpriteInSpriteCoordinates.X = 12;

@@ -28,8 +28,8 @@ namespace mike_and_conquer_simulation.main
         private float buildBarracksPercentComplete;
         private bool isBarracksReadyToPlace;
 
-        private float scaledBuildSpeed;
-        private float baseBuildSpeed = 0.65f;
+        // private float scaledBuildSpeed;
+        // private float baseBuildSpeed = 0.65f;
 
         public bool IsBuildingBarracks
         {

@@ -10,11 +10,7 @@ namespace mike_and_conquer_monogame.gameview
 {
     public class JeepView : UnitView
     {
-        private UnitSprite unitSprite;
-        // private UnitSelectionCursor unitSelectionCursor;
-        private DestinationSquare destinationSquare;
-        // private MCV myMCV;
-        private bool drawDestinationSquare;
+        private UnitSelectionCursor unitSelectionCursor;
 
         //        enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
@@ -49,12 +45,25 @@ namespace mike_and_conquer_monogame.gameview
             this.unitSprite = new UnitSprite(SPRITE_KEY);
             this.unitSize = new UnitSize(JEEP_UNIT_SIZE_WIDTH, JEEP_UNIT_SIZE_HEIGHT);
 
-            this.unitSprite.drawShadow = true;
-            this.drawDestinationSquare = false;
+            this.unitSelectionCursor = new UnitSelectionCursor(
+                this,
+                13,
+                13,
+                3,
+                4,
+                12,
+                6,
+                6,
+                XInWorldCoordinates,
+                YInWorldCoordinates);
+
+
+            // this.drawDestinationSquare = false;
 
             AnimationSequence animationSequence = new AnimationSequence(1);
             animationSequence.AddFrame(8);
             unitSprite.AddAnimationSequence(0, animationSequence);
+            showClickDetectionRectangle = true;
 
         }
 
@@ -76,17 +85,23 @@ namespace mike_and_conquer_monogame.gameview
             unitSprite.DrawNoShadow(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
 
 
-            // if (myMCV.selected)
-            // {
-            //     unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
-            // }
+            if (Selected)
+            {
+                unitSelectionCursor.DrawNoShadow(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
+            }
+
+            if (showClickDetectionRectangle)
+            {
+                clickDetectionRectangle.DrawNoShadow(gameTime, spriteBatch);
+            }
+
 
 
         }
 
         internal override void UpdateInternal(GameTime gameTime)
         {
-           
+            unitSelectionCursor.Update(gameTime);
         }
 
 
@@ -108,10 +123,11 @@ namespace mike_and_conquer_monogame.gameview
 
             unitSprite.DrawShadowOnly(gameTime, spriteBatch, worldCoordinatesAsVector2, SpriteSortLayers.UNIT_DEPTH);
 
-            // if (myMCV.selected)
-            // {
-            //     unitSelectionCursor.DrawShadowOnly(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
-            // }
+            if (Selected)
+            {
+                unitSelectionCursor.DrawShadowOnly(gameTime, spriteBatch, SpriteSortLayers.UNIT_DEPTH);
+            }
+
 
         }
 

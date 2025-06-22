@@ -14,8 +14,6 @@ namespace mike_and_conquer_monogame.gameview
     public class MinigunnerView : UnitView
     {
         private UnitSelectionCursor unitSelectionCursor;
-        private DestinationSquare destinationSquare;
-        private bool drawDestinationSquare;
 
 
         private static int MINIGUNNER_VIEW_CLICK_DETECTION_RECTANGLE_X_OFFSET = 0;
@@ -46,7 +44,6 @@ namespace mike_and_conquer_monogame.gameview
         {
             this.unitSprite = new UnitSprite(spriteListKey);
             this.unitSize = new UnitSize(12, 16);
-            this.unitSprite.drawShadow = true;
 
             this.unitSelectionCursor = new UnitSelectionCursor(
                 this,
@@ -61,8 +58,6 @@ namespace mike_and_conquer_monogame.gameview
                 YInWorldCoordinates);
 
 
-            // this.destinationSquare = new DestinationSquare();
-            this.drawDestinationSquare = false;
             SetupAnimations();
 
             this.selectionCursorOffset = new Point(0, -4);

@@ -96,8 +96,8 @@ namespace mike_and_conquer_simulation.gameworld
 
             int i = 0;
 
-            int arrayColumn = 0;
-            int arrayRow = 0;
+            // int arrayColumn = 0;
+            // int arrayRow = 0;
 
             for (int row = startY; row <= endY; row++)
             {

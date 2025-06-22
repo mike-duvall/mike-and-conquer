@@ -68,7 +68,7 @@ namespace mike_and_conquer_monogame.eventhandler
             }
 
             eventTypeToCommandMap.Add(eventName, commandAndEventDataTypes);
-            int x = 3;
+            // int x = 3;
         }
 
 

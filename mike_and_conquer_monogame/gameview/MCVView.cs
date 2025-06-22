@@ -14,8 +14,6 @@ namespace mike_and_conquer_monogame.gameview;
 public class MCVView : UnitView
 {
     private UnitSelectionCursor unitSelectionCursor;
-    private DestinationSquare destinationSquare;
-    private bool drawDestinationSquare;
 
     //        enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
@@ -50,7 +48,6 @@ public class MCVView : UnitView
         this.Health = health;
 
         unitSprite = new UnitSprite(SPRITE_KEY);
-        // unitSprite.drawShadow = true;
         selectionCursorOffset = new XnaPoint(0, 2);
 
         unitSelectionCursor = new UnitSelectionCursor(
@@ -65,8 +62,6 @@ public class MCVView : UnitView
             XInWorldCoordinates,
             YInWorldCoordinates);
 
-        // this.destinationSquare = new DestinationSquare();
-        drawDestinationSquare = false;
 
         var animationSequence = new AnimationSequence(1);
         animationSequence.AddFrame(0);
