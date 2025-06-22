@@ -342,8 +342,8 @@ public class UnitSelectionCursor
 
     internal void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch, float layerDepth)
     {
-        spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, healthBarTextureOrigin, defaultScale,
-            SpriteEffects.None, layerDepth);
+        // spriteBatch.Draw(healthBarShadowTexture, healthBarPosition, null, Color.White, 0f, healthBarTextureOrigin, defaultScale,
+        //     SpriteEffects.None, layerDepth);
 
     }
 }

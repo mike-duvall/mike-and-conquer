@@ -29,8 +29,8 @@ namespace mike_and_conquer_simulation.main
 
         private float buildMinigunnerPercentComplete;
 
-        private float scaledBuildSpeed;
-        private float baseBuildSpeed = 1.25f;
+        // private float scaledBuildSpeed;
+        // private float baseBuildSpeed = 1.25f;
 
 
         public bool IsBuildingMinigunner

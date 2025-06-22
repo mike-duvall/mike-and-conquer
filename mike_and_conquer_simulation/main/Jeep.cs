@@ -46,10 +46,10 @@ namespace mike_and_conquer_simulation.main
             float speedFromCncInLeptons = 30;  // 30 leptons, for Jeep, MPH_MEDIUM_FAST = 30
 
 
-            float pixelsPerSquare = 24;
-            float leptonsPerSquare = 256;
+            // float pixelsPerSquare = 24;
+            // float leptonsPerSquare = 256;
             float pixelsPerLepton = 0.09375f;
-            float leptonsPerPixel = 10.66666666666667f;
+            // float leptonsPerPixel = 10.66666666666667f;
 
 
             this.movementDelta = speedFromCncInLeptons * pixelsPerLepton;

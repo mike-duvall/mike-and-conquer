@@ -14,34 +14,36 @@ namespace mike_and_conquer_monogame.gameview
     public class MinigunnerView : UnitView
     {
         private UnitSelectionCursor unitSelectionCursor;
-        private DestinationSquare destinationSquare;
-        private bool drawDestinationSquare;
 
 
-        private bool showClickDetectionRectangle;
-        private ClickDetectionRectangle clickDetectionRectangle;
+        private static int MINIGUNNER_VIEW_CLICK_DETECTION_RECTANGLE_X_OFFSET = 0;
+        private static int MINIGUNNER_VIEW_CLICK_DETECTION_RECTANGLE_Y_OFFSET = -5;
 
-
-        private int clickDetectionRectangleYOffset = -5;
-        private int clickDetectionRectangleXOffset = 0;
+        private static int MINIGUNNER_UNIT_SIZE_WIDTH = 12;
+        private static int MINIGUNNER_UNIT_SIZE_HEIGHT = 16;
 
         enum AnimationSequences { STANDING_STILL, WALKING_UP, SHOOTING_UP };
 
+        protected MinigunnerView(
+            int unitId,
+            string spriteListKey,
+            int xInWorldCoordinates,
+            int yInWorldCoordinates,
+            int maxHealth,
+            int health) :
 
-        protected MinigunnerView(int unitId,string spriteListKey, int xInWorldCoordinates, int yInWorldCoordinates, int maxHealth, int health)
+                base(unitId,
+                    xInWorldCoordinates,
+                    yInWorldCoordinates,
+                    MINIGUNNER_UNIT_SIZE_WIDTH,
+                    MINIGUNNER_UNIT_SIZE_HEIGHT,
+                    maxHealth,
+                    health,
+                    MINIGUNNER_VIEW_CLICK_DETECTION_RECTANGLE_X_OFFSET,
+                    MINIGUNNER_VIEW_CLICK_DETECTION_RECTANGLE_Y_OFFSET)
         {
-            this.UnitId = unitId;
-            this.XInWorldCoordinates = xInWorldCoordinates;
-            this.YInWorldCoordinates = yInWorldCoordinates;
-            this.MaxHealth = maxHealth;
-            this.Health = health;
             this.unitSprite = new UnitSprite(spriteListKey);
-
             this.unitSize = new UnitSize(12, 16);
-
-
-            this.unitSprite.drawShadow = true;
-
 
             this.unitSelectionCursor = new UnitSelectionCursor(
                 this,
@@ -56,28 +58,14 @@ namespace mike_and_conquer_monogame.gameview
                 YInWorldCoordinates);
 
 
-            // this.destinationSquare = new DestinationSquare();
-            this.drawDestinationSquare = false;
             SetupAnimations();
 
-            // this.selectionCursorOffset = new Point(0, -5);  // X is correct, y too high
             this.selectionCursorOffset = new Point(0, -4);
 
             // showClickDetectionRectangle = true;
-            showClickDetectionRectangle = false;
-            clickDetectionRectangle = new ClickDetectionRectangle(
-                this.XInWorldCoordinates + clickDetectionRectangleXOffset,
-                this.YInWorldCoordinates + clickDetectionRectangleYOffset,
-                this.unitSize.Width + 1,
-                this.unitSize.Height + 1);
 
         }
 
-        internal override Rectangle CreateClickDetectionRectangle()
-        {
-            return clickDetectionRectangle.GetRectangle();
-
-        }
 
         private void SetupAnimations()
         {
@@ -111,13 +99,9 @@ namespace mike_and_conquer_monogame.gameview
 
 
 
-        internal override void Update(GameTime gameTime)
+        internal override void UpdateInternal(GameTime gameTime)
         {
             unitSelectionCursor.Update(gameTime);
-            clickDetectionRectangle.Update(
-                gameTime,
-                XInWorldCoordinates + clickDetectionRectangleXOffset,
-                YInWorldCoordinates + clickDetectionRectangleYOffset);
         }
 
 

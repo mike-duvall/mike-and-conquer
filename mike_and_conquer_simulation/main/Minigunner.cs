@@ -80,10 +80,10 @@ namespace mike_and_conquer_simulation.main
 
             // isMoving = false;
 
-            float pixelsPerSquare = 24;
-            float leptonsPerSquare = 256;
+            // float pixelsPerSquare = 24;
+            // float leptonsPerSquare = 256;
             float pixelsPerLepton = 0.09375f;
-            float leptonsPerPixel = 10.66666666666667f;
+            // float leptonsPerPixel = 10.66666666666667f;
 
 
             this.movementDelta = speedFromCncInLeptons * pixelsPerLepton;

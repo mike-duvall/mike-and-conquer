@@ -32,8 +32,6 @@ namespace mike_and_conquer_monogame.gamesprite
 
         private ImmutablePalette palette;
 
-        public bool drawShadow;
-
         private int width;
         public int Width
         {
@@ -67,7 +65,6 @@ namespace mike_and_conquer_monogame.gamesprite
             this.animate = true;
             int[] remap = { };
             palette = new ImmutablePalette(MikeAndConquerGame.CONTENT_DIRECTORY_PREFIX + "temperat.pal", remap);
-            drawShadow = false;
         }
 
         public void SetCurrentAnimationSequenceIndex(int animationSequenceIndex)
