@@ -30,9 +30,7 @@ namespace mike_and_conquer_monogame.gameview
         private readonly int clickDetectionRectangleXOffset;
 
 
-        public Color color;
-
-        protected UnitSize unitSize;
+        protected readonly SizeInWorldCoordinates clickDetectionRectangleSize;
 
         protected PlannedPathView plannedPathView;
 
@@ -49,9 +47,9 @@ namespace mike_and_conquer_monogame.gameview
         }
 
 
-        public UnitSize UnitSize
+        public SizeInWorldCoordinates SizeInWorldCoordinates
         {
-            get { return unitSize; }
+            get { return clickDetectionRectangleSize; }
         }
 
         protected Point selectionCursorOffset;
@@ -88,7 +86,7 @@ namespace mike_and_conquer_monogame.gameview
             this.YInWorldCoordinates = yInWorldCoordinates;
             this.MaxHealth = maxHealth;
             this.Health = health;
-            this.unitSize = new UnitSize(unitWidth, unitHeight);
+            this.clickDetectionRectangleSize = new SizeInWorldCoordinates(unitWidth, unitHeight);
 
             this.clickDetectionRectangleXOffset = clickDetectionRectangleXOffset;
             this.clickDetectionRectangleYOffset = clickDetectionRectangleYOffset;
@@ -96,8 +94,8 @@ namespace mike_and_conquer_monogame.gameview
             clickDetectionRectangle = new ClickDetectionRectangle(
                 this.XInWorldCoordinates + clickDetectionRectangleXOffset,
                 this.YInWorldCoordinates + clickDetectionRectangleYOffset,
-                this.unitSize.Width,
-                this.unitSize.Height);
+                this.clickDetectionRectangleSize.Width,
+                this.clickDetectionRectangleSize.Height);
 
         }
 
