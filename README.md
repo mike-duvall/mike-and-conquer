@@ -14,8 +14,6 @@ The current state of the code varies.  Some of code is pretty high quality that 
 
 ## Current work
 
-You see the project Kanban board here:  https://github.com/users/mike-duvall/projects/1/views/2
-
 
 Here is screenshot of current state:
 
