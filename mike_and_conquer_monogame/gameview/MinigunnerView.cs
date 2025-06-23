@@ -43,7 +43,6 @@ namespace mike_and_conquer_monogame.gameview
                     MINIGUNNER_VIEW_CLICK_DETECTION_RECTANGLE_Y_OFFSET)
         {
             this.unitSprite = new UnitSprite(spriteListKey);
-            this.unitSize = new UnitSize(12, 16);
 
             this.unitSelectionCursor = new UnitSelectionCursor(
                 this,

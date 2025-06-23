@@ -43,7 +43,6 @@ namespace mike_and_conquer_monogame.gameview
             this.YInWorldCoordinates = yInWorldCoordinates;
 
             this.unitSprite = new UnitSprite(SPRITE_KEY);
-            this.unitSize = new UnitSize(JEEP_UNIT_SIZE_WIDTH, JEEP_UNIT_SIZE_HEIGHT);
 
             this.unitSelectionCursor = new UnitSelectionCursor(
                 this,
@@ -57,13 +56,10 @@ namespace mike_and_conquer_monogame.gameview
                 XInWorldCoordinates,
                 YInWorldCoordinates);
 
-
-            // this.drawDestinationSquare = false;
-
             AnimationSequence animationSequence = new AnimationSequence(1);
             animationSequence.AddFrame(8);
             unitSprite.AddAnimationSequence(0, animationSequence);
-            showClickDetectionRectangle = true;
+            // showClickDetectionRectangle = true;
 
         }
 

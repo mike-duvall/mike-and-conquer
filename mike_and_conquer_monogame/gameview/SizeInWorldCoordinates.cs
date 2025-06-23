@@ -1,6 +1,6 @@
 ﻿namespace mike_and_conquer_monogame.gameview
 {
-    public class UnitSize
+    public class SizeInWorldCoordinates
     {
 
         private int width;
@@ -18,7 +18,7 @@
             set { height = value; }
         }
 
-        public UnitSize(int width, int height)
+        public SizeInWorldCoordinates(int width, int height)
         {
             this.Width = width;
             this.Height = height;
