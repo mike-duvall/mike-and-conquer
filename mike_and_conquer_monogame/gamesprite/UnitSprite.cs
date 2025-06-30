@@ -124,13 +124,7 @@ namespace mike_and_conquer_monogame.gamesprite
         public void DrawShadowOnly(GameTime gameTime, SpriteBatch spriteBatch, Vector2 positionInWorldCoordinates, float layerDepth)
         {
             AnimationSequence currentAnimationSequence = animationSequenceMap[currentAnimationSequenceIndex];
-            if (animate)
-            {
-                currentAnimationSequence.Update();
-            }
-
             int currentAnimationImageIndex = currentAnimationSequence.GetCurrentFrame();
-
             Texture2D shadowOnlyTexture = unitFrameList[currentAnimationImageIndex].ShadowOnlyTexture;
 
             float defaultScale = 1;
