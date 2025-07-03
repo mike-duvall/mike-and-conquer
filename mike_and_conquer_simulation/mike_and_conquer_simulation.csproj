@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>mike_and_conquer_simulation</RootNamespace>
     <Configurations>Debug;Release;Debug Local</Configurations>
   </PropertyGroup>
