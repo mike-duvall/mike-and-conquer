@@ -19,7 +19,7 @@ namespace mike_and_conquer_monogame.rest.controller
         {
 
             // TODO Should this be retrieved via event on game loop?
-            string cursorState = GameWorldView.instance.gameCursor.StateAsString;
+            string cursorState = "\"" + GameWorldView.instance.gameCursor.StateAsString + "\"";
             return new OkObjectResult(cursorState);
 
         }
