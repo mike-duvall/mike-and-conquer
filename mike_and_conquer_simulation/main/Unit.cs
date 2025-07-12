@@ -1,5 +1,4 @@
-﻿
-using mike_and_conquer_simulation.events;
+﻿using mike_and_conquer_simulation.events;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -265,6 +264,10 @@ namespace mike_and_conquer_simulation.main
         public bool ApplyDamage(int amountOfDamage)
         {
             health -= amountOfDamage;
+            if (health < 0)
+            {
+                health = 0;
+            }
             PublishUnitTookDamageEvent(amountOfDamage,health);
             Boolean destroyed = health <= 0;
             if (destroyed)

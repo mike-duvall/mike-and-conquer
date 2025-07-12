@@ -617,7 +617,6 @@ namespace mike_and_conquer_monogame.main
             gameWorldView.Update(gameTime, newKeyboardState);
             
             currentGameState = this.currentGameState.Update(gameTime);
-            this.currentGameStateView.Update(gameTime);
         
         }
 
