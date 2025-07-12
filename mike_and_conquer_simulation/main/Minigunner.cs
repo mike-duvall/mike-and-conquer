@@ -277,7 +277,7 @@ namespace mike_and_conquer_simulation.main
                     reloadTimer = 20;
                     PublishBulletHitTargetEvent(this.UnitId, currentAttackTarget.UnitId);
                     int amountOfDamage = 15;
-                        bool destroyed = currentAttackTarget.ApplyDamage(amountOfDamage);
+                    bool destroyed = currentAttackTarget.ApplyDamage(amountOfDamage);
                     PublishFiredOnUnitEvent(this.UnitId, currentAttackTarget.UnitId);
                     if (destroyed)
                     {
