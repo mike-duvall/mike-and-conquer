@@ -5,6 +5,7 @@ using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using mike_and_conquer_simulation.pathfinding;
 using Newtonsoft.Json;
+using Serilog;
 
 
 using MapTileInstance = mike_and_conquer_simulation.gameworld.MapTileInstance;
@@ -15,6 +16,7 @@ namespace mike_and_conquer_simulation.main
 {
     internal class Minigunner : Unit
     {
+        private static readonly ILogger Logger = Log.ForContext<Minigunner>();
 
         public enum State { IDLE, MOVING, FIRING, LANDING_AT_MAP_SQUARE };
         public State currentState;
@@ -62,6 +64,8 @@ namespace mike_and_conquer_simulation.main
 
         private int reloadTimer;
         private bool weaponIsLoaded;
+
+//         private long reloadStartTimeTicks; // uncomment out this to log reload times
 
         private static int MAX_HEALTH = 50;
 
@@ -211,6 +215,15 @@ namespace mike_and_conquer_simulation.main
                 reloadTimer--;
                 if (reloadTimer <= 0)
                 {
+                    // uncomment out this to log reload times
+                    // long reloadEndTimeTicks = DateTime.Now.Ticks;
+                    // long reloadDurationTicks = reloadEndTimeTicks - reloadStartTimeTicks;
+                    // double reloadDurationMilliseconds = reloadDurationTicks / (double)TimeSpan.TicksPerMillisecond;
+                    //
+                    // Logger.Information("Minigunner {UnitId} completed reloading at {EndTime} ticks. " +
+                    //     "Reload duration: {DurationTicks} ticks ({DurationMs:F2} milliseconds)", 
+                    //     this.UnitId, reloadEndTimeTicks, reloadDurationTicks, reloadDurationMilliseconds);
+                    
                     PublishUnitReloadedWeaponEvent();
                     weaponIsLoaded = true;
                 }
@@ -274,7 +287,10 @@ namespace mike_and_conquer_simulation.main
                 if (weaponIsLoaded)
                 {
                     weaponIsLoaded = false;
-                    reloadTimer = 20;
+                    reloadTimer = 17;  // In real Cnc code, value in table is 20
+                    // reloadStartTimeTicks = DateTime.Now.Ticks;
+                    // Logger.Information("Minigunner {UnitId} started reloading at {StartTime} ticks", 
+                    //     this.UnitId, reloadStartTimeTicks);
                     PublishBulletHitTargetEvent(this.UnitId, currentAttackTarget.UnitId);
                     int amountOfDamage = 15;
                     bool destroyed = currentAttackTarget.ApplyDamage(amountOfDamage);
