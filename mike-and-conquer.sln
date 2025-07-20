@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mike_and_conquer_monogame",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mike_and_conquer_simulation", "mike_and_conquer_simulation\mike_and_conquer_simulation.csproj", "{52DB7130-76AE-4FC1-84EC-6F345A341CF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mike_and_conquer_simulation.tests", "mike_and_conquer_simulation.tests\mike_and_conquer_simulation.tests.csproj", "{C07BE5A4-A819-4822-B566-3BC8555F4EE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{52DB7130-76AE-4FC1-84EC-6F345A341CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52DB7130-76AE-4FC1-84EC-6F345A341CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52DB7130-76AE-4FC1-84EC-6F345A341CF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C07BE5A4-A819-4822-B566-3BC8555F4EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C07BE5A4-A819-4822-B566-3BC8555F4EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C07BE5A4-A819-4822-B566-3BC8555F4EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C07BE5A4-A819-4822-B566-3BC8555F4EE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
