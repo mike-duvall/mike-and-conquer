@@ -18,14 +18,13 @@ namespace mike_and_conquer_simulation.main
 
         public static int globalId = 1;
 
+        private readonly SimulationOptions simulationOptions;
 
-        private SimulationOptions simulationOptions;
+        private readonly Queue<AsyncSimulationCommand> inputCommandQueue;
 
-        private Queue<AsyncSimulationCommand> inputCommandQueue;
+        private readonly List<SimulationStateUpdateEvent> simulationStateUpdateEventsHistory;
 
-        private List<SimulationStateUpdateEvent> simulationStateUpdateEventsHistory;
-
-        private List<SimulationStateListener> listeners;
+        private readonly List<SimulationStateListener> listeners;
 
         public static SimulationMain instance;
 
@@ -33,16 +32,82 @@ namespace mike_and_conquer_simulation.main
 
         // private List<Unit> unitList;
 
-        private GameWorld gameWorld;
+        private readonly GameWorld gameWorld;
+
+
+
+
+        SimulationMain()
+        {
+            inputCommandQueue = new Queue<AsyncSimulationCommand>();
+            simulationStateUpdateEventsHistory = new List<SimulationStateUpdateEvent>();
+            listeners = new List<SimulationStateListener>();
+            listeners.Add(new SimulationStateHistoryListener(this));
+
+            gameWorld = new GameWorld();
+            simulationOptions = new SimulationOptions();
+            SimulationMain.instance = this;
+        }
+
+
+        public static void Main()
+        {
+            SimulationMain.condition.Set();
+            ExactTimer exactTimer = new ExactTimer();
+            SimulationMain.instance.SetGameSpeed(SimulationOptions.GameSpeed.Normal);
+
+            while (true)
+            {
+                int sleepTime = (int)SimulationMain.instance.simulationOptions.CurrentGameSpeed;
+                
+                exactTimer.WaitForExactly(sleepTime);
+
+                SimulationMain.instance.Tick();
+
+            }
+
+        }
+
+        private void Tick()
+        {
+            Update();
+            ProcessInputCommandQueue();
+        }
+
+        private void Update()
+        {
+            // foreach (Unit unit in unitList)
+            // {
+            //     unit.Update();
+            // }
+
+            gameWorld.Update();
+
+        }
+
+        private void ProcessInputCommandQueue()
+        {
+            lock (inputCommandQueue)
+            {
+                while (inputCommandQueue.Count > 0)
+                {
+                    AsyncSimulationCommand anEvent = inputCommandQueue.Dequeue();
+                    anEvent.Process();
+                    if (anEvent.ThrownException != null)
+                    {
+                        string errorMessage = "Exception thrown processing command '" + anEvent.ToString() + "' in SimulationMain.ProcessInputCommandQueue().  Exception stacktrace follows:";
+                        // Logger.LogError(anEvent.ThrownException, errorMessage);
+                    }
+                }
+            }
+        }
+
 
         public static void StartSimulation(List<SimulationStateListener> listenerList)
         {
 
-
-
             Logger.Information("************************Information-Simulation Mike is cool");
             Logger.Warning("************************Warning-Simulation Mike is cool");
-
 
             new SimulationMain();
             foreach (SimulationStateListener listener in listenerList)
@@ -50,17 +115,13 @@ namespace mike_and_conquer_simulation.main
                 SimulationMain.instance.AddListener(listener);
             }
 
-
             condition = new ManualResetEvent(false);
-            Thread backgroundThread = new Thread(new ThreadStart(SimulationMain.Main));
-            backgroundThread.IsBackground = true;
+            Thread simulationThread = new Thread(SimulationMain.Main);
+            simulationThread.IsBackground = true;
 
             // Start thread  
-            backgroundThread.Start();
+            simulationThread.Start();
             condition.WaitOne();
-
-            // PublishInitializeScenarioEvent(27,23);
-
 
         }
 
@@ -140,98 +201,6 @@ namespace mike_and_conquer_simulation.main
         }
 
 
-        public static void Main()
-        {
-            SimulationMain.condition.Set();
-            long previousTicks = 0;
-            SimulationMain.instance.SetGameSpeed(SimulationOptions.GameSpeed.Normal);
-
-            while (true)
-            {
-
-
-                int sleepTime = (int) SimulationMain.instance.simulationOptions.CurrentGameSpeed;
-                //TimerHelper.SleepForNoMoreThan(sleepTime, Logger);
-                TimerHelper.SleepForNoMoreThan2(sleepTime);
-                // TimerHelper.SleepForNoMoreThan(sleepTime);
-                //Thread.Sleep(1);
-
-
-
-                SimulationMain.instance.Tick();
-
-                bool doneWaiting = false;
-                long delta = -1;
-                long currentTicks = -1;
-
-                while (!doneWaiting)
-                {
-                
-                     currentTicks = DateTime.Now.Ticks;
-                     delta = (currentTicks - previousTicks) / TimeSpan.TicksPerMillisecond;
-                     if (delta >= sleepTime)
-                     {
-                         doneWaiting = true;
-                     }
-
-
-                }
-                // Logger.LogInformation("delta=" + delta + ",  sleepTime=" + sleepTime);
-                previousTicks = currentTicks;
-            }
-
-        }
-
-
-        SimulationMain()
-        {
-            inputCommandQueue = new Queue<AsyncSimulationCommand>();
-            simulationStateUpdateEventsHistory = new List<SimulationStateUpdateEvent>();
-            listeners = new List<SimulationStateListener>();
-            listeners.Add(new SimulationStateHistoryListener(this));
-
-            // unitList = new List<Unit>();
-
-            gameWorld = new GameWorld();
-
-            simulationOptions = new SimulationOptions();
-
-            SimulationMain.instance = this;
-        }
-
-        private void Tick()
-        {
-            Update();
-            ProcessInputCommandQueue();
-        }
-
-        private void Update()
-        {
-            // foreach (Unit unit in unitList)
-            // {
-            //     unit.Update();
-            // }
-
-            gameWorld.Update();
-
-        }
-
-        private void ProcessInputCommandQueue()
-        {
-            lock (inputCommandQueue)
-            {
-                while (inputCommandQueue.Count > 0)
-                {
-                    AsyncSimulationCommand anEvent = inputCommandQueue.Dequeue();
-                    anEvent.Process();
-                    if (anEvent.ThrownException != null)
-                    {
-                        string errorMessage = "Exception thrown processing command '" + anEvent.ToString() + "' in SimulationMain.ProcessInputCommandQueue().  Exception stacktrace follows:";
-                        // Logger.LogError(anEvent.ThrownException, errorMessage);
-                    }
-                }
-            }
-        }
 
         public List<SimulationStateUpdateEvent> GetCopyOfEventHistoryViaCommand()
         {
