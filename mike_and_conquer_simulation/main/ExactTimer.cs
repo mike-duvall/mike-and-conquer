@@ -15,7 +15,7 @@ namespace mike_and_conquer_simulation.main
         /// </summary>
         public ExactTimer()
         {
-            previousTicks = 0;
+            previousTicks = DateTime.Now.Ticks;
         }
 
         /// <summary>
@@ -46,33 +46,5 @@ namespace mike_and_conquer_simulation.main
             previousTicks = currentTicks;
         }
 
-        /// <summary>
-        /// Resets the timer's internal state. 
-        /// The next call to WaitForExactly will start timing from when this method is called.
-        /// </summary>
-        public void Reset()
-        {
-            previousTicks = DateTime.Now.Ticks;
-        }
-
-        /// <summary>
-        /// Gets the time elapsed since the last WaitForExactly call or Reset in milliseconds.
-        /// </summary>
-        /// <returns>Elapsed time in milliseconds</returns>
-        public long GetElapsedMilliseconds()
-        {
-            long currentTicks = DateTime.Now.Ticks;
-            return (currentTicks - previousTicks) / TimeSpan.TicksPerMillisecond;
-        }
-
-        /// <summary>
-        /// Gets the time elapsed since the last WaitForExactly call or Reset in ticks.
-        /// </summary>
-        /// <returns>Elapsed time in ticks</returns>
-        public long GetElapsedTicks()
-        {
-            long currentTicks = DateTime.Now.Ticks;
-            return currentTicks - previousTicks;
-        }
     }
 }

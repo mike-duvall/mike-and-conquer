@@ -54,7 +54,6 @@ namespace mike_and_conquer_simulation.main
         {
             SimulationMain.condition.Set();
             ExactTimer exactTimer = new ExactTimer();
-            exactTimer.Reset();
             SimulationMain.instance.SetGameSpeed(SimulationOptions.GameSpeed.Normal);
 
             while (true)
