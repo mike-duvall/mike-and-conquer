@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using mike_and_conquer_simulation.commands;
 using mike_and_conquer_simulation.commands.commandbody;
@@ -8,6 +9,7 @@ using mike_and_conquer_simulation.events;
 using mike_and_conquer_simulation.gameworld;
 using Newtonsoft.Json;
 using Serilog;
+using mike_and_conquer_simulation.simulationstate;
 
 namespace mike_and_conquer_simulation.main
 {
@@ -32,8 +34,9 @@ namespace mike_and_conquer_simulation.main
 
         // private List<Unit> unitList;
 
-        private readonly GameWorld gameWorld;
+        internal readonly GameWorld gameWorld;
 
+        private SimulationState currentSimulationState;
 
 
 
@@ -46,8 +49,12 @@ namespace mike_and_conquer_simulation.main
 
             gameWorld = new GameWorld();
             simulationOptions = new SimulationOptions();
+            // currentSimulationState = new Initializing();
+
             SimulationMain.instance = this;
         }
+
+
 
 
         public static void Main()
@@ -70,7 +77,8 @@ namespace mike_and_conquer_simulation.main
 
         private void Tick()
         {
-            Update();
+            // Update();
+            currentSimulationState = currentSimulationState.Update();
             ProcessInputCommandQueue();
         }
 
@@ -82,7 +90,6 @@ namespace mike_and_conquer_simulation.main
             // }
 
             gameWorld.Update();
-
         }
 
         private void ProcessInputCommandQueue()
@@ -556,5 +563,11 @@ namespace mike_and_conquer_simulation.main
         {
             return gameWorld.ApplyDamageToUnit(unitId, damageAmount);
         }
+
+        internal void SetNextState(SimulationState nextState)
+        {
+            this.currentSimulationState.SetNextState(nextState);
+        }
+
     }
 }
