@@ -6,7 +6,7 @@ namespace mike_and_conquer_simulation.main
     /// A high-precision timer that combines Thread.Sleep() with busy-waiting 
     /// to achieve exact timing intervals with minimal CPU overhead.
     /// </summary>
-    public class ExactTimer
+    internal class ExactTimer
     {
         private long previousTicks;
 

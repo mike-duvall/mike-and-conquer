@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading;
 using mike_and_conquer_simulation.commands;
 using mike_and_conquer_simulation.commands.commandbody;
@@ -10,6 +10,7 @@ using mike_and_conquer_simulation.gameworld;
 using Newtonsoft.Json;
 using Serilog;
 using mike_and_conquer_simulation.simulationstate;
+
 
 namespace mike_and_conquer_simulation.main
 {
@@ -40,6 +41,8 @@ namespace mike_and_conquer_simulation.main
 
 
 
+
+
         SimulationMain()
         {
             inputCommandQueue = new Queue<AsyncSimulationCommand>();
@@ -49,7 +52,8 @@ namespace mike_and_conquer_simulation.main
 
             gameWorld = new GameWorld();
             simulationOptions = new SimulationOptions();
-            // currentSimulationState = new Initializing();
+            currentSimulationState = new InitializingScenario();
+            // currentSimulationState = new Running();
 
             SimulationMain.instance = this;
         }
@@ -109,6 +113,10 @@ namespace mike_and_conquer_simulation.main
             }
         }
 
+        internal SimulationState GetCurrentSimulationState()
+        {
+            return currentSimulationState;
+        }
 
         public static void StartSimulation(List<SimulationStateListener> listenerList)
         {
@@ -221,6 +229,20 @@ namespace mike_and_conquer_simulation.main
             List<SimulationStateUpdateEvent> list = anEvent.GetCopyOfEventHistory();
             return list;
         }
+
+        internal SimulationState GetCurrentSimulationStateViaCommand()
+        {
+            GetCurrentSimulationStateCommand aCommand = new GetCurrentSimulationStateCommand();
+
+            lock (inputCommandQueue)
+            {
+                inputCommandQueue.Enqueue(aCommand);
+            }
+
+            return aCommand.GetCurrentSimulationState();
+
+        }
+
 
         internal Minigunner CreateGDIMinigunner(int xInWorldCoordinates, int yInWorldCoordinates)
         {
@@ -474,6 +496,13 @@ namespace mike_and_conquer_simulation.main
 
             }
 
+            else if (jsonAsyncSimulationCommand.CommandType.Equals(SetSimulationStateToRunningCommand.CommandName))
+            {
+
+                return new SetSimulationStateToRunningCommand();
+
+            }
+
             else if (jsonAsyncSimulationCommand.CommandType.Equals(OrderUnitToAttackCommand.CommandName))
             {
 
@@ -538,10 +567,7 @@ namespace mike_and_conquer_simulation.main
             {
                 throw new Exception("Unknown CommandType:" + jsonAsyncSimulationCommand.CommandType);
             }
-
-
         }
-
 
         internal void StartScenario(PlayerController playerController)
         {
@@ -556,6 +582,8 @@ namespace mike_and_conquer_simulation.main
             gameWorld.StartScenario(playerController);
             
             PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
+
+            this.currentSimulationState.SetNextState(new RunningScenario());
         }
 
 

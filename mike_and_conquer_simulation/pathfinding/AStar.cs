@@ -20,7 +20,7 @@ namespace mike_and_conquer_simulation.pathfinding
 
     }
 
-    public class NavigationGraph
+    internal class NavigationGraph
     {
 
         public List<Node> nodeList;
@@ -164,7 +164,7 @@ namespace mike_and_conquer_simulation.pathfinding
         }
     }
 
-    public class Node
+    internal class Node
     {
         public int id;
         public List<int> connectedNodes;
@@ -177,7 +177,7 @@ namespace mike_and_conquer_simulation.pathfinding
 
     }
 
-    public class AStar
+    internal class AStar
     {
         // This code uses algorithms from here:  https://www.redblobgames.com/pathfinding/a-star/introduction.html
         // Current implementation is actually "Dijkstra’s Algorithm" rather than A *
