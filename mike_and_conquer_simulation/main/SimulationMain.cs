@@ -52,10 +52,11 @@ namespace mike_and_conquer_simulation.main
 
             gameWorld = new GameWorld();
             simulationOptions = new SimulationOptions();
+            SimulationMain.instance = this;
             currentSimulationState = new InitializingScenario();
             // currentSimulationState = new Running();
 
-            SimulationMain.instance = this;
+
         }
 
 
@@ -138,6 +139,11 @@ namespace mike_and_conquer_simulation.main
             simulationThread.Start();
             condition.WaitOne();
 
+        }
+
+        internal void TemporaryHackPublishInitializeScenarioEvent()
+        {
+            PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
         }
 
         private void PublishInitializeScenarioEvent(
@@ -496,6 +502,14 @@ namespace mike_and_conquer_simulation.main
 
             }
 
+            if (jsonAsyncSimulationCommand.CommandType.Equals(StartScenarioInitializationCommand.CommandName))
+            {
+
+                return new StartScenarioInitializationCommand();
+
+            }
+
+
             else if (jsonAsyncSimulationCommand.CommandType.Equals(SetSimulationStateToRunningCommand.CommandName))
             {
 
@@ -572,20 +586,36 @@ namespace mike_and_conquer_simulation.main
         internal void StartScenario(PlayerController playerController)
         {
 
-            lock (simulationStateUpdateEventsHistory)
-            {
-                simulationStateUpdateEventsHistory.Clear();
-            }
-
-            SimulationMain.globalId = 1;
-
-            gameWorld.StartScenario(playerController);
-            
-            PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
+            // lock (simulationStateUpdateEventsHistory)
+            // {
+            //     simulationStateUpdateEventsHistory.Clear();
+            // }
+            //
+            // SimulationMain.globalId = 1;
+            //
+            // gameWorld.StartScenario(playerController);
+            //
+            // PublishInitializeScenarioEvent(27, 23, gameWorld.gameMap.MapTileInstanceArray, gameWorld.terrainItemList);
 
             this.currentSimulationState.SetNextState(new RunningScenario());
         }
 
+        internal void StartScenarioInitialization()
+        {
+            this.currentSimulationState.SetNextState(new InitializingScenario());
+        }
+
+        internal void ResetScenario()
+        {
+            lock (simulationStateUpdateEventsHistory)
+            {
+                simulationStateUpdateEventsHistory.Clear();
+            }
+            
+            SimulationMain.globalId = 1;
+
+            this.gameWorld.InitializeMap();
+        }
 
         internal Unit ApplyDamageToUnit(int unitId, int damageAmount)
         {

@@ -1162,15 +1162,24 @@ namespace mike_and_conquer_simulation.gameworld
         }
 
 
-        public void StartScenario(PlayerController playerController)
+        internal void InitializeMap()
         {
+            // TODO:  Have actual mapped passed in when we can support more than default map
 
             terrainItemList.Clear();
-
-            gdiPlayer = new GDIPlayer(playerController);
-            nodPlayer = new NodPlayer(null);
             InitializeDefaultMap();
         }
+
+
+        // public void StartScenario(PlayerController playerController)
+        // {
+        //
+        //     terrainItemList.Clear();
+        //
+        //     gdiPlayer = new GDIPlayer(playerController);
+        //     nodPlayer = new NodPlayer(null);
+        //     InitializeDefaultMap();
+        // }
 
         //         public  bool IsValidMoveDestination(Point pointInWorldCoordinates)
         //         {
